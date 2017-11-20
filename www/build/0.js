@@ -75,7 +75,7 @@ var UsertabsPage = (function () {
     };
     UsertabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-usertabs',template:/*ion-inline-start:"/home/gideon/Desktop/UwiChemApp/UWIChemApp/ChemApp/src/pages/usertabs/usertabs.html"*/'<ion-tabs>\n  <ion-tab [root]="UserCoursesPage" tabTitle="My Courses" tabIcon="albums"></ion-tab>\n  <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="archive"></ion-tab>\n  <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/gideon/Desktop/UwiChemApp/UWIChemApp/ChemApp/src/pages/usertabs/usertabs.html"*/,
+            selector: 'page-usertabs',template:/*ion-inline-start:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/usertabs/usertabs.html"*/'<ion-tabs>\n  <ion-tab [root]="UserCoursesPage" tabTitle="My Courses" tabIcon="albums"></ion-tab>\n  <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="archive"></ion-tab>\n  <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/usertabs/usertabs.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
     ], UsertabsPage);
