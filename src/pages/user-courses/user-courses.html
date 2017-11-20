@@ -14,5 +14,9 @@
 
 
 <ion-content padding>
-  <button ion-button (click)="navigateToCalendar()">Go to Calendar</button>
+  <ion-list>
+    <button *ngFor="let course of courses" ion-item (click)="navigateToCalendar(course.courseID)">
+      {{course.Name}}
+    </button>  
+  </ion-list>
 </ion-content>

@@ -6,13 +6,30 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+
+
+export const fbConfig = {
+  apiKey: "AIzaSyDjGvGArBLdrMu2-KPKuUBtonz4QnNw-xM",
+  authDomain: "chemappuwi.firebaseapp.com",
+  databaseURL: "https://chemappuwi.firebaseio.com",
+  projectId: "chemappuwi",
+  storageBucket: "chemappuwi.appspot.com",
+  messagingSenderId: "977963203864"
+};
+
 @NgModule({
   declarations: [
     MyApp,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(fbConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

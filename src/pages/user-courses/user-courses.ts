@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 /**
  * Generated class for the UserCoursesPage page.
@@ -14,15 +15,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'user-courses.html',
 })
 export class UserCoursesPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  courses:any = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase) {
+    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserCoursesPage');
+    this.db.object('/Courses').valueChanges().subscribe(data=>{
+      for(let key in data){
+        let d = data[key];
+        d['courseID'] = key;
+        this.courses.push(d);
+      }
+    });
   }
 
-  navigateToCalendar(){
-    this.navCtrl.push("CalendarPage");
+  navigateToCalendar(courseID:string){
+    this.navCtrl.push('CalendarPage',{courseID});
   }
 }
