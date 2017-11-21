@@ -1,14 +1,14 @@
 webpackJsonp([6],{
 
-/***/ 446:
+/***/ 460:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AllCoursesPageModule", function() { return AllCoursesPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DepartmentsPageModule", function() { return DepartmentsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_courses__ = __webpack_require__(453);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__departments__ = __webpack_require__(589);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AllCoursesPageModule = (function () {
-    function AllCoursesPageModule() {
+var DepartmentsPageModule = (function () {
+    function DepartmentsPageModule() {
     }
-    AllCoursesPageModule = __decorate([
+    DepartmentsPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__all_courses__["a" /* AllCoursesPage */],
+                __WEBPACK_IMPORTED_MODULE_2__departments__["a" /* DepartmentsPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__all_courses__["a" /* AllCoursesPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__departments__["a" /* DepartmentsPage */]),
             ],
         })
-    ], AllCoursesPageModule);
-    return AllCoursesPageModule;
+    ], DepartmentsPageModule);
+    return DepartmentsPageModule;
 }());
 
-//# sourceMappingURL=all-courses.module.js.map
+//# sourceMappingURL=departments.module.js.map
 
 /***/ }),
 
-/***/ 453:
+/***/ 589:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllCoursesPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DepartmentsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -57,29 +57,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 /**
- * Generated class for the AllCoursesPage page.
+ * Generated class for the DepartmentsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var AllCoursesPage = (function () {
-    function AllCoursesPage(navCtrl, navParams) {
+var DepartmentsPage = (function () {
+    function DepartmentsPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
-    AllCoursesPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad AllCoursesPage');
+    DepartmentsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad DepartmentsPage');
     };
-    AllCoursesPage = __decorate([
+    DepartmentsPage.prototype.navigateToLogin = function () {
+        this.navCtrl.push("LoginPage");
+    };
+    DepartmentsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-all-courses',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/all-courses/all-courses.html"*/'<!--\n  Generated template for the AllCoursesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>All Courses</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/all-courses/all-courses.html"*/,
+            selector: 'page-departments',template:/*ion-inline-start:"/home/gideon/Desktop/UWIChemApp/src/pages/departments/departments.html"*/'<!--\n  Generated template for the DepartmentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Departments</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <button ion-button (click)="navigateToLogin()">Go to login</button>\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/UWIChemApp/src/pages/departments/departments.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
-    ], AllCoursesPage);
-    return AllCoursesPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
+    ], DepartmentsPage);
+    return DepartmentsPage;
 }());
 
-//# sourceMappingURL=all-courses.js.map
+//# sourceMappingURL=departments.js.map
 
 /***/ })
 

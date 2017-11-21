@@ -1,14 +1,14 @@
 webpackJsonp([3],{
 
-/***/ 449:
+/***/ 464:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginPageModule", function() { return LoginPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserCoursesPageModule", function() { return UserCoursesPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__(456);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_courses__ = __webpack_require__(593);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var LoginPageModule = (function () {
-    function LoginPageModule() {
+var UserCoursesPageModule = (function () {
+    function UserCoursesPageModule() {
     }
-    LoginPageModule = __decorate([
+    UserCoursesPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_2__user_courses__["a" /* UserCoursesPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__user_courses__["a" /* UserCoursesPage */]),
             ],
         })
-    ], LoginPageModule);
-    return LoginPageModule;
+    ], UserCoursesPageModule);
+    return UserCoursesPageModule;
 }());
 
-//# sourceMappingURL=login.module.js.map
+//# sourceMappingURL=user-courses.module.js.map
 
 /***/ }),
 
-/***/ 456:
+/***/ 593:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserCoursesPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__ = __webpack_require__(282);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,33 +57,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 /**
- * Generated class for the LoginPage page.
+ * Generated class for the UserCoursesPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var LoginPage = (function () {
-    function LoginPage(navCtrl, navParams) {
+var UserCoursesPage = (function () {
+    function UserCoursesPage(navCtrl, navParams, db) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.db = db;
+        this.courses = [];
     }
-    LoginPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad LoginPage');
+    UserCoursesPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        console.log('ionViewDidLoad UserCoursesPage');
+        this.db.object('/Courses').valueChanges().subscribe(function (data) {
+            for (var key in data) {
+                var d = data[key];
+                d['courseID'] = key;
+                _this.courses.push(d);
+            }
+        });
     };
-    LoginPage.prototype.navigateToTabs = function () {
-        this.navCtrl.push("UsertabsPage");
+    UserCoursesPage.prototype.navigateToCalendar = function (courseID) {
+        this.navCtrl.push('CalendarPage', { courseID: courseID });
     };
-    LoginPage = __decorate([
+    UserCoursesPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-grid>\n    <ion-row>\n      <ion-col col-12>\n          <img src="../../assets/imgs/UWI_CREST.png" alt="UWI Crest" style="display:block;margin:auto">\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col>\n        <ion-list>\n          <ion-item>\n            <ion-label color="primary" floating>Username</ion-label>\n            <ion-input></ion-input>\n          </ion-item>\n        </ion-list>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col>\n        <ion-list>\n          <ion-item>\n            <ion-label color="primary" floating>Password</ion-label>\n            <ion-input type="password"></ion-input>\n          </ion-item>\n        </ion-list>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col>\n        <button ion-button (click)="navigateToTabs()">Login</button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/login/login.html"*/,
+            selector: 'page-user-courses',template:/*ion-inline-start:"/home/gideon/Desktop/UWIChemApp/src/pages/user-courses/user-courses.html"*/'<!--\n  Generated template for the UserCoursesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>My Courses</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <button *ngFor="let course of courses" ion-item (click)="navigateToCalendar(course.courseID)">\n      {{course.Name}}\n    </button>  \n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/UWIChemApp/src/pages/user-courses/user-courses.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
-    ], LoginPage);
-    return LoginPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */]])
+    ], UserCoursesPage);
+    return UserCoursesPage;
 }());
 
-//# sourceMappingURL=login.js.map
+//# sourceMappingURL=user-courses.js.map
 
 /***/ })
 

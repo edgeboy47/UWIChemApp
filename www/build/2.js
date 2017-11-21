@@ -1,14 +1,14 @@
 webpackJsonp([2],{
 
-/***/ 450:
+/***/ 465:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoticesPageModule", function() { return NoticesPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsertabsPageModule", function() { return UsertabsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__notices__ = __webpack_require__(457);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__usertabs__ = __webpack_require__(594);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var NoticesPageModule = (function () {
-    function NoticesPageModule() {
+var UsertabsPageModule = (function () {
+    function UsertabsPageModule() {
     }
-    NoticesPageModule = __decorate([
+    UsertabsPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__notices__["a" /* NoticesPage */],
+                __WEBPACK_IMPORTED_MODULE_2__usertabs__["a" /* UsertabsPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__notices__["a" /* NoticesPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__usertabs__["a" /* UsertabsPage */]),
             ],
         })
-    ], NoticesPageModule);
-    return NoticesPageModule;
+    ], UsertabsPageModule);
+    return UsertabsPageModule;
 }());
 
-//# sourceMappingURL=notices.module.js.map
+//# sourceMappingURL=usertabs.module.js.map
 
 /***/ }),
 
-/***/ 457:
+/***/ 594:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NoticesPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsertabsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -57,29 +57,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 /**
- * Generated class for the NoticesPage page.
+ * Generated class for the UsertabsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var NoticesPage = (function () {
-    function NoticesPage(navCtrl, navParams) {
+var UsertabsPage = (function () {
+    function UsertabsPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.UserCoursesPage = "UserCoursesPage";
+        this.AllCoursesPage = "AllCoursesPage";
+        this.NoticesPage = "NoticesPage";
     }
-    NoticesPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad NoticesPage');
+    UsertabsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad UsertabsPage');
     };
-    NoticesPage = __decorate([
+    UsertabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-notices',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/notices/notices.html"*/'<!--\n  Generated template for the NoticesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Notices</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/notices/notices.html"*/,
+            selector: 'page-usertabs',template:/*ion-inline-start:"/home/gideon/Desktop/UWIChemApp/src/pages/usertabs/usertabs.html"*/'<ion-tabs>\n  <ion-tab [root]="UserCoursesPage" tabTitle="My Courses" tabIcon="albums"></ion-tab>\n  <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="archive"></ion-tab>\n  <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/gideon/Desktop/UWIChemApp/src/pages/usertabs/usertabs.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
-    ], NoticesPage);
-    return NoticesPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
+    ], UsertabsPage);
+    return UsertabsPage;
 }());
 
-//# sourceMappingURL=notices.js.map
+//# sourceMappingURL=usertabs.js.map
 
 /***/ })
 

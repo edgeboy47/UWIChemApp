@@ -5,14 +5,52 @@
   Ionic pages and navigation.
 -->
 <ion-header>
+  
+    <ion-navbar>
+      <ion-title>{{viewTitle}}</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="addEvent()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  
+  </ion-header>
+  
 
-  <ion-navbar>
-    <ion-title>Calendar</ion-title>
-  </ion-navbar>
+  <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+    <ion-item *ngFor="let event of eventSource">
+      {{event.endTime|date: 'HH:mm'}}|{{event.title}}
+    </ion-item>
+  </ng-template>
 
-</ion-header>
 
+  <ng-template #template2 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+      <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+          <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+              <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
+                {{event.endTime|date: 'HH:mm'}} 
+              </span>
+              <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
+              <span class="event-detail">  |  {{event.title}}</span>
+          </ion-item>
+          <ion-item *ngIf="selectedDate?.events.length==0">
+              <div class="no-events-label">{{noEventsLabel}}</div>
+          </ion-item>
+      </ion-list>
+  </ng-template>
 
-<ion-content padding>
-
-</ion-content>
+  
+  
+  <ion-content padding>
+    <calendar [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [monthviewEventDetailTemplate] = "template2"
+      [currentDate]="calendar.currentDate"
+      (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onTimeSelected)="onTimeSelected($event)"
+      step="30"
+      class="calendar">
+    </calendar>
+  </ion-content>

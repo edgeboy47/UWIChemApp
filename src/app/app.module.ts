@@ -10,6 +10,7 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 
+import {NgCalendarModule} from 'ionic2-calendar';
 
 export const fbConfig = {
   apiKey: "AIzaSyDjGvGArBLdrMu2-KPKuUBtonz4QnNw-xM",
@@ -25,6 +26,7 @@ export const fbConfig = {
     MyApp,
   ],
   imports: [
+    NgCalendarModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(fbConfig),
