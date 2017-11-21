@@ -1,14 +1,14 @@
 webpackJsonp([5],{
 
-/***/ 447:
+/***/ 449:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CalendarPageModule", function() { return CalendarPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DepartmentsPageModule", function() { return DepartmentsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar__ = __webpack_require__(454);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__departments__ = __webpack_require__(458);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,31 +18,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CalendarPageModule = (function () {
-    function CalendarPageModule() {
+var DepartmentsPageModule = (function () {
+    function DepartmentsPageModule() {
     }
-    CalendarPageModule = __decorate([
+    DepartmentsPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__calendar__["a" /* CalendarPage */],
+                __WEBPACK_IMPORTED_MODULE_2__departments__["a" /* DepartmentsPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__calendar__["a" /* CalendarPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__departments__["a" /* DepartmentsPage */]),
             ],
         })
-    ], CalendarPageModule);
-    return CalendarPageModule;
+    ], DepartmentsPageModule);
+    return DepartmentsPageModule;
 }());
 
-//# sourceMappingURL=calendar.module.js.map
+//# sourceMappingURL=departments.module.js.map
 
 /***/ }),
 
-/***/ 454:
+/***/ 458:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CalendarPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DepartmentsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -57,29 +57,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 /**
- * Generated class for the CalendarPage page.
+ * Generated class for the DepartmentsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var CalendarPage = (function () {
-    function CalendarPage(navCtrl, navParams) {
+var DepartmentsPage = (function () {
+    function DepartmentsPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
-    CalendarPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CalendarPage');
+    DepartmentsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad DepartmentsPage');
     };
-    CalendarPage = __decorate([
+    DepartmentsPage.prototype.navigateToLogin = function () {
+        this.navCtrl.push("LoginPage");
+    };
+    DepartmentsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-calendar',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/calendar/calendar.html"*/'<!--\n  Generated template for the CalendarPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Calendar</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/calendar/calendar.html"*/,
+            selector: 'page-departments',template:/*ion-inline-start:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/departments/departments.html"*/'<!--\n  Generated template for the DepartmentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Departments</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <button ion-button (click)="navigateToLogin()">Go to login</button>\n</ion-content>\n'/*ion-inline-end:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/departments/departments.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
-    ], CalendarPage);
-    return CalendarPage;
+    ], DepartmentsPage);
+    return DepartmentsPage;
 }());
 
-//# sourceMappingURL=calendar.js.map
+//# sourceMappingURL=departments.js.map
 
 /***/ })
 

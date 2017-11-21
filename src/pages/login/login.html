@@ -14,36 +14,15 @@
 
 
 <ion-content padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-          <img src="../../assets/imgs/UWI_CREST.png" alt="UWI Crest" style="display:block;margin:auto">
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-label color="primary" floating>Username</ion-label>
-            <ion-input></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-label color="primary" floating>Password</ion-label>
-            <ion-input type="password"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button ion-button (click)="navigateToTabs()">Login</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <img src="../../assets/imgs/UWI_CREST.png" alt="UWI Crest" style="display:block;margin:auto">
+  <ion-item>
+    <ion-label color="primary" floating>Email Address</ion-label>
+    <ion-input [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" floating>Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <button ion-button (click)="login()">Login</button>
+  <button ion-button (click)="createUser()">Register</button>
 </ion-content>

@@ -1,14 +1,14 @@
 webpackJsonp([6],{
 
-/***/ 446:
+/***/ 448:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AllCoursesPageModule", function() { return AllCoursesPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreateUserPageModule", function() { return CreateUserPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_courses__ = __webpack_require__(453);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__create_user__ = __webpack_require__(457);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,31 +18,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AllCoursesPageModule = (function () {
-    function AllCoursesPageModule() {
+var CreateUserPageModule = (function () {
+    function CreateUserPageModule() {
     }
-    AllCoursesPageModule = __decorate([
+    CreateUserPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__all_courses__["a" /* AllCoursesPage */],
+                __WEBPACK_IMPORTED_MODULE_2__create_user__["a" /* CreateUserPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__all_courses__["a" /* AllCoursesPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__create_user__["a" /* CreateUserPage */]),
             ],
         })
-    ], AllCoursesPageModule);
-    return AllCoursesPageModule;
+    ], CreateUserPageModule);
+    return CreateUserPageModule;
 }());
 
-//# sourceMappingURL=all-courses.module.js.map
+//# sourceMappingURL=create-user.module.js.map
 
 /***/ }),
 
-/***/ 453:
+/***/ 457:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllCoursesPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateUserPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -57,29 +57,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 /**
- * Generated class for the AllCoursesPage page.
+ * Generated class for the CreateUserPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var AllCoursesPage = (function () {
-    function AllCoursesPage(navCtrl, navParams) {
+var CreateUserPage = (function () {
+    function CreateUserPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
-    AllCoursesPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad AllCoursesPage');
+    CreateUserPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad CreateUserPage');
     };
-    AllCoursesPage = __decorate([
+    CreateUserPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-all-courses',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/all-courses/all-courses.html"*/'<!--\n  Generated template for the AllCoursesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>All Courses</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/all-courses/all-courses.html"*/,
+            selector: 'page-create-user',template:/*ion-inline-start:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/create-user/create-user.html"*/'<!--\n  Generated template for the CreateUserPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>createUser</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/create-user/create-user.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
-    ], AllCoursesPage);
-    return AllCoursesPage;
+    ], CreateUserPage);
+    return CreateUserPage;
 }());
 
-//# sourceMappingURL=all-courses.js.map
+//# sourceMappingURL=create-user.js.map
 
 /***/ })
 

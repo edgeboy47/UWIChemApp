@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 452:
+/***/ 454:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsertabsPageModule", function() { return UsertabsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__usertabs__ = __webpack_require__(459);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__usertabs__ = __webpack_require__(463);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var UsertabsPageModule = (function () {
 
 /***/ }),
 
-/***/ 459:
+/***/ 463:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75,7 +75,7 @@ var UsertabsPage = (function () {
     };
     UsertabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-usertabs',template:/*ion-inline-start:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/usertabs/usertabs.html"*/'<ion-tabs>\n  <ion-tab [root]="UserCoursesPage" tabTitle="My Courses" tabIcon="albums"></ion-tab>\n  <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="archive"></ion-tab>\n  <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/gideon/Desktop/Project2/UWIChemApp/src/pages/usertabs/usertabs.html"*/,
+            selector: 'page-usertabs',template:/*ion-inline-start:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/usertabs/usertabs.html"*/'<ion-tabs>\n  <ion-tab [root]="UserCoursesPage" tabTitle="My Courses" tabIcon="albums"></ion-tab>\n  <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="archive"></ion-tab>\n  <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/edgeboy47/Documents/COMP3550/project/UWIChemApp/UWIChemApp/src/pages/usertabs/usertabs.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
     ], UsertabsPage);
