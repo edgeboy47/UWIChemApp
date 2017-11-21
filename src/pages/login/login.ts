@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { ToastService } from '../../providers/toast-service/toast-service';
 
 @IonicPage()
 @Component({
@@ -11,7 +12,7 @@ export class LoginPage {
   email:string = ''
   password:string = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private fbAuth: AngularFireAuth) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private fbAuth: AngularFireAuth, private toast: ToastService) {
   }
 
   ionViewDidLoad() {
@@ -23,8 +24,8 @@ export class LoginPage {
       await this.fbAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       this.navCtrl.push('UsertabsPage')
     }
-    catch(err)
-      {alert("Invalid email or password")
+    catch(err){
+      this.toast.show("Invalid Email or Password")
       console.error(err)
     }
   }

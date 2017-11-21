@@ -11,6 +11,7 @@ import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 
 import {NgCalendarModule} from 'ionic2-calendar';
+import { ToastService } from '../providers/toast-service/toast-service';
 
 export const fbConfig = {
   apiKey: "AIzaSyDjGvGArBLdrMu2-KPKuUBtonz4QnNw-xM",
@@ -40,7 +41,8 @@ export const fbConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ToastService
   ]
 })
 export class AppModule {}
