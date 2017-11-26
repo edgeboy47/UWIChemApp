@@ -29,7 +29,7 @@ export class RegisterPage {
       }
     }
     catch(err){
-      this.toast.show("Invalid Email or Password")
+      this.toast.show(err['message'])
       console.error(err)
     }
   }
