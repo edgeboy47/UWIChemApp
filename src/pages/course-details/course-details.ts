@@ -18,7 +18,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class CourseDetailsPage {
   course={courseID:"",available:false, name:"",outline:""};
-
+  showButton=true;
   constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
     
   }
@@ -26,6 +26,15 @@ export class CourseDetailsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CourseDetailsPage');
     this.course.courseID = this.navParams.get('courseID');
+
+    this.fbAuth.authState.subscribe(data=>{
+      this.db.object('/UserCourses/'+data.uid+'/'+this.course.courseID).valueChanges().subscribe(data=>{
+        if(data!=null)this.showButton = false;
+      })
+    });
+   
+
+
     this.db.object('/Courses/'+this.course.courseID).valueChanges().subscribe(data=>{
       this.course.name = data['Name'];
       this.course.outline = data['Outline'];
@@ -39,6 +48,7 @@ export class CourseDetailsPage {
     
     this.fbAuth.authState.subscribe(data=>{
       this.db.database.ref('/UserCourses/').child(data.uid).child(id).set(name);
+      this.showButton = false;
     });
   }
 

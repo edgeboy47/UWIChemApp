@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>{{course.courseID}} Details</ion-title>
     <ion-buttons end>
-      <button ion-button  (click)="addCourse()">
+      <button *ngIf="showButton" ion-button  (click)="addCourse()">
         <ion-icon name="add"></ion-icon>
         Add To My Courses          
       </button>
