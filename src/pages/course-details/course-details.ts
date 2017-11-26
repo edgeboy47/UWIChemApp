@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+
 
 /**
  * Generated class for the CourseDetailsPage page.
@@ -17,7 +19,8 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class CourseDetailsPage {
   course={courseID:"",available:false, name:"",outline:""};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
+  constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
+    
   }
 
   ionViewDidLoad() {
@@ -27,6 +30,15 @@ export class CourseDetailsPage {
       this.course.name = data['Name'];
       this.course.outline = data['Outline'];
       this.course.available = data['Available'];
+    });
+  }
+  
+  addCourse(){
+    let id = this.course.courseID;
+    let name = this.course.name;
+    
+    this.fbAuth.authState.subscribe(data=>{
+      this.db.database.ref('/UserCourses/').child(data.uid).child(id).set(name);
     });
   }
 
