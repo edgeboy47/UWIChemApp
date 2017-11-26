@@ -14,5 +14,9 @@
 
 
 <ion-content padding>
-
+  <ion-list>
+    <button *ngFor="let course of courses" ion-item (click)="navigateToDetails(course.courseID)">
+      {{course.Name}}
+    </button>  
+  </ion-list>
 </ion-content>

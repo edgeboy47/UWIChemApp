@@ -1,0 +1,28 @@
+<!--
+  Generated template for the CourseDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{course.courseID}} Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="course">
+    <ion-item> 
+      <ion-title>Name: </ion-title>{{course.name}}
+    </ion-item> 
+    <ion-item> 
+      <ion-title>Available: </ion-title>{{course.available}}
+    </ion-item> 
+    <ion-item> 
+      <ion-title>Outline: <br></ion-title>{{course.outline}}
+    </ion-item>     
+  </ion-list>
+</ion-content>
