@@ -12,6 +12,7 @@ import {AngularFireDatabaseModule} from 'angularfire2/database';
 
 import {NgCalendarModule} from 'ionic2-calendar';
 import { FCM } from '@ionic-native/fcm';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 import { ToastService } from '../providers/toast-service/toast-service';
 
 export const fbConfig = {
@@ -45,6 +46,7 @@ export const fbConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ToastService,
     FCM,
+    LocalNotifications,
   ]
 })
 export class AppModule {}
