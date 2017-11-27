@@ -14,5 +14,11 @@
 
 
 <ion-content padding>
+  <button ion-button (click)="addNotice()">Add a notice</button>
 
+  <ion-list >
+    <ion-item *ngFor="let notice of notices">
+      <ion-item no-lines (click)="navigateToCalendar(notice.noticeID)" >{{course.To}} {{course.Message}} {{course.Date}}</ion-item>
+      <ion-icon name="close" item-end (click)="removeNotice(notice.noticeID)"></ion-icon>
+    </ion-item>
 </ion-content>
