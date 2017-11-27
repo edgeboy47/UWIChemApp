@@ -22,10 +22,10 @@ export class UserCoursesPage {
   }
 
   ionViewDidLoad() {
-    this.courses = [];
     console.log('ionViewDidLoad UserCoursesPage');
     this.fbAuth.authState.subscribe(data=>{
       this.db.object('/UserCourses/'+data.uid).valueChanges().subscribe(data=>{
+        this.courses = [];
         for(let key in data){
           let course = {courseID:key,Name:data[key]};
           this.courses.push(course);
@@ -36,5 +36,11 @@ export class UserCoursesPage {
 
   navigateToCalendar(courseID:string){
     this.navCtrl.push('CalendarPage',{courseID});
+  }
+
+  removeCourse(courseID:string){
+    this.fbAuth.authState.subscribe(data=>{
+      this.db.object('/UserCourses/'+data.uid+'/'+courseID+'/').remove()
+    });
   }
 }
