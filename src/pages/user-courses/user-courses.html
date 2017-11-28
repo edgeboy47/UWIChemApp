@@ -15,14 +15,12 @@
 
 <ion-content padding>
   <ion-list >
+    <div  text-capitalize id="notice1" *ngIf="courses.length==0">
+      No Courses Added Yet..
+    </div>
     <ion-item *ngFor="let course of courses">
       <ion-item no-lines (click)="navigateToCalendar(course.courseID)" >{{course.Name}}</ion-item>
       <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
     </ion-item>
-
-
-    <!-- <button *ngFor="let course of courses" ion-item (click)="navigateToCalendar(course.courseID)">
-      {{course.Name}}
-    </button> -->
   </ion-list>
 </ion-content>

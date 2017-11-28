@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams ,AlertController} from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -19,7 +19,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class CourseDetailsPage {
   course={courseID:"",available:false, name:"",outline:""};
   showButton=true;
-  constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
+  constructor(private alertCtrl: AlertController, private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
     
   }
 
@@ -49,6 +49,17 @@ export class CourseDetailsPage {
     this.fbAuth.authState.subscribe(data=>{
       this.db.database.ref('/UserCourses/').child(data.uid).child(id).set(name);
       this.showButton = false;
+
+      let alert = this.alertCtrl.create({
+        title: 'Courses Added',
+        message: 'You added '+this.course.courseID+' to your courses!',
+        buttons: [
+          {
+            text: 'OK',
+          },
+        ]
+      });
+      alert.present();
     });
   }
 

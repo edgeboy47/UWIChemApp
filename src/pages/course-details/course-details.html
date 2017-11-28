@@ -10,8 +10,7 @@
     <ion-title>{{course.courseID}} Details</ion-title>
     <ion-buttons end>
       <button *ngIf="showButton" ion-button  (click)="addCourse()">
-        <ion-icon name="add"></ion-icon>
-        Add To My Courses          
+        <ion-icon name="add"></ion-icon>         
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -20,15 +19,32 @@
 
 
 <ion-content padding>
-  <ion-list *ngIf="course">
-    <ion-item> 
-      <ion-title>Name: </ion-title>{{course.name}}
-    </ion-item> 
-    <ion-item> 
-      <ion-title>Available: </ion-title>{{course.available}}
-    </ion-item> 
-    <ion-item> 
-      <ion-title>Outline: <br></ion-title>{{course.outline}}
-    </ion-item>     
-  </ion-list>
+  <div *ngIf="course">
+    <ion-card>
+      <ion-card-header>
+        Name
+      </ion-card-header>
+      <ion-card-content>
+        {{course.name}}
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-card>
+      <ion-card-header>
+        Available
+      </ion-card-header>
+      <ion-card-content>
+        {{course.available}}
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-card>
+      <ion-card-header>
+        Outline
+      </ion-card-header>
+      <ion-card-content>
+        {{course.outline}}
+      </ion-card-content>
+    </ion-card>       
+  </div>
 </ion-content>
