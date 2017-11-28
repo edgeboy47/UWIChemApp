@@ -4,6 +4,7 @@ import { AngularFireAuth} from 'angularfire2/auth'
 import { ToastService } from '../../providers/toast-service/toast-service';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { FCM } from '@ionic-native/fcm';
+import { PlatformCheckProvider } from '../../providers/platform-check/platform-check';
 
 
 @IonicPage()
@@ -15,7 +16,13 @@ export class RegisterPage {
   email:string = ''
   password:string = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private fcm: FCM, private fbAuth: AngularFireAuth, private db: AngularFireDatabase, private toast: ToastService) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private fcm: FCM, 
+              private fbAuth: AngularFireAuth, 
+              private db: AngularFireDatabase, 
+              private toast: ToastService,
+              private pltCheck: PlatformCheckProvider) {
   }
 
   ionViewDidLoad() {
@@ -31,9 +38,11 @@ export class RegisterPage {
         this.fbAuth.authState.subscribe( user => {
           this.db.object(`Users/${user.uid}`).set({ email: this.email })
           .then( () => {
-            this.fcm.getToken().then( token => {
-              this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
-            })
+            if(!this.pltCheck.contains('core')) {
+              this.fcm.getToken().then( token => {
+                this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
+              })
+            }
             this.navCtrl.setRoot('UsertabsPage')
           })
         })
