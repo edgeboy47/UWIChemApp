@@ -27,9 +27,10 @@ export class LoginPage {
       this.fcm.onTokenRefresh().subscribe( token => {
         this.fbAuth.authState.subscribe( user => {
           this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
-          this.navCtrl.setRoot('UsertabsPage')
         })
-      })   
+      })
+
+      this.navCtrl.setRoot('UsertabsPage')
     }
     catch(err){
       this.toast.show("Invalid Email or Password")
