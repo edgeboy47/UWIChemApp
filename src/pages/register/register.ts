@@ -36,7 +36,7 @@ export class RegisterPage {
         await this.fbAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
         
         this.fbAuth.authState.subscribe( user => {
-          this.db.object(`Users/${user.uid}`).set({ email: this.email })
+          this.db.object(`Users/${user.uid}`).set({ email: this.email, type: "Student" })
           .then( () => {
             if(!this.pltCheck.contains('core')) {
               this.fcm.getToken().then( token => {
