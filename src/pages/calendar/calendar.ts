@@ -121,10 +121,6 @@ export class CalendarPage {
     let end = moment(event.endTime).format('LLLL');
     console.log(end);
 
-    let buttons = [{
-      text: 'OK',
-    }]
-
     if(this.showButtons){
       let alert = this.alertCtrl.create({
         title: ''+event.title,
