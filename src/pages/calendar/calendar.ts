@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, ModalController, AlertController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 import {AngularFireDatabase} from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+
 
 /**
  * Generated class for the CalendarPage page.
@@ -18,7 +20,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class CalendarPage {
 
   courseID;
-  
+  showButtons = false;
   calendar = {
     mode: 'month',
     currentDate: new Date()
@@ -28,7 +30,7 @@ export class CalendarPage {
   eventSource = [];
   selectedDay = new Date();
 
-  constructor(public navCtrl: NavController,  private modalCtrl:ModalController, private alertCtrl: AlertController, public navParams: NavParams, public db: AngularFireDatabase) {
+  constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController,  private modalCtrl:ModalController, private alertCtrl: AlertController, public navParams: NavParams, public db: AngularFireDatabase) {
 
   }
 
@@ -54,6 +56,14 @@ export class CalendarPage {
       this.eventSource = [];
       setTimeout(()=>{
         this.eventSource = events;
+      });
+    });
+
+    this.fbAuth.authState.subscribe(data=>{
+      this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+        if(d2=='Teacher' || d2=='Admin'){
+          this.showButtons = true;
+        }
       });
     });
   }
@@ -111,23 +121,43 @@ export class CalendarPage {
     let end = moment(event.endTime).format('LLLL');
     console.log(end);
 
-    let alert = this.alertCtrl.create({
-      title: ''+event.title,
-      subTitle: 'Due Date: '+end,
-      message: 'Type: '+event.type,
-      buttons: [
-        {
-          text: 'OK',
-        },
-        {
-          text: 'Remove',
-          handler: ()=>{
-            this.removeEvent(event);
+    let buttons = [{
+      text: 'OK',
+    }]
+
+    if(this.showButtons){
+      let alert = this.alertCtrl.create({
+        title: ''+event.title,
+        subTitle: 'Due Date: '+end,
+        message: 'Type: '+event.type,
+        buttons: [
+          {
+            text: 'OK',
+          },
+          {
+            text: 'Remove',
+            handler: ()=>{
+              this.removeEvent(event);
+            }
           }
-        }
-      ]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+    }else{
+      let alert = this.alertCtrl.create({
+        title: ''+event.title,
+        subTitle: 'Due Date: '+end,
+        message: 'Type: '+event.type,
+        buttons: [
+          {
+            text: 'OK',
+          },
+        ]
+      });
+      alert.present();
+    }
   }
+
+    
 
 }

@@ -8,7 +8,7 @@
   
     <ion-navbar>
       <ion-title>{{viewTitle}}</ion-title>
-      <ion-buttons end>
+      <ion-buttons *ngIf="showButtons" end>
         <button ion-button  (click)="addEvent()">
           <ion-icon name="add"></ion-icon>
           Event        
