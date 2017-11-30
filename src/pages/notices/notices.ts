@@ -19,6 +19,7 @@ export class NoticesPage {
   noticeSource= [];
   noticeID;
   showButtons = false;
+  notices:any=[];
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
   }
   
@@ -26,7 +27,7 @@ export class NoticesPage {
     this.noticeID = this.navParams.get('noticeID');
     console.log(this.noticeID);
     this.db.object('/Notices/'+this.noticeID).valueChanges().subscribe(data=>{
-      let notices= this.noticeSource;
+      this.notices= this.noticeSource;
       for(let key in data){
         let d = data[key];
         let note = {title: "", Message: "", Recipient:"", Date:"", id:""};
@@ -36,13 +37,13 @@ export class NoticesPage {
         note.Recipient = d['Recipient'];
         note.Date = d['Date'];
         note.id = key;
-
-        notices.push(note);
+        console.log("inside for loop note.tite is"+note.Recipient);
+        this.notices.push(note);
       }
 
       this.noticeSource = [];
       setTimeout(()=>{
-        this.noticeSource = notices;
+        this.noticeSource = this.notices;
       });
     });
 
@@ -62,15 +63,16 @@ export class NoticesPage {
   addNotice(){
     let modal = this.modalCtrl.create('NoticesModalPage');
     modal.present();
+    console.log("line 65");
     modal.onDidDismiss(data=>{
       if(data){
         let noticeData = data;
 
         
 
-        this.db.list('/Notices/'+this.noticeID).push({
+        this.db.list('/Notices/').push({
           Recipient: noticeData.Recipient,
-          title: noticeData.title,
+          title: noticeData.Title,
           Message: noticeData.Message,
         });
 
@@ -81,8 +83,9 @@ export class NoticesPage {
         setTimeout(()=>{
           this.noticeSource = notices;
         });
+        console.log("line 85");
       }
-    })
+    });
   }
 
  /* onViewTitleChanged(title){
@@ -94,14 +97,14 @@ export class NoticesPage {
   }*/
 
   removeNotice(notice){
-    let notices = this.noticeSource;
-    notices.splice(notices.indexOf(notice),1);
+    this.notices = this.noticeSource;
+    this.notices.splice(this.notices.indexOf(notice),1);
     
-    this.db.object('/Notices/'+this.noticeID+'/'+notice.id+'/').remove();
+    this.db.object('/Notices/'+notice.id+'/').remove();
 
     this.noticeSource = [];
     setTimeout(()=>{
-      this.noticeSource = notices;
+      this.noticeSource = this.notices;
     });
     
   }
