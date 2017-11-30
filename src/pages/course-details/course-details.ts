@@ -17,7 +17,7 @@ import { ToastController } from 'ionic-angular';
   templateUrl: 'course-details.html',
 })
 export class CourseDetailsPage {
-  course={courseID:"",available:false, name:"",outline:""};
+  course={courseID:"",available:false, name:"",outline:"",credits:""};
   showButton=true;
   constructor(private fbAuth: AngularFireAuth, 
               public navCtrl: NavController, 
@@ -43,6 +43,7 @@ export class CourseDetailsPage {
       this.course.name = data['Name'];
       this.course.outline = data['Outline'];
       this.course.available = data['Available'];
+      this.course.credits = data['Credits'];
     });
   }
   
