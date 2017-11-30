@@ -32,8 +32,11 @@ export class LoginPage {
     try{
       await this.fbAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       if(!this.pltCheck.contains('core')) {
-        this.fcm.onTokenRefresh().subscribe( token => {
-          this.fbAuth.authState.subscribe( user => {
+        this.fbAuth.authState.subscribe( user => {
+          this.fcm.getToken().then( token => {
+            this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
+          })
+          this.fcm.onTokenRefresh().subscribe( token => {
             this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
           })
         })
