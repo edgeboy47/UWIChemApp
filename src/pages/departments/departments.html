@@ -14,5 +14,17 @@
 
 
 <ion-content padding>
-  <button ion-button (click)="navigateToLogin()">Go to login</button>
+    <ion-grid >
+      <ion-row align-items-center>
+        <ion-col col-4>
+          <img src="assets/imgs/CHEM.png" style="width : 75% ; height : 75%" (click)="navigateToLogin()">
+        </ion-col>
+        <ion-col col-4>
+          <img src="assets/imgs/DCIT.png" style="width : 75% ; height : 75%" (click)="navigateToLogin()">
+        </ion-col>
+        <ion-col col-4>
+            <img src="assets/imgs/MATH.png" style="width : 75% ; height : 75%" (click)="navigateToLogin()">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-content>
