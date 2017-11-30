@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController,AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the NoticesModalPage page.
@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class NoticesModalPage {
   notice = {date:new Date().toString(), Title:"", Recipient:"",Message:""}
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private alertCtrl:AlertController) {
     
   }
   ionViewDidLoad() {
@@ -23,7 +23,22 @@ export class NoticesModalPage {
   }
   save(){
     console.log("Save button pressed..Notice title:" +this.notice.Title);
-    this.viewCtrl.dismiss(this.notice);
+    
+    if(this.notice.Recipient!=="" && this.notice.Message!==""){
+      this.viewCtrl.dismiss(this.notice);
+    }
+    else{
+      let extraMessage = "Recipient";
+      if(this.notice.Recipient)
+        extraMessage = 'Message';
+
+
+      let alert = this.alertCtrl.create({
+        title: extraMessage+' Required',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
   }
 
   cancel(){

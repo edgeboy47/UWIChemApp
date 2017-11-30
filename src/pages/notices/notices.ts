@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController ,NavController, NavParams, AlertController } from 'ionic-angular';
-//import {AngularFireAuth} from 'angularfire2/auth';
-//import {AngularFireDatabase } from 'angularfire2/database';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabase } from 'angularfire2/database';
 
 /**
  * Generated class for the NoticesPage page.
@@ -16,19 +16,132 @@ import { IonicPage, ModalController ,NavController, NavParams, AlertController }
   templateUrl: 'notices.html',
 })
 export class NoticesPage {
-   notices:any = [];
-  temp:any;
-  constructor(public modal:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
+  noticeSource= [];
+  noticeID;
+  showButtons = false;
+  constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
   }
-  //private fbAuth: AngularFireAuth,public db: AngularFireDatabase
+  
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NoticesPage');
-     
+    this.noticeID = this.navParams.get('noticeID');
+    console.log(this.noticeID);
+    this.db.object('/Notices/'+this.noticeID).valueChanges().subscribe(data=>{
+      let notices= this.noticeSource;
+      for(let key in data){
+        let d = data[key];
+        let note = {title: "", Message: "", Recipient:"", Date:"", id:""};
+        
+        note.title = d['title'];
+        note.Message = d['Message'];
+        note.Recipient = d['Recipient'];
+        note.Date = d['Date'];
+        note.id = key;
+
+        notices.push(note);
+      }
+
+      this.noticeSource = [];
+      setTimeout(()=>{
+        this.noticeSource = notices;
+      });
+    });
+
+    this.fbAuth.authState.subscribe(data=>{
+      this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+        if(d2=='Teacher' || d2=='Admin'){
+          this.showButtons = true;
+        }
+      });
+    });
   }
 
+
+
+
+
   addNotice(){
-    let notice = this.modal.create('NoticesModalPage');
-    notice.present();
+    let modal = this.modalCtrl.create('NoticesModalPage');
+    modal.present();
+    modal.onDidDismiss(data=>{
+      if(data){
+        let noticeData = data;
+
+        
+
+        this.db.list('/Notices/'+this.noticeID).push({
+          Recipient: noticeData.Recipient,
+          title: noticeData.title,
+          Message: noticeData.Message,
+        });
+
+        let notices = this.noticeSource;
+        notices.push(noticeData);
+
+        this.noticeSource = [];
+        setTimeout(()=>{
+          this.noticeSource = notices;
+        });
+      }
+    })
+  }
+
+ /* onViewTitleChanged(title){
+    this.viewTitle = title;
+  }
+
+  onTimeSelected(note){
+    this.selectedDay = note.selectedTime;
+  }*/
+
+  removeNotice(notice){
+    let notices = this.noticeSource;
+    notices.splice(notices.indexOf(notice),1);
+    
+    this.db.object('/Notices/'+this.noticeID+'/'+notice.id+'/').remove();
+
+    this.noticeSource = [];
+    setTimeout(()=>{
+      this.noticeSource = notices;
+    });
+    
+  }
+
+  onNoticeSelected(notice){
+    
+
+    if(this.showButtons){
+      let alert = this.alertCtrl.create({
+        title: ''+notice.title,
+        subTitle: 'Due Date: '+notice.Date,
+        message: 'Message: '+notice.Message,
+        buttons: [
+          {
+            text: 'OK',
+          },
+          {
+            text: 'Remove',
+            handler: ()=>{
+              this.removeNotice(notice);
+            }
+          }
+        ]
+      });
+      alert.present();
+    }else{
+      let alert = this.alertCtrl.create({
+        title: ''+notice.title,
+        subTitle: 'Due Date: '+notice.Date,
+        message: 'Message: '+notice.Message,
+        buttons: [
+          {
+            text: 'OK',
+          },
+        ]
+      });
+      alert.present();
+    }
+  
+
   }
 }
 
