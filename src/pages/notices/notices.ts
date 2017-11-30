@@ -90,10 +90,6 @@ export class NoticesPage {
 
  /* onViewTitleChanged(title){
     this.viewTitle = title;
-  }
-
-  onTimeSelected(note){
-    this.selectedDay = note.selectedTime;
   }*/
 
   removeNotice(notice){
@@ -114,7 +110,7 @@ export class NoticesPage {
 
     if(this.showButtons){
       let alert = this.alertCtrl.create({
-        title: ''+notice.title,
+        title: ''+notice.Title,
         subTitle: 'Due Date: '+notice.Date,
         message: 'Message: '+notice.Message,
         buttons: [
@@ -132,7 +128,7 @@ export class NoticesPage {
       alert.present();
     }else{
       let alert = this.alertCtrl.create({
-        title: ''+notice.title,
+        title: ''+notice.Title,
         subTitle: 'Due Date: '+notice.Date,
         message: 'Message: '+notice.Message,
         buttons: [

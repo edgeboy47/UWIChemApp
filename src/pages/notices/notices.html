@@ -17,7 +17,7 @@
   <button ion-button (click)="addNotice()">Add a notice</button>
 
   <ion-list >
-    <ion-item *ngFor="let notice of notices">
+    <ion-item *ngFor="let notice of notices"  (click)="onNoticeSelected(notice)" has-bouncing="false" overflow-scroll="false" >
       <ion-item >{{notice.Recipient}} {{notice.title}} {{notice.Date}}</ion-item>
       <ion-icon name="close" item-end (click)="removeNotice(notice)"></ion-icon>
     </ion-item>
