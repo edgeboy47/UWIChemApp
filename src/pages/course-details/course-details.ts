@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams ,AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-
+import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the CourseDetailsPage page.
@@ -19,7 +19,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class CourseDetailsPage {
   course={courseID:"",available:false, name:"",outline:""};
   showButton=true;
-  constructor(private alertCtrl: AlertController, private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams , public db: AngularFireDatabase) {
+  constructor(private fbAuth: AngularFireAuth, 
+              public navCtrl: NavController, 
+              public navParams: NavParams , 
+              public db: AngularFireDatabase,
+              public toasty: ToastController) {
     
   }
 
@@ -49,17 +53,14 @@ export class CourseDetailsPage {
     this.fbAuth.authState.subscribe(data=>{
       this.db.database.ref('/UserCourses/').child(data.uid).child(id).set(name);
       this.showButton = false;
-
-      let alert = this.alertCtrl.create({
-        title: 'Courses Added',
+      
+      let toast = this.toasty.create({
         message: 'You added '+this.course.courseID+' to your courses!',
-        buttons: [
-          {
-            text: 'OK',
-          },
-        ]
+        duration: 1000,
+        position: 'middle'
       });
-      alert.present();
+    
+      toast.present();
     });
   }
 

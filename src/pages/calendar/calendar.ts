@@ -86,7 +86,7 @@ export class CalendarPage {
 
         let events = this.eventSource;
         events.push(eventData);
-
+        
         this.eventSource = [];
         setTimeout(()=>{
           this.eventSource = events;

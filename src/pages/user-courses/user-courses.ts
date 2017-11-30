@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the UserCoursesPage page.
@@ -17,7 +18,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class UserCoursesPage {
   courses:any = [];
-  constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase) {
+  constructor(private fbAuth: AngularFireAuth, 
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public db: AngularFireDatabase,
+              public toasty: ToastController) {
     
   }
 
@@ -42,5 +47,13 @@ export class UserCoursesPage {
     this.fbAuth.authState.subscribe(data=>{
       this.db.object('/UserCourses/'+data.uid+'/'+courseID+'/').remove()
     });
+
+    let toast = this.toasty.create({
+      message: "Removed "+courseID,
+      duration: 1000,
+      position: 'middle'
+    });
+  
+    toast.present();
   }
 }
