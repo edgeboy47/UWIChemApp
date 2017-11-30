@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
+import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the UserEditPage page.
@@ -18,7 +19,11 @@ export class UserEditPage {
 
   user = {email:"",type:""};
   userID="";
-  constructor(public alertCtrl:AlertController, public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase) {
+  constructor(public alertCtrl:AlertController, 
+              public navCtrl: NavController, 
+              public navParams: NavParams,
+              public db: AngularFireDatabase,
+              public toasty: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -33,15 +38,14 @@ export class UserEditPage {
 
   save(){
     this.db.database.ref('/Users/').child(this.userID).child("type").set(this.user.type);
-    let alert = this.alertCtrl.create({
-      title: 'Changes Saved',
-      buttons: [
-        {
-          text: 'OK',
-        },
-      ]
+
+    let toast = this.toasty.create({
+      message: "Changes Saved",
+      duration: 1000,
+      position: 'middle'
     });
-    alert.present();
+    
+    toast.present();
   }
 
   remove(){
