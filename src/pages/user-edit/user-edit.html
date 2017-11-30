@@ -1,0 +1,36 @@
+<!--
+  Generated template for the UserEditPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Edit User</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+      <ion-title>User</ion-title> 
+      {{user.email}}    
+  </ion-item>
+  <ion-list radio-group [(ngModel)]="user.type">
+      <ion-item>
+        <ion-label>Student</ion-label>
+        <ion-radio value="Student"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Teacher</ion-label>
+        <ion-radio value="Teacher"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Administrator</ion-label>
+        <ion-radio value="Admin"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button (click)="remove()">Remove User</button>    
+    <button ion-button (click)="save()">Save Changes</button>
+</ion-content>

@@ -47,7 +47,7 @@ export class AdminPage {
   }
   
   navigateToUserDetails(userID){
-
+    this.navCtrl.push("UserEditPage",{userID});
   }
 
 }
