@@ -12,9 +12,9 @@
   </ion-header>
   
   
-  <ion-content padding>
+  <ion-content>
     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-    <ion-list>
+    <ion-list *ngIf="showContent">
       <button *ngFor="let user of dUsers" ion-item (click)="navigateToUserDetails(user.userID)">
         {{user.email}}
       </button>  

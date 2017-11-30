@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
-
+import { AngularFireAuth } from 'angularfire2/auth';
 /**
  * Generated class for the AdminPage page.
  *
@@ -17,13 +17,19 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class AdminPage {
   users=[];
   dUsers=[];
+  showContent = false;
 
-  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public db: AngularFireDatabase, 
+              public navCtrl: NavController, 
+              public navParams: NavParams,
+              public auth:AngularFireAuth) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdminPage');
     this.users = [];
+
+    this.showContent = this.navParams.get('show');
 
     this.db.object('/Users').valueChanges().subscribe(data=>{
       for(let key in data){
