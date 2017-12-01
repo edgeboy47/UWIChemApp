@@ -45,7 +45,7 @@ export class AllCoursesPage implements OnDestroy{
 
     if (val && val.trim() != '') {
       this.dCourses = this.courses.filter((item) => {
-        return (item['Name'].indexOf(val) > -1);
+        return (item['Name'].toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }

@@ -53,7 +53,7 @@ export class AdminPage implements OnDestroy{
 
     if (val && val.trim() != '') {
       this.dUsers = this.users.filter((item) => {
-        return (item['email'].indexOf(val) > -1);
+        return (item['email'].toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }
