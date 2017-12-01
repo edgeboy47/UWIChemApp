@@ -11,6 +11,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class AllCoursesPage implements OnDestroy{
   coursesSubscription;
   courses:any = [];
+  dCourses=[];
   constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase) {
     
   }
@@ -29,6 +30,7 @@ export class AllCoursesPage implements OnDestroy{
           d['courseID'] = key;
           this.courses.push(d);
         }
+        this.dCourses = this.courses;
       }
     });
   }
@@ -37,4 +39,14 @@ export class AllCoursesPage implements OnDestroy{
     this.navCtrl.push('CourseDetailsPage',{courseID});
   }
 
+  getItems(ev: any) {
+    this.dCourses = this.courses;
+    let val = ev.target.value;
+
+    if (val && val.trim() != '') {
+      this.dCourses = this.courses.filter((item) => {
+        return (item['Name'].indexOf(val) > -1);
+      })
+    }
+  }
 }

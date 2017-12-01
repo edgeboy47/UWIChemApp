@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ModalController ,NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
@@ -15,18 +15,32 @@ import {AngularFireDatabase } from 'angularfire2/database';
   selector: 'page-notices',
   templateUrl: 'notices.html',
 })
-export class NoticesPage {
+export class NoticesPage implements OnDestroy{
   noticeSource= [];
   noticeID;
   showButtons = false;
   notices:any=[];
+
+  noticeSub;
+  userSub;
+  typeSub;
+
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
+  }
+
+  ngOnDestroy(){
+    if(this.noticeSub)
+      this.noticeSub.unsubscribe();
+    if(this.typeSub)
+      this.typeSub.unsubscribe();
+    if(this.userSub)
+      this.userSub.unsubscribe();
   }
   
   ionViewDidLoad() {
     this.noticeID = this.navParams.get('noticeID');
     console.log(this.noticeID);
-    this.db.object('/Notices/'+this.noticeID).valueChanges().subscribe(data=>{
+    this.noticeSub = this.db.object('/Notices/'+this.noticeID).valueChanges().subscribe(data=>{
       this.notices= this.noticeSource;
       for(let key in data){
         let d = data[key];
@@ -47,8 +61,8 @@ export class NoticesPage {
       });
     });
 
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+    this.userSub = this.fbAuth.authState.subscribe(data=>{
+      this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
         if(d2=='Teacher' || d2=='Admin'){
           this.showButtons = true;
         }

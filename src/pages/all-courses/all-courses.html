@@ -13,9 +13,10 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>    
   <ion-list>
-    <button *ngFor="let course of courses" ion-item (click)="navigateToDetails(course.courseID)">
+    <button *ngFor="let course of dCourses" ion-item (click)="navigateToDetails(course.courseID)">
       {{course.Name}}
     </button>  
   </ion-list>
