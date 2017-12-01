@@ -57,6 +57,7 @@ exports.subscribeToCourse = functions.database.ref("UserCourses/{userID}/{course
     }
 })
 
+
 // Subscribes new users to the global topic
 exports.globalNotification = functions.database.ref("Users/{userID}").onUpdate( event => {
     const user = event.data.current.toJSON()
@@ -70,4 +71,28 @@ exports.globalNotification = functions.database.ref("Users/{userID}").onUpdate( 
         })
     }
     
+})
+
+
+// Sends a notification when an event is created
+exports.eventNotification = functions.database.ref("Events/{courseCode}/{eventCode}").onCreate( event => {
+    const newVal = event.data.current.toJSON()
+
+    const topic = String(event.params.courseCode).split(' ').join('')
+
+    var payload = {
+        notification:{
+            title: `New event for ${event.params.courseCode}`,
+            body: `New ${newVal.Type} for ${newVal.Notes}`,
+            sound: 'default'
+        }
+    };
+
+    admin.messaging().sendToTopic(topic, payload).then( res => {
+        console.log("Event:", newVal.Notes, "sent successfully to topic:", topic)
+        console.log("Response:", res)
+    }).catch(err => {
+        console.log("Event:", newVal.Notes, "was not sent to topic:", topic)
+        console.log("Error:", err)
+    })
 })
