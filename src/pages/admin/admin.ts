@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -14,10 +14,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
   selector: 'page-admin',
   templateUrl: 'admin.html',
 })
-export class AdminPage {
+export class AdminPage implements OnDestroy{
   users=[];
   dUsers=[];
   showContent = false;
+  usersSub;
 
   constructor(public db: AngularFireDatabase, 
               public navCtrl: NavController, 
@@ -31,7 +32,7 @@ export class AdminPage {
 
     this.showContent = this.navParams.get('show');
 
-    this.db.object('/Users').valueChanges().subscribe(data=>{
+    this.usersSub = this.db.object('/Users').valueChanges().subscribe(data=>{
       for(let key in data){
         let d = data[key];
         d['userID'] = key;
@@ -39,6 +40,11 @@ export class AdminPage {
       }
       this.dUsers = this.users;
     });
+  }
+
+  ngOnDestroy(){
+    if(this.usersSub)
+      this.usersSub.unsubscribe();
   }
 
   getItems(ev: any) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -14,7 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
   selector: 'page-usertabs',
   templateUrl: 'usertabs.html',
 })
-export class UsertabsPage {
+export class UsertabsPage implements OnDestroy{
 
   UserCoursesPage:any="UserCoursesPage";
   AllCoursesPage:any="AllCoursesPage";
@@ -23,17 +23,29 @@ export class UsertabsPage {
 
   showAdmin:boolean = false;
 
+  typeSub;
+  userSub;
+
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+  ngOnDestroy(){
+    if(this.userSub)
+      this.userSub.unsubscribe();
+    if(this.typeSub)
+      this.typeSub.unsubscribe();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UsertabsPage');
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
-        if(d2=='Admin'){
-          this.showAdmin = true;
-        }
-      });
+    this.userSub = this.fbAuth.authState.subscribe(data=>{
+      if(data){
+        this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+          if(d2=='Admin'){
+            this.showAdmin = true;
+          }
+        });
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { ToastController } from 'ionic-angular';
@@ -15,10 +15,11 @@ import { ToastController } from 'ionic-angular';
   selector: 'page-user-edit',
   templateUrl: 'user-edit.html',
 })
-export class UserEditPage {
+export class UserEditPage implements OnDestroy{
 
   user = {email:"",type:""};
   userID="";
+  usersSub;
   constructor(public alertCtrl:AlertController, 
               public navCtrl: NavController, 
               public navParams: NavParams,
@@ -26,11 +27,16 @@ export class UserEditPage {
               public toasty: ToastController) {
   }
 
+  ngOnDestroy(){
+    if(this.usersSub)
+      this.usersSub.unsubscribe();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserEditPage');
 
     this.userID = this.navParams.get('userID');
-    this.db.object("/Users/"+this.userID+"/").valueChanges().subscribe(data=>{
+    this.usersSub = this.db.object("/Users/"+this.userID+"/").valueChanges().subscribe(data=>{
       this.user.email = data['email'];
       this.user.type = data['type'];
     });

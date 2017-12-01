@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -16,9 +16,13 @@ import { ToastController } from 'ionic-angular';
   selector: 'page-user-courses',
   templateUrl: 'user-courses.html',
 })
-export class UserCoursesPage {
+export class UserCoursesPage implements OnDestroy{
   courses:any = [];
-  constructor(private fbAuth: AngularFireAuth, 
+  userCoursesSubscription;
+  userSubscription;
+  user;
+
+  constructor(public fbAuth: AngularFireAuth, 
               public navCtrl: NavController, 
               public navParams: NavParams, 
               public db: AngularFireDatabase,
@@ -26,16 +30,26 @@ export class UserCoursesPage {
     
   }
 
+  ngOnDestroy(){
+    if(this.userCoursesSubscription)
+      this.userCoursesSubscription.unsubscribe();
+    if(this.userSubscription)
+      this.userSubscription.unsubscribe();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserCoursesPage');
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/UserCourses/'+data.uid).valueChanges().subscribe(data=>{
-        this.courses = [];
-        for(let key in data){
-          let course = {courseID:key,Name:data[key]};
-          this.courses.push(course);
-        }
-      });
+    this.userSubscription = this.fbAuth.authState.subscribe(data=>{
+      if(data){
+        this.user = data;
+        this.userCoursesSubscription = this.db.object('/UserCourses/'+data.uid).valueChanges().subscribe(data=>{
+          this.courses = [];
+          for(let key in data){
+            let course = {courseID:key,Name:data[key]};
+            this.courses.push(course);
+          }
+        });
+      }
     });
   }
 
@@ -44,16 +58,33 @@ export class UserCoursesPage {
   }
 
   removeCourse(courseID:string){
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/UserCourses/'+data.uid+'/'+courseID+'/').remove()
-    });
+    let toast;
 
-    let toast = this.toasty.create({
-      message: "Removed "+courseID,
-      duration: 1000,
-      position: 'middle'
-    });
+    if(this.user){
+      this.db.object('/UserCourses/'+this.user.uid+'/'+courseID+'/').remove()
+
+      toast = this.toasty.create({
+        message: "Removed "+courseID,
+        duration: 1000,
+        position: 'middle'
+      });
+
+    }else{
+      toast = this.toasty.create({
+        message: "Remove Failed!"+courseID,
+        duration: 1000,
+        position: 'middle'
+      });
+    }
   
     toast.present();
   }
+
+  logOut(){
+    return this.fbAuth.auth.signOut().then(()=>{
+      console.log("it worked");
+      this.navCtrl.setRoot("DepartmentsPage");
+    })
+  }
+
 }

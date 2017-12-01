@@ -5,22 +5,27 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>My Courses</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
-  <ion-list >
-    <div  text-capitalize id="notice1" *ngIf="courses.length==0">
-      No Courses Added Yet..
-    </div>
-    <ion-item *ngFor="let course of courses">
-      <ion-item no-lines (click)="navigateToCalendar(course.courseID)" >{{course.Name}}</ion-item>
-      <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
-    </ion-item>
-  </ion-list>
-</ion-content>
+  
+    <ion-navbar>
+      <ion-title>My Courses</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="logOut()">
+          <ion-icon name="log-out"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  
+  <ion-content>
+    <ion-list >
+      <div  text-capitalize id="notice1" *ngIf="courses.length==0">
+        No Courses Added Yet..
+      </div>
+      <ion-item *ngFor="let course of courses">
+        <ion-item no-lines (click)="navigateToCalendar(course.courseID)" >{{course.Name}}</ion-item>
+        <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  

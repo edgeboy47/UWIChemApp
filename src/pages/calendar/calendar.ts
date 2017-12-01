@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, ModalController, AlertController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 import {AngularFireDatabase} from 'angularfire2/database';
@@ -17,7 +17,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
   selector: 'page-calendar',
   templateUrl: 'calendar.html',
 })
-export class CalendarPage {
+export class CalendarPage implements OnDestroy{
 
   courseID;
   showButtons = false;
@@ -29,38 +29,52 @@ export class CalendarPage {
   viewTitle: string;
   eventSource = [];
   selectedDay = new Date();
+  userSub;
+  typeSub;
+  eventSub;
 
   constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController,  private modalCtrl:ModalController, private alertCtrl: AlertController, public navParams: NavParams, public db: AngularFireDatabase) {
 
   }
 
+  ngOnDestroy(){
+    if(this.eventSub)
+      this.eventSub.unsubscribe();
+    if(this.typeSub)
+      this.typeSub.unsubscribe();
+    if(this.userSub)
+      this.userSub.unsubscribe();
+  }
+
   ionViewDidLoad() {
     this.courseID = this.navParams.get('courseID');
     console.log(this.courseID);
-    this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{
-      let events= this.eventSource;
-      for(let key in data){
-        let d = data[key];
-        let ev = {startTime: new Date(), endTime: new Date(), title: "", type: "", id:""};
-        
-        ev.endTime = new Date(d['date']);
-        ev.startTime = ev.endTime;
-        ev.title = d['Notes'];
-        ev.type = d['Type'];
-        
-        ev.id = key;
+    this.eventSub = this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{
+      if(data){
+        let events= this.eventSource;
+        for(let key in data){
+          let d = data[key];
+          let ev = {startTime: new Date(), endTime: new Date(), title: "", type: "", id:""};
+          
+          ev.endTime = new Date(d['date']);
+          ev.startTime = ev.endTime;
+          ev.title = d['Notes'];
+          ev.type = d['Type'];
+          
+          ev.id = key;
 
-        events.push(ev);
+          events.push(ev);
+        }
+
+        this.eventSource = [];
+        setTimeout(()=>{
+          this.eventSource = events;
+        });
       }
-
-      this.eventSource = [];
-      setTimeout(()=>{
-        this.eventSource = events;
-      });
     });
 
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+    this.userSub = this.fbAuth.authState.subscribe(data=>{
+      this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
         if(d2=='Teacher' || d2=='Admin'){
           this.showButtons = true;
         }
