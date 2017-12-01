@@ -5,20 +5,22 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PlatformCheckProvider } from '../providers/platform-check/platform-check';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:string = "DepartmentsPage";
+  rootPage:string = "";
 
   constructor(platform: Platform, 
               statusBar: StatusBar, 
               splashScreen: SplashScreen, 
               private fcm : FCM, 
               private localNotifications: LocalNotifications,
-              private pltCheck: PlatformCheckProvider) {
+              private pltCheck: PlatformCheckProvider,
+              public fbAuth:AngularFireAuth) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -26,6 +28,14 @@ export class MyApp {
       splashScreen.hide();
       this.acceptNotification()
     });
+
+    this.fbAuth.authState.subscribe(data=>{
+      if(data){
+        this.rootPage="UsertabsPage";
+      }else{
+        this.rootPage="DepartmentsPage"
+      }
+    })
   }
 
   async acceptNotification() {
