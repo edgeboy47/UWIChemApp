@@ -14,6 +14,7 @@ import { PlatformCheckProvider } from '../../providers/platform-check/platform-c
 export class LoginPage {
   email:string = ''
   password:string = ''
+  skip=false;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -25,6 +26,12 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+    this.fbAuth.authState.subscribe(data=>{
+      if(data){
+        this.skip=true;
+      }
+    })
+
     console.log('ionViewDidLoad LoginPage');
   }
 
@@ -48,6 +55,10 @@ export class LoginPage {
       this.toast.show("Invalid Email or Password")
       console.error(err)
     }
+  }
+
+  skipLogin(){
+    this.navCtrl.setRoot('UsertabsPage')
   }
 
   createUser(){
