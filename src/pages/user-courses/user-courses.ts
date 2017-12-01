@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, NavParams } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController } from 'ionic-angular';
@@ -26,7 +26,8 @@ export class UserCoursesPage implements OnDestroy{
               public navCtrl: NavController, 
               public navParams: NavParams, 
               public db: AngularFireDatabase,
-              public toasty: ToastController) {
+              public toasty: ToastController,
+              public alerty: AlertController) {
     
   }
 
@@ -81,10 +82,29 @@ export class UserCoursesPage implements OnDestroy{
   }
 
   logOut(){
+    let alert = this.alerty.create({
+      title: 'Log Out',
+      message: 'Are You Sure you want to Log Out?',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Yes',
+          handler: ()=>{
+            this.realLogOut();
+          }
+        }
+      ]
+    });
+
+    alert.present(); 
+  }
+
+  realLogOut(){
     return this.fbAuth.auth.signOut().then(()=>{
       console.log("it worked");
       this.navCtrl.setRoot("DepartmentsPage");
     })
   }
-
 }
