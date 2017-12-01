@@ -27,14 +27,27 @@ exports.notification = functions.database.ref("Notices/{noticeHead}").onCreate( 
     })
 })
 
+// Subscribes users to a course topic when they add one to their course list
+// exports.subscribeToCourse = functions.database.ref("UserCourses/{userID}/{courseName}").onWrite( event => {
+//     const oldVal = event.data.previous.val()
+//     const newVal = event.data.current.val()
 
+//     if(newVal != null){
+
+//     }
+// })
+
+// Subscribes new users to the global topic
 exports.globalNotification = functions.database.ref("Users/{userID}").onUpdate( event => {
     const user = event.data.current.toJSON()
 
     if(user.hasOwnProperty("notificationToken")) {
-        console.log('token:', user.notificationToken)
+        admin.messaging().subscribeToTopic(user.notificationToken, 'global').then( res => {
+            console.log("User",user.email,"successfully subscribed to global topic:", res)
+        })
+        .catch( err => {
+            console.error("Error subscribing user",user.email,"to global topic:",err)
+        })
     }
     
 })
-// TODO: Create a global topic and subscribe users to global topic when they register an account
-//       Subscribe users to a course topic when they add the course their course list
