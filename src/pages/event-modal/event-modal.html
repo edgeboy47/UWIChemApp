@@ -16,13 +16,13 @@
 <ion-content padding>
   <ion-list>  
     <ion-item>
-      <ion-label>Title</ion-label>
+      <ion-label color="primary" stacked>Title</ion-label>
       <ion-input type="text" placeholder="" [(ngModel)]="event.title"></ion-input>
     </ion-item> 
 
     <ion-item>
-      <ion-label>Date</ion-label>
-      <ion-datetime displayFormat="DD MMM HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"></ion-datetime>      
+      <ion-label color="primary" stacked>Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"></ion-datetime>      
     </ion-item>
     
     <ion-list radio-group [(ngModel)]="event.type">

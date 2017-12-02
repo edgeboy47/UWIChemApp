@@ -1,0 +1,61 @@
+<!--
+  Generated template for the AddCourseModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Course</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="course">  
+    <ion-item>
+      <ion-label color="primary" stacked>Course Code</ion-label>
+      <ion-input type="text" placeholder="Enter course code" [(ngModel)]="course.courseID"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Course Name</ion-label>
+      <ion-input type="text" placeholder="Enter course title" [(ngModel)]="course.Name"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label color="primary" stacked>Course Outline</ion-label>
+      <ion-textarea type="text" placeholder="Enter course outline" [(ngModel)]="course.Outline"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Credits</ion-label>
+      <ion-range min="0" max="10" [(ngModel)]="course.Credits" color="secondary" pin="true" step="1" snaps="true">
+        <ion-label range-left>0</ion-label>
+        <ion-label range-right>10</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-list radio-group [(ngModel)]="course.Available">
+      <ion-item>
+        <ion-label>Available</ion-label>
+        <ion-radio value=true></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label >Unavailable</ion-label>
+        <ion-radio value=false></ion-radio>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+
+  <button ion-button full icon-left (click)="save()">
+    <ion-icon name="checkmark"></ion-icon>Add Course
+  </button>
+
+  <button ion-button full icon-left (click)="goBack()">
+    <ion-icon name="close"></ion-icon>Back
+  </button>
+</ion-content>
