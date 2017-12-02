@@ -27,7 +27,7 @@ export class AllCoursesPage implements OnDestroy{
       if(data){
         for(let key in data){
           let d = data[key];
-          d['courseID'] = key;
+          d['courseID'] = key+" ";
           this.courses.push(d);
         }
         this.dCourses = this.courses;
@@ -36,6 +36,7 @@ export class AllCoursesPage implements OnDestroy{
   }
 
   navigateToDetails(courseID:string){
+    courseID = courseID.replace(/^\s+|\s+$/g, "");
     this.navCtrl.push('CourseDetailsPage',{courseID});
   }
 

@@ -17,7 +17,7 @@
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>    
   <ion-list>
     <button *ngFor="let course of dCourses" ion-item (click)="navigateToDetails(course.courseID)">
-      {{course.Name}}
+      {{course.courseID}}{{course.Name}}
     </button>  
   </ion-list>
 </ion-content>
