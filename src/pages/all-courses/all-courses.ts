@@ -80,12 +80,6 @@ export class AllCoursesPage implements OnDestroy{
     modal.present();
     modal.onDidDismiss(data=>{
       if(data){
-        // this.db.list('/Events/'+this.courseID).push({
-        //   date: eventData.endTime.toISOString(),
-        //   Notes: eventData.title,
-        //   Type: eventData.type,
-        // });
-
         let obj = {
           Available: data.Available,
           Name: data.Name,
@@ -105,5 +99,10 @@ export class AllCoursesPage implements OnDestroy{
         });
       }
     });
+  }
+
+  removeCourse(courseID:string){
+    courseID = courseID.replace(/^\s+|\s+$/g, "");
+    this.db.object('/Courses/'+courseID).remove();
   }
 }
