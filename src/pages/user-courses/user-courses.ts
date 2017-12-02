@@ -40,14 +40,20 @@ export class UserCoursesPage implements OnDestroy{
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserCoursesPage');
-    this.userSubscription = this.fbAuth.authState.subscribe(data=>{
-      if(data){
-        this.user = data;
-        this.userCoursesSubscription = this.db.object('/UserCourses/'+data.uid).valueChanges().subscribe(data=>{
+    this.userSubscription = this.fbAuth.authState.subscribe(data1=>{
+      if(data1){
+        this.user = data1;
+        this.userCoursesSubscription = this.db.object('/UserCourses/'+data1.uid).valueChanges().subscribe(data=>{
           this.courses = [];
           for(let key in data){
-            let course = {courseID:key,Name:data[key]};
-            this.courses.push(course);
+            this.db.database.ref('/Courses/'+key+'/').once('value',(existance)=>{
+              if(existance.exists()){
+                let course = {courseID:key,Name:data[key]};
+                this.courses.push(course);
+              }else
+                this.db.object('/UserCourses/'+data1.uid+'/'+key).remove();
+            });
+            
           }
         });
       }

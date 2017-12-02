@@ -26,7 +26,7 @@
     </div>
     <ion-item *ngFor="let course of dCourses">
       <ion-item no-lines (click)="navigateToDetails(course.courseID)" >{{course.courseID}}{{course.Name}}</ion-item>
-      <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
+      <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

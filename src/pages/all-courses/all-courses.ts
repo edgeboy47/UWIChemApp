@@ -104,5 +104,6 @@ export class AllCoursesPage implements OnDestroy{
   removeCourse(courseID:string){
     courseID = courseID.replace(/^\s+|\s+$/g, "");
     this.db.object('/Courses/'+courseID).remove();
+    this.db.object('/Events/'+courseID).remove();
   }
 }
