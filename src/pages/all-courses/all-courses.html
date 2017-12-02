@@ -24,7 +24,7 @@
     <div  text-capitalize id="notice1" *ngIf="courses.length==0">
       No Courses Added Yet..
     </div>
-    <ion-item *ngFor="let course of courses">
+    <ion-item *ngFor="let course of dCourses">
       <ion-item no-lines (click)="navigateToDetails(course.courseID)" >{{course.courseID}}{{course.Name}}</ion-item>
       <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
     </ion-item>
