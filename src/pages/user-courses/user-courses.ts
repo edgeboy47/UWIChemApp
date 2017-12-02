@@ -20,6 +20,7 @@ export class UserCoursesPage implements OnDestroy{
   courses:any = [];
   userCoursesSubscription;
   userSubscription;
+  courseSubscription;
   user;
 
   constructor(public fbAuth: AngularFireAuth, 
@@ -36,10 +37,18 @@ export class UserCoursesPage implements OnDestroy{
       this.userCoursesSubscription.unsubscribe();
     if(this.userSubscription)
       this.userSubscription.unsubscribe();
+    if(this.courseSubscription)
+      this.courseSubscription.unsubscribe();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserCoursesPage');
+    this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{
+      this.loadUserCourses();
+    });
+  }
+
+  loadUserCourses(){
     this.userSubscription = this.fbAuth.authState.subscribe(data1=>{
       if(data1){
         this.user = data1;
@@ -52,8 +61,7 @@ export class UserCoursesPage implements OnDestroy{
                 this.courses.push(course);
               }else
                 this.db.object('/UserCourses/'+data1.uid+'/'+key).remove();
-            });
-            
+            });         
           }
         });
       }
