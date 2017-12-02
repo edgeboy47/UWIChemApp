@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ModalController ,NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
-
+import * as moment from 'moment';
 /**
  * Generated class for the NoticesPage page.
  *
@@ -81,13 +81,13 @@ export class NoticesPage implements OnDestroy{
     modal.onDidDismiss(data=>{
       if(data){
         let noticeData = data;
-
+        noticeData.date = new Date(data.date);
         
-
         this.db.list('/Notices/').push({
           Recipient: noticeData.Recipient,
           title: noticeData.Title,
           Message: noticeData.Message,
+          Date: noticeData.date.toISOString(),
         });
 
         let notices = this.noticeSource;
@@ -120,12 +120,12 @@ export class NoticesPage implements OnDestroy{
   }
 
   onNoticeSelected(notice){
-    
+    let date = moment(notice.date).format('LLLL');
 
     if(this.showButtons){
       let alert = this.alertCtrl.create({
         title: ''+notice.Title,
-        subTitle: 'Due Date: '+notice.Date,
+        subTitle: 'Due Date: '+date,
         message: 'Message: '+notice.Message,
         buttons: [
           {
@@ -143,7 +143,7 @@ export class NoticesPage implements OnDestroy{
     }else{
       let alert = this.alertCtrl.create({
         title: ''+notice.Title,
-        subTitle: 'Due Date: '+notice.Date,
+        subTitle: 'Due Date: '+date,
         message: 'Message: '+notice.Message,
         buttons: [
           {

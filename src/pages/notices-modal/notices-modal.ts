@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams, ViewController,AlertController } f
   templateUrl: 'notices-modal.html',
 })
 export class NoticesModalPage {
-  notice = {date:new Date().toString(), Title:"", Recipient:"",Message:""}
+  notice = {date:new Date().toISOString(), Title:"", Recipient:"",Message:""}
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private alertCtrl:AlertController) {
     
   }
