@@ -3,7 +3,6 @@ import { IonicPage, ModalController ,NavController, NavParams, AlertController }
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
 import * as moment from 'moment';
-import {UserCoursesPage} from '../user-courses/user-courses';
 /**
  * Generated class for the NoticesPage page.
  *
