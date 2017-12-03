@@ -34,6 +34,7 @@
               </span>
               <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
               <span class="event-detail">  |  {{event.title}}</span>
+              <span class="event-detail">&nbsp;&nbsp;&nbsp;| Resource: <a>{{event.resource}}</a></span>
           </ion-item>
           <ion-item *ngIf="selectedDate?.events.length==0">
               <div class="no-events-label">{{noEventsLabel}}</div>

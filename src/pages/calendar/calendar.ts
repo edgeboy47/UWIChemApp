@@ -54,16 +54,16 @@ export class CalendarPage implements OnDestroy{
         let events= this.eventSource;
         for(let key in data){
           let d = data[key];
-          let ev = {startTime: new Date(), endTime: new Date(), title: "", type: "", id:"", courseID:""};
+          let ev = {startTime: new Date(), endTime: new Date(), title: "", type: "", resource: "", id:""};
           
           ev.endTime = new Date(d['date']);
           ev.startTime = ev.endTime;
           ev.title = d['Notes'];
           ev.type = d['Type'];
-          ev.courseID=this.courseID;
+          ev.resource = d['resource'];
           
           ev.id = key;
-          console.log("ev.id is "+ev.id+" and courseID is "+this.courseID);
+
           events.push(ev);
         }
 
@@ -97,7 +97,7 @@ export class CalendarPage implements OnDestroy{
           date: eventData.endTime.toISOString(),
           Notes: eventData.title,
           Type: eventData.type,
-          CourseID: this.courseID,
+          resource: eventData.resource,
         });
 
         let events = this.eventSource;
