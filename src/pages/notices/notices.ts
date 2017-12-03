@@ -22,6 +22,7 @@ export class NoticesPage implements OnDestroy{
   notices:any=[];
 
   noticeSub;
+  noticeSub2;
   userSub;
   typeSub;
 
@@ -36,30 +37,43 @@ export class NoticesPage implements OnDestroy{
     if(this.userSub)
       this.userSub.unsubscribe();
   }
-  
-  ionViewDidLoad() {
-    this.noticeID = this.navParams.get('noticeID');
-    console.log(this.noticeID);
-    this.noticeSub = this.db.object('/Notices/'+this.noticeID).valueChanges().subscribe(data=>{
-      this.notices= this.noticeSource;
-      for(let key in data){
-        let d = data[key];
-        let note = {title: "", Message: "", Recipient:"", Date:"", id:""};
-        
-        note.title = d['title'];
-        note.Message = d['Message'];
-        note.Recipient = d['Recipient'];
-        note.Date = d['Date'];
-        note.id = key;
-        console.log("inside for loop note.tite is"+note.Recipient);
-        this.notices.push(note);
-      }
 
-      this.noticeSource = [];
-      setTimeout(()=>{
-        this.noticeSource = this.notices;
-      });
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad NoticesPage');
+    this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(data=>{
+      
+      if(data){
+        this.notices = [];
+        for(let key in data){
+          this.noticeSub2= this.db.object('/Events/'+key).valueChanges().subscribe(data2=>{
+            
+            if(data2){
+              for(let key2 in data2){
+                let d = data2[key2];
+                let note = { Type: "", date:"", Notes:"", CourseID:"",id:""};
+               
+                note.Type=d['Type']; 
+                note.date=d['date'];
+                note.Notes=d['Notes'];  
+                note.CourseID=key; 
+                note.id=key2;
+                this.notices.push(note);
+              }
+            }
+          });
+        }  
+        this.noticeSource = this.notices; 
+      }
     });
+    
+  
+ 
+
+     // this.noticeSource = this.notices;
+     /* setTimeout(()=>{
+        this.noticeSource = this.notices;
+      });*/
+    //});*/
 
     this.userSub = this.fbAuth.authState.subscribe(data=>{
       this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
@@ -70,38 +84,6 @@ export class NoticesPage implements OnDestroy{
     });
   }
 
-
-
-
-
-  addNotice(){
-    let modal = this.modalCtrl.create('NoticesModalPage');
-    modal.present();
-    console.log("line 65");
-    modal.onDidDismiss(data=>{
-      if(data){
-        let noticeData = data;
-        noticeData.date = new Date(data.date);
-        
-        this.db.list('/Notices/').push({
-          Recipient: noticeData.Recipient,
-          title: noticeData.Title,
-          Message: noticeData.Message,
-          Date: noticeData.date.toISOString(),
-        });
-
-        let notices = this.noticeSource;
-        notices.push(noticeData);
-
-        this.noticeSource = [];
-        setTimeout(()=>{
-          this.noticeSource = notices;
-        });
-        console.log("line 85");
-      }
-    });
-  }
-
  /* onViewTitleChanged(title){
     this.viewTitle = title;
   }*/
@@ -109,8 +91,7 @@ export class NoticesPage implements OnDestroy{
   removeNotice(notice){
     this.notices = this.noticeSource;
     this.notices.splice(this.notices.indexOf(notice),1);
-    
-    this.db.object('/Notices/'+notice.id+'/').remove();
+    this.db.object('/Events/'+notice.CourseID+'/'+notice.id).remove();
 
     this.noticeSource = [];
     setTimeout(()=>{
@@ -124,9 +105,9 @@ export class NoticesPage implements OnDestroy{
 
     if(this.showButtons){
       let alert = this.alertCtrl.create({
-        title: ''+notice.Title,
+        title: ''+notice.Type,
         subTitle: 'Due Date: '+date,
-        message: 'Message: '+notice.Message,
+        message: 'Message: '+notice.Notes,
         buttons: [
           {
             text: 'OK',
@@ -142,9 +123,9 @@ export class NoticesPage implements OnDestroy{
       alert.present();
     }else{
       let alert = this.alertCtrl.create({
-        title: ''+notice.Title,
+        title: ''+notice.Type,
         subTitle: 'Due Date: '+date,
-        message: 'Message: '+notice.Message,
+        message: 'Message: '+notice.Notes,
         buttons: [
           {
             text: 'OK',
