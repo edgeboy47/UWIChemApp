@@ -41,7 +41,7 @@ export class NoticesPage implements OnDestroy{
       this.noticeSub.unsubscribe();
     if(this.typeSub)
       this.typeSub.unsubscribe();
-      if(this.userCoursesSubscription)
+    if(this.userCoursesSubscription)
       this.userCoursesSubscription.unsubscribe();
     if(this.userSubscription)
       this.userSubscription.unsubscribe();
