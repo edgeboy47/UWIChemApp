@@ -1,12 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin')
 admin.initializeApp(functions.config().firebase)
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 
 // Sends a notification to the specified device when a new node is created in the Notices object of the database
 exports.notification = functions.database.ref("Notices/{noticeHead}").onCreate( event => {
@@ -100,5 +94,21 @@ exports.eventNotification = functions.database.ref("Events/{courseCode}/{eventCo
     }).catch(err => {
         console.log("Event:", newVal.Notes, "was not sent to topic:", topic)
         console.log("Error:", err)
+    })
+})
+
+// Deletes a user 
+exports.deleteUser = functions.database.ref("Deletions/{userID}").onCreate( event => {
+    const uid = String(event.params.userID)
+
+    admin.auth().deleteUser(uid).then( () => {
+        console.log("User", uid, "successfully deleted")
+        admin.database().ref(`Deletions/${uid}`).remove().then( () => console.log('Deletion table entry removed'))
+        .catch(err => {
+            console.log('Deletion table entry not removed:', err)
+        })
+    })
+    .catch(err => {
+        console.log('User not deleted:', err)
     })
 })

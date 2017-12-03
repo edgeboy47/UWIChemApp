@@ -33,6 +33,7 @@ export class AdminPage implements OnDestroy{
     this.showContent = this.navParams.get('show');
 
     this.usersSub = this.db.object('/Users').valueChanges().subscribe(data=>{
+      this.users = []
       for(let key in data){
         let d = data[key];
         d['userID'] = key;

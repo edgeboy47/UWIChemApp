@@ -35,7 +35,8 @@ export class UserEditPage implements OnDestroy{
     console.log('ionViewDidLoad UserEditPage');
 
     this.userID = this.navParams.get('userID');
-    this.usersSub = this.db.object("/Users/"+this.userID+"/").valueChanges().subscribe(data=>{
+    this.usersSub = this.db.object("/Users/"+this.userID+"/").snapshotChanges().subscribe(snapshot => {
+      let data = snapshot.payload.toJSON()
       this.user.email = data['email'];
       this.user.type = data['type'];
     });
@@ -54,22 +55,24 @@ export class UserEditPage implements OnDestroy{
   }
 
   remove(){
-    // let alert = this.alertCtrl.create({
-    //   title: 'Are you sure?',
-    //   buttons: [
-    //     {
-    //       text: 'Yes',
-    //       handler: ()=>{
-    //         this.db.object('/Users/'+this.userID+'/').remove();
-    //         this.db.object('/UserCourses/'+this.userID+'/').remove();
-    //         this.navCtrl.pop();
-    //       }
-    //     },
-    //     {
-    //       text: 'Cancel',
-    //     },
-    //   ]
-    // });
-    // alert.present();
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.usersSub.unsubscribe()
+            this.navCtrl.pop();
+            this.db.object(`/Deletions/${this.userID}`).set({test: ''});
+            this.db.object('/Users/'+this.userID+'/').remove();
+            this.db.object('/UserCourses/'+this.userID+'/').remove();
+          }
+        },
+        {
+          text: 'Cancel',
+        },
+      ]
+    });
+    alert.present();
   }
 }
