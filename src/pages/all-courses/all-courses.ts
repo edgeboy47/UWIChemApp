@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, ModalController,  NavParams } from 'ionic-angular';
+import { IonicPage, NavController, ModalController,  NavParams, AlertController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -21,7 +21,8 @@ export class AllCoursesPage implements OnDestroy{
               public navParams: NavParams, 
               public db: AngularFireDatabase,
               public auth: AngularFireAuth,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              public alertCtrl: AlertController) {
     
   }
 
@@ -103,7 +104,24 @@ export class AllCoursesPage implements OnDestroy{
 
   removeCourse(courseID:string){
     courseID = courseID.replace(/^\s+|\s+$/g, "");
-    this.db.object('/Courses/'+courseID).remove();
-    this.db.object('/Events/'+courseID).remove();
+
+    let alert = this.alertCtrl.create({
+      title: 'Are You Sure?',
+      subTitle: 'This cannot be undone',
+      message: 'This cannot be undone',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Remove',
+          handler: ()=>{
+            this.db.object('/Courses/'+courseID).remove();
+            this.db.object('/Events/'+courseID).remove();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }
