@@ -22,16 +22,14 @@ export class NoticesPage implements OnDestroy{
   notices:any=[];
 
   noticeSub;
-  noticeSub2;
-  userSub;
   typeSub;
+  userCoursesSubscription;
+  userSubscription;
+  courseSubscription;
 
   courses:any = [];
   c:any ;
 
-  userCoursesSubscription;
-  userSubscription;
-  courseSubscription;
   user;
 
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
@@ -41,12 +39,8 @@ export class NoticesPage implements OnDestroy{
   ngOnDestroy(){
     if(this.noticeSub)
       this.noticeSub.unsubscribe();
-    if(this.noticeSub2)
-      this.noticeSub2.unsubscribe();
     if(this.typeSub)
       this.typeSub.unsubscribe();
-    if(this.userSub)
-      this.userSub.unsubscribe();
       if(this.userCoursesSubscription)
       this.userCoursesSubscription.unsubscribe();
     if(this.userSubscription)
@@ -60,86 +54,47 @@ export class NoticesPage implements OnDestroy{
   ionViewDidLoad() {
     console.log('ionViewDidLoad NoticesPage');
     this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{
-      
-      this.userSubscription = this.fbAuth.authState.subscribe(data1=>{
-        if(data1){
-          this.user = data1;
-          this.userCoursesSubscription = this.db.object('/UserCourses/'+data1.uid).valueChanges().subscribe(data=>{
-            this.courses = [];
-            for(let key in data){
-              this.db.database.ref('/Courses/'+key+'/').once('value',(existance)=>{
-                if(existance.exists()){
-                  let course = {courseID:key,Name:data[key]};
-                  
-                  this.courses.push(course);
-                }else
-                  this.db.object('/UserCourses/'+data1.uid+'/'+key).remove();
-              });         
-            }
-          });
-        }
-        this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(data=>{
-              
-          if(data){
-            this.notices = [];
-            for(let key in data){
-              let valid= false;
-              this.courses.forEach(element => {
-                if (element.courseID==key){
-                  valid =true;
-                  return;
-                }
-              });
-              if(valid){
-                this.noticeSub2= this.db.object('/Events/'+key).valueChanges().subscribe(data2=>{
-                  
-                  if(data2){
-                    for(let key2 in data2){
-                      let d = data2[key2];
+      this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(events=>{
+        this.userSubscription = this.fbAuth.authState.subscribe(user=>{
+          if(user){
+            this.typeSub = this.db.object('/Users/'+user.uid+'/type/').valueChanges().subscribe(d2=>{
+              if(d2=='Teacher' || d2=='Admin'){
+                this.showButtons = true;
+              }
+            });
+            this.user = user;
+            this.userCoursesSubscription = this.db.object('/UserCourses/'+user.uid).valueChanges().subscribe(usercourses=>{
+              this.courses = [];
+              this.noticeSource = [];
+              this.notices = [];
+              for(let key in usercourses){
+                this.db.database.ref('/Courses/'+key+'/').once('value',(existance)=>{
+                  if(existance.exists()){
+                    let course = {courseID:key,Name:usercourses[key]};
+                    this.courses.push(course);
+                      
+                    let courseNotices = events[key];
+                    for(let notice in courseNotices){
+                      let d = courseNotices[notice];
                       let note = { Type: "", date:"", Notes:"", CourseID:"",id:""};
-                    
                       note.Type=d['Type']; 
                       note.date=d['date'];
                       note.Notes=d['Notes'];  
                       note.CourseID=key; 
-                      note.id=key2;
+                      note.id=notice;
                       this.notices.push(note);
                     }
-                  }
-                });
+                  }else
+                    this.db.object('/UserCourses/'+user.uid+'/'+key).remove();
+                });         
               }
-            }  
-            this.noticeSource = this.notices; 
+              this.noticeSource = this.notices;
+            });
           }
-         });//noticesubscription
-
-      });//usersubscription
-    });//courseSubscription
-
-
-    
-    
-  
- 
-
-     // this.noticeSource = this.notices;
-     /* setTimeout(()=>{
-        this.noticeSource = this.notices;
-      });*/
-    //});*/
-
-    this.userSub = this.fbAuth.authState.subscribe(data=>{
-      this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
-        if(d2=='Teacher' || d2=='Admin'){
-          this.showButtons = true;
-        }
+        });
       });
     });
   }
-
- /* onViewTitleChanged(title){
-    this.viewTitle = title;
-  }*/
 
   removeNotice(notice){
     this.notices = this.noticeSource;
@@ -150,7 +105,6 @@ export class NoticesPage implements OnDestroy{
     setTimeout(()=>{
       this.noticeSource = this.notices;
     });
-    
   }
 
   onNoticeSelected(notice){
@@ -187,66 +141,5 @@ export class NoticesPage implements OnDestroy{
       });
       alert.present();
     }
-  
-
   }
 }
-
-/*this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/Notices/'+data.uid).valueChanges().subscribe(data=>{
-        this.notices= [];
-        for(let key in data){
-          let notice = {noticeID:key,Message:data[key]};// figure out your own way to store from the database.
-          this.notices.push(notice);
-        }
-      });
-    });*/
-/*  navigateToCalendar(noticeID:string){
-    this.navCtrl.push('CalendarPage',{noticeID});
-  }
-
-  removeNotice(noticeID:string){
-    this.fbAuth.authState.subscribe(data=>{
-      this.db.object('/UserNotices/'+data.uid+'/'+noticeID+'/').remove()
-    });
-  }
-
-
-  addNotice(){
-     this.alertCtrl.create({
-      title:"Add a notice",
-      inputs:[
-        {
-          name:'To',
-          placeholder:'Recipient'
-        },
-        {
-          name:'Message',
-          placeholder:'Message'
-        },
-        {
-          name:'Date',
-          placeholder:'Date'
-        }
-      ],
-      buttons:[
-        {
-          text:'Submit',
-          role:'submit',
-          handler:data=>{
-            console.log(data.To+" "+ data.Date+ " "+ data.Message)
-            this.temp = data.To+" "+ data.Date+ " "+ data.Message
-            this.notices.push(this.temp)
-          }
-        },
-        {
-          text:'Cancel',
-          role:'cancel',
-          handler:data=>{
-              console.log("Cancel button clicked..")
-          }
-        }
-
-      ]
-     }).present()
-  } */
