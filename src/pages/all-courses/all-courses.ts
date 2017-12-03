@@ -107,7 +107,6 @@ export class AllCoursesPage implements OnDestroy{
 
     let alert = this.alertCtrl.create({
       title: 'Are You Sure?',
-      subTitle: 'This cannot be undone',
       message: 'This cannot be undone',
       buttons: [
         {
