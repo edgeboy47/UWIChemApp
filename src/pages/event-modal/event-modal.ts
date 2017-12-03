@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController,AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController,AlertController,ToastController } from 'ionic-angular';
 import * as moment from 'moment';
 /**
  * Generated class for the EventModalPage page.
@@ -16,7 +16,11 @@ import * as moment from 'moment';
 export class EventModalPage {
   event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), title: "", type: ""}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl:ViewController, private alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private viewCtrl:ViewController, 
+              private alertCtrl:AlertController,
+              public toasty: ToastController) {
     let preselectedDate = moment(this.navParams.get('selectedDay')).format();
     this.event.startTime = preselectedDate;
     this.event.endTime = preselectedDate;
@@ -30,6 +34,15 @@ export class EventModalPage {
     console.log(this.event.title)
     if(this.event.title!=="" && this.event.type!==""){
       this.event.startTime = this.event.endTime;
+
+      let toast = this.toasty.create({
+        message: "Event Saved",
+        duration: 1000,
+        position: 'middle'
+      });
+      
+      toast.present();
+
       this.viewCtrl.dismiss(this.event);
     }
     else{

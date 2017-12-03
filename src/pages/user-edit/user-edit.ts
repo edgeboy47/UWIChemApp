@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
-import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the UserEditPage page.

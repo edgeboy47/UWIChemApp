@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the AddCourseModalPage page.
@@ -19,7 +19,8 @@ export class AddCourseModalPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public viewCtrl: ViewController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              public toasty:ToastController) {
   }
 
   ionViewDidLoad() {
@@ -32,6 +33,16 @@ export class AddCourseModalPage {
 
   save(){
     if(this.course.Name!=="" && this.course.courseID!=="" && this.course.Outline!==""){
+
+      let toast = this.toasty.create({
+        message: "Course Added",
+        duration: 1000,
+        position: 'middle'
+      });
+      
+      toast.present();
+
+
       this.viewCtrl.dismiss(this.course);
     }
     else{
