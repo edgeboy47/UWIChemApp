@@ -26,45 +26,98 @@ export class NoticesPage implements OnDestroy{
   userSub;
   typeSub;
 
+  courses:any = [];
+  c:any ;
+
+  userCoursesSubscription;
+  userSubscription;
+  courseSubscription;
+  user;
+
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
   }
+
 
   ngOnDestroy(){
     if(this.noticeSub)
       this.noticeSub.unsubscribe();
+    if(this.noticeSub2)
+      this.noticeSub2.unsubscribe();
     if(this.typeSub)
       this.typeSub.unsubscribe();
     if(this.userSub)
       this.userSub.unsubscribe();
+      if(this.userCoursesSubscription)
+      this.userCoursesSubscription.unsubscribe();
+    if(this.userSubscription)
+      this.userSubscription.unsubscribe();
+    if(this.courseSubscription)
+      this.courseSubscription.unsubscribe();
   }
+
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NoticesPage');
-    this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(data=>{
+    this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{
       
-      if(data){
-        this.notices = [];
-        for(let key in data){
-          this.noticeSub2= this.db.object('/Events/'+key).valueChanges().subscribe(data2=>{
-            
-            if(data2){
-              for(let key2 in data2){
-                let d = data2[key2];
-                let note = { Type: "", date:"", Notes:"", CourseID:"",id:""};
-               
-                note.Type=d['Type']; 
-                note.date=d['date'];
-                note.Notes=d['Notes'];  
-                note.CourseID=key; 
-                note.id=key2;
-                this.notices.push(note);
-              }
+      this.userSubscription = this.fbAuth.authState.subscribe(data1=>{
+        if(data1){
+          this.user = data1;
+          this.userCoursesSubscription = this.db.object('/UserCourses/'+data1.uid).valueChanges().subscribe(data=>{
+            this.courses = [];
+            for(let key in data){
+              this.db.database.ref('/Courses/'+key+'/').once('value',(existance)=>{
+                if(existance.exists()){
+                  let course = {courseID:key,Name:data[key]};
+                  
+                  this.courses.push(course);
+                }else
+                  this.db.object('/UserCourses/'+data1.uid+'/'+key).remove();
+              });         
             }
           });
-        }  
-        this.noticeSource = this.notices; 
-      }
-    });
+        }
+        this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(data=>{
+              
+          if(data){
+            this.notices = [];
+            for(let key in data){
+              let valid= false;
+              this.courses.forEach(element => {
+                if (element.courseID==key){
+                  valid =true;
+                  return;
+                }
+              });
+              if(valid){
+                this.noticeSub2= this.db.object('/Events/'+key).valueChanges().subscribe(data2=>{
+                  
+                  if(data2){
+                    for(let key2 in data2){
+                      let d = data2[key2];
+                      let note = { Type: "", date:"", Notes:"", CourseID:"",id:""};
+                    
+                      note.Type=d['Type']; 
+                      note.date=d['date'];
+                      note.Notes=d['Notes'];  
+                      note.CourseID=key; 
+                      note.id=key2;
+                      this.notices.push(note);
+                    }
+                  }
+                });
+              }
+            }  
+            this.noticeSource = this.notices; 
+          }
+         });//noticesubscription
+
+      });//usersubscription
+    });//courseSubscription
+
+
+    
     
   
  

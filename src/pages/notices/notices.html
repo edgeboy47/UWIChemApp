@@ -18,8 +18,8 @@
 
   <ion-list >
     <ion-item *ngFor="let notice of noticeSource"  (click)="onNoticeSelected(notice)" has-bouncing="false" overflow-scroll="false" >
-      <ion-item >{{notice.CourseID}} {{notice.Notes}} </ion-item>
-      <ion-icon name="close" item-end (click)="removeNotice(notice)"></ion-icon>
+      {{notice.CourseID}} {{notice.Notes}}
+      <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNotice(notice)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
