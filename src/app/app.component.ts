@@ -22,13 +22,12 @@ export class MyApp {
               private pltCheck: PlatformCheckProvider,
               public fbAuth:AngularFireAuth) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
       this.acceptNotification()
     });
 
+    // If the user is signed in, navigate to the Usertabs page, else navigate to the departments page
     this.fbAuth.authState.subscribe(data=>{
       if(data){
         this.rootPage="UsertabsPage";
@@ -38,11 +37,16 @@ export class MyApp {
     })
   }
 
+  // Function to handle firebase notifications while the app is running
   async acceptNotification() {
     try{
+      // If the user agent is not a desktop browser
       if(!this.pltCheck.contains('core')) {
+        // Allow the user to give permission to display notifications
         await this.localNotifications.registerPermission()
+        // Whenever a notification from firebase is received
         this.fcm.onNotification().subscribe( data => {
+          // Create a local notification that displays the firebase notification's data
           this.localNotifications.schedule({
             title: data.title,
             text: data.message,
