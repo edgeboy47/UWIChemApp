@@ -80,7 +80,7 @@ export class UserCoursesPage implements OnDestroy{
 
       toast = this.toasty.create({
         message: "Removed "+courseID,
-        duration: 800,
+        duration: 1000,
         position: 'bottom',
         showCloseButton: true
       });
@@ -88,7 +88,7 @@ export class UserCoursesPage implements OnDestroy{
     }else{
       toast = this.toasty.create({
         message: "Remove Failed!"+courseID,
-        duration: 800,
+        duration: 1000,
         position: 'bottom',
         showCloseButton: true
       });

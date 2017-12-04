@@ -53,7 +53,7 @@ export class LoginPage {
     catch(err){
       let toast = this.toasty.create({
         message: "Invalid Email or Password",
-        duration: 800,
+        duration: 1000,
         position: 'bottom',
         cssClass:"toast-success",
         showCloseButton:true,

@@ -33,7 +33,7 @@ export class RegisterPage {
       if(this.email.length === 0 || this.password.length === 0){
         let toast = this.toasty.create({
           message: "Invalid Email or Password",
-          duration: 800,
+          duration: 1000,
           position: 'bottom',
           cssClass:"toast-success",
           showCloseButton:true,
@@ -58,7 +58,7 @@ export class RegisterPage {
     catch(err){
       let toast = this.toasty.create({
         message: err['message'],
-        duration: 800,
+        duration: 1000,
         position: 'bottom',
         cssClass:"toast-success",
         showCloseButton:true,

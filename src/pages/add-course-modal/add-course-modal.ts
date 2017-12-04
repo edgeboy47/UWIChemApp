@@ -36,7 +36,7 @@ export class AddCourseModalPage {
 
       let toast = this.toasty.create({
         message: "Course Added",
-        duration: 800,
+        duration: 1000,
         showCloseButton: true,
         position: 'bottom'
       });

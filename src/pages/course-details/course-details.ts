@@ -75,7 +75,7 @@ export class CourseDetailsPage  implements OnDestroy{
       
       let toast = this.toasty.create({
         message: 'You added '+this.course.courseID+' to your courses!',
-        duration: 800,
+        duration: 1000,
         showCloseButton: true,
         position: 'bottom'
       });
