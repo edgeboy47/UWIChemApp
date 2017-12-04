@@ -23,7 +23,7 @@
         No Courses Added Yet..
       </div>
       <ion-item *ngFor="let course of courses">
-        <ion-item no-lines (click)="navigateToCalendar(course.courseID)" >{{course.Name}}</ion-item>
+        <ion-item no-lines (click)="navigateToCalendar(course.courseID)" >{{course.courseID}}  {{course.Name}}</ion-item>
         <ion-icon name="close" item-end (click)="removeCourse(course.courseID)"></ion-icon>
       </ion-item>
     </ion-list>
