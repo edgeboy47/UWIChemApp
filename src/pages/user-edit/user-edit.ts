@@ -47,8 +47,9 @@ export class UserEditPage implements OnDestroy{
 
     let toast = this.toasty.create({
       message: "Changes Saved",
-      duration: 1000,
-      position: 'middle'
+      duration: 800,
+      position: 'bottom',
+      showCloseButton: true,    //added to get around UI glitch
     });
     
     toast.present();

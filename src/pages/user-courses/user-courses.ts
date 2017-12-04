@@ -80,15 +80,17 @@ export class UserCoursesPage implements OnDestroy{
 
       toast = this.toasty.create({
         message: "Removed "+courseID,
-        duration: 1000,
-        position: 'middle'
+        duration: 800,
+        position: 'bottom',
+        showCloseButton: true
       });
 
     }else{
       toast = this.toasty.create({
         message: "Remove Failed!"+courseID,
-        duration: 1000,
-        position: 'middle'
+        duration: 800,
+        position: 'bottom',
+        showCloseButton: true
       });
     }
   

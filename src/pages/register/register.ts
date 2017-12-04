@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AngularFireAuth} from 'angularfire2/auth'
-import { ToastService } from '../../providers/toast-service/toast-service';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { FCM } from '@ionic-native/fcm';
 import { PlatformCheckProvider } from '../../providers/platform-check/platform-check';
@@ -21,7 +20,7 @@ export class RegisterPage {
               private fcm: FCM, 
               private fbAuth: AngularFireAuth, 
               private db: AngularFireDatabase, 
-              private toast: ToastService,
+              private toasty: ToastController,
               private pltCheck: PlatformCheckProvider) {
   }
 
@@ -31,8 +30,16 @@ export class RegisterPage {
 
   async register(){
     try{
-      if(this.email.length === 0 || this.password.length === 0) this.toast.show("Invalid Email or Password")
-      else{
+      if(this.email.length === 0 || this.password.length === 0){
+        let toast = this.toasty.create({
+          message: "Invalid Email or Password",
+          duration: 800,
+          position: 'bottom',
+          cssClass:"toast-success",
+          showCloseButton:true,
+        });
+        toast.present();
+      }else{
         await this.fbAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
         
         this.fbAuth.authState.subscribe( user => {
@@ -49,7 +56,15 @@ export class RegisterPage {
       }
     }
     catch(err){
-      this.toast.show(err['message'])
+      let toast = this.toasty.create({
+        message: err['message'],
+        duration: 800,
+        position: 'bottom',
+        cssClass:"toast-success",
+        showCloseButton:true,
+      });
+      
+      toast.present();
       console.error(err)
     }
   }

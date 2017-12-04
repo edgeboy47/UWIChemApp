@@ -37,8 +37,9 @@ export class EventModalPage {
 
       let toast = this.toasty.create({
         message: "Event Saved",
-        duration: 1000,
-        position: 'middle'
+        duration: 800,
+        position: 'bottom',
+        showCloseButton: true
       });
       
       toast.present();

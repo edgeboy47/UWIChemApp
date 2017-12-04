@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastService } from '../../providers/toast-service/toast-service';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { PlatformCheckProvider } from '../../providers/platform-check/platform-check';
@@ -21,7 +20,7 @@ export class LoginPage {
               private fcm: FCM, 
               private db: AngularFireDatabase, 
               private fbAuth: AngularFireAuth, 
-              private toast: ToastService,
+              private toasty: ToastController,
               private pltCheck: PlatformCheckProvider) {
   }
 
@@ -52,7 +51,15 @@ export class LoginPage {
       this.navCtrl.setRoot('UsertabsPage')
     }
     catch(err){
-      this.toast.show("Invalid Email or Password")
+      let toast = this.toasty.create({
+        message: "Invalid Email or Password",
+        duration: 800,
+        position: 'bottom',
+        cssClass:"toast-success",
+        showCloseButton:true,
+      });
+      
+      toast.present();
       console.error(err)
     }
   }
