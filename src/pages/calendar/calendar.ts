@@ -1,8 +1,9 @@
+//Various imports
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, ModalController, AlertController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
-import {AngularFireDatabase} from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import {AngularFireDatabase} from 'angularfire2/database';  //Import AngularFire database to utilize firebase
+import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 
 
 /**
@@ -19,8 +20,10 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class CalendarPage implements OnDestroy{
 
-  courseID;
-  showButtons = false;
+  courseID;                     //Stores the retreived courseID from the navParams
+  showButtons = false;          //Stores whether or not certain buttons should be shown based on user types.
+
+  //Variables to store values needed by the calendar html element.
   calendar = {
     mode: 'month',
     currentDate: new Date()
@@ -29,14 +32,27 @@ export class CalendarPage implements OnDestroy{
   viewTitle: string;
   eventSource = [];
   selectedDay = new Date();
+
+  //Variables to store user subscriptions
   userSub;
   typeSub;
   eventSub;
 
-  constructor(private fbAuth: AngularFireAuth, public navCtrl: NavController,  private modalCtrl:ModalController, private alertCtrl: AlertController, public navParams: NavParams, public db: AngularFireDatabase) {
+  constructor(private fbAuth: AngularFireAuth, 
+              public navCtrl: NavController,            //Various Constructor declarations.
+              private modalCtrl:ModalController, 
+              private alertCtrl: AlertController, 
+              public navParams: NavParams, 
+              public db: AngularFireDatabase) {
 
   }
 
+
+  /*
+    This function unsubscribes from all subscriptions to avoid
+    the error of failed permission being shown to the user when 
+    loggin out.
+  */
   ngOnDestroy(){
     if(this.eventSub)
       this.eventSub.unsubscribe();
@@ -47,55 +63,58 @@ export class CalendarPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    this.courseID = this.navParams.get('courseID');
+    this.courseID = this.navParams.get('courseID');       //Get selected courseID from the navParams
     console.log(this.courseID);
-    this.eventSub = this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{
-      if(data){
+    this.eventSub = this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{           //Get all the events of the current course.
+      if(data){                                 //If the course has events then continue.
         let events= this.eventSource;
-        for(let key in data){
+        for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
           let d = data[key];
           let ev = {startTime: new Date(), endTime: new Date(), title: "", type: "", resource: "", id:""};
           
           ev.endTime = new Date(d['date']);
           ev.startTime = ev.endTime;
-          ev.title = d['Notes'];
+          ev.title = d['Notes'];              //Set the corresponding fields of the newly created object
           ev.type = d['Type'];
           ev.resource = d['resource'];
           
           ev.id = key;
 
-          events.push(ev);
+          events.push(ev);                    //Add object to the temp events list.
         }
 
         this.eventSource = [];
-        setTimeout(()=>{
-          this.eventSource = events;
+        setTimeout(()=>{                      //Set Timeout that will allow interface to be update
+          this.eventSource = events;          //Update global eventSource list for calendar element.
         });
       }
     });
 
-    this.userSub = this.fbAuth.authState.subscribe(data=>{
+    this.userSub = this.fbAuth.authState.subscribe(data=>{                                      
       this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
-        if(d2=='Teacher' || d2=='Admin'){
-          this.showButtons = true;
+        if(d2=='Teacher' || d2=='Admin'){                     //Determine whether the user should be able to add or remove events.
+          this.showButtons = true;                            //Set the showButtons to true if user is a teacher or admin.                      
         }
       });
     });
   }
 
+  /*
+    This function allows users to add events.
+  */
   addEvent(){
-    let modal = this.modalCtrl.create('EventModalPage',{selectedDay:this.selectedDay});
-    modal.present();
+    let modal = this.modalCtrl.create('EventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
+    modal.present();                                                                        //Present that modal
     modal.onDidDismiss(data=>{
-      if(data){
+      if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
         let eventData = data;
 
         eventData.startTime = new Date(data.startTime);
-        eventData.endTime = new Date(data.endTime);
+        eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
 
-        this.db.list('/Events/'+this.courseID).push({
+        this.db.list('/Events/'+this.courseID).push({         //Push retrieved event to the database.
           date: eventData.endTime.toISOString(),
-          Notes: eventData.title,
+          Notes: eventData.title,                 
           Type: eventData.type,
           resource: eventData.resource,
         });
@@ -104,40 +123,57 @@ export class CalendarPage implements OnDestroy{
         events.push(eventData);
         
         this.eventSource = [];
-        setTimeout(()=>{
-          this.eventSource = events;
+        setTimeout(()=>{                            //Set timeout to update user interface.
+          this.eventSource = events;                //Set global eventsSource list for the calendar element.
         });
       }
     })
   }
 
+  /*
+    Funcition that the calendar uses to set the title.
+  */
   onViewTitleChanged(title){
-    this.viewTitle = title;
+    this.viewTitle = title;       //The title is the current course
   }
 
+
+  /*
+    When a day is selected on the calendar update the
+    local selectedDay variable to it.
+  */
   onTimeSelected(ev){
     this.selectedDay = ev.selectedTime;
   }
 
+
+  /*
+    Function allows the removal of events.
+  */
   removeEvent(event){
     let events = this.eventSource;
-    events.splice(events.indexOf(event),1);
+    events.splice(events.indexOf(event),1);   //get event that is selected.
     
-    this.db.object('/Events/'+this.courseID+'/'+event.id+'/').remove();
+    this.db.object('/Events/'+this.courseID+'/'+event.id+'/').remove();   //Remove it from firebase.
 
     this.eventSource = [];
     setTimeout(()=>{
-      this.eventSource = events;
+      this.eventSource = events;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
     });
     
   }
 
+
+  /*
+    This function shows an alert with more information about an event when it is selected
+    from the list of events in the calendar.
+  */
   onEventSelected(event){
     console.log(event.endTime);
     let end = moment(event.endTime).format('LLLL');
     console.log(end);
 
-    if(this.showButtons){
+    if(this.showButtons){                               //If the user is a teacher or admin then allow them to remove courses.
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
@@ -149,13 +185,13 @@ export class CalendarPage implements OnDestroy{
           {
             text: 'Remove',
             handler: ()=>{
-              this.removeEvent(event);
+              this.removeEvent(event);          //Call the removeEvent function with the event selected passed as an argument if the remove button is pressed.
             }
           }
         ]
       });
-      alert.present();
-    }else{
+      alert.present();                          //Present alert
+    }else{                                      //Otherwise, only allow them to view event details.
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
@@ -166,10 +202,7 @@ export class CalendarPage implements OnDestroy{
           },
         ]
       });
-      alert.present();
+      alert.present();                        //Present alert
     }
   }
-
-    
-
 }
