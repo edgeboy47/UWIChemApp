@@ -64,13 +64,13 @@ exports.eventNotification = functions.database.ref("Events/{courseCode}/{eventCo
         // Used when app is in the background
         notification:{
             title: `New event for ${event.params.courseCode}`,
-            body: `New ${newVal.Type} for ${newVal.Notes}`,
+            body: `New ${newVal.Type} : ${newVal.Notes}`,
             sound: 'default'
         },
         // Used when the app is in the foreground
         data:{
             title: `New event for ${event.params.courseCode}`,
-            message: `New ${newVal.Type} for ${newVal.Notes}`
+            message: `New ${newVal.Type} : ${newVal.Notes}`
         }
     };
 
