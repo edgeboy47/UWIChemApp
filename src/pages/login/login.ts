@@ -11,8 +11,11 @@ import { PlatformCheckProvider } from '../../providers/platform-check/platform-c
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  // Bound to the email input field on the login screen
   email:string = ''
+  // Bound to the password input field on the login screen
   password:string = ''
+  // Flag used to test if a user is already logged in
   skip=false;
 
   constructor(public navCtrl: NavController, 
@@ -25,6 +28,7 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+    // If a user is already logged in, skip the login page
     this.fbAuth.authState.subscribe(data=>{
       if(data){
         this.skip=true;
@@ -34,23 +38,33 @@ export class LoginPage {
     console.log('ionViewDidLoad LoginPage');
   }
 
+  // The user login function
   async login(){
     try{
+      // Signs the user into Firebase Authentication with the email and password they entered
       await this.fbAuth.auth.signInWithEmailAndPassword(this.email, this.password)
+
+      // If the user agent is not a desktop browser
       if(!this.pltCheck.contains('core')) {
+        // Retrieve user account information
         this.fbAuth.authState.subscribe( user => {
+          // Retrieve the user's firebase cloud messaging notification token
           this.fcm.getToken().then( token => {
+            // Add the token to the user's table in the firebase databse
             this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
           })
+          // Whenever the user's notification token chenges
           this.fcm.onTokenRefresh().subscribe( token => {
+            // Update its value in the databsae
             this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
           })
         })
       }
-
+      // Navigate to the User Tabs Page
       this.navCtrl.setRoot('UsertabsPage')
     }
     catch(err){
+      // Create a toast showing an error message if the login failed
       let toast = this.toasty.create({
         message: "Invalid Email or Password",
         duration: 1000,
@@ -68,6 +82,7 @@ export class LoginPage {
     this.navCtrl.setRoot('UsertabsPage')
   }
 
+  // Navigate to the register page to create a new user account
   createUser(){
     this.navCtrl.push('RegisterPage')
   }
