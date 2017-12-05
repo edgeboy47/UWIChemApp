@@ -6,7 +6,7 @@ import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the CourseDetailsPage page.
- *
+ * This class displays all the details for a user chosen course, as well as allows the user to add the course
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
@@ -17,12 +17,12 @@ import { ToastController } from 'ionic-angular';
   templateUrl: 'course-details.html',
 })
 export class CourseDetailsPage  implements OnDestroy{
-  course={courseID:"",available:false, name:"",outline:"",credits:""};
+  course={courseID:"",available:false, name:"",outline:"",credits:""}; //Course object
   showButton=true;
-  user;
-  userSub;
-  userCourseSub;
-  courseSub;
+  user; 
+  userSub; 
+  userCourseSub; 
+  courseSub; //Variable to hold the course chosen
 
   constructor(private fbAuth: AngularFireAuth, 
               public navCtrl: NavController, 
@@ -32,6 +32,7 @@ export class CourseDetailsPage  implements OnDestroy{
     
   }
 
+  //Unsubscribing all created objects
   ngOnDestroy(){
     if(this.courseSub)
       this.courseSub.unsubscribe();
@@ -45,6 +46,7 @@ export class CourseDetailsPage  implements OnDestroy{
     console.log('ionViewDidLoad CourseDetailsPage');
     this.course.courseID = this.navParams.get('courseID');
 
+    
     this.userSub = this.fbAuth.authState.subscribe(data=>{
       if(data){
         this.user = data;
@@ -56,7 +58,7 @@ export class CourseDetailsPage  implements OnDestroy{
     });
    
 
-
+    //Storing chosen course object by retrieving from firebase
     this.courseSub = this.db.object('/Courses/'+this.course.courseID).valueChanges().subscribe(data=>{
       this.course.name = data['Name'];
       this.course.outline = data['Outline'];
@@ -65,6 +67,7 @@ export class CourseDetailsPage  implements OnDestroy{
     });
   }
   
+  //Adding the chosen course to the user's courses by adding it to Firebase
   addCourse(){
     let id = this.course.courseID;
     let name = this.course.name;
@@ -73,6 +76,7 @@ export class CourseDetailsPage  implements OnDestroy{
       this.db.database.ref('/UserCourses/').child(this.user.uid).child(id).set(name);
       this.showButton = false;
       
+      //Creating and displaying notification of course being added
       let toast = this.toasty.create({
         message: 'You added '+this.course.courseID+' to your courses!',
         duration: 1000,
