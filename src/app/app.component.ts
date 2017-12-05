@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { FCM } from '@ionic-native/fcm';
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import { PlatformCheckProvider } from '../providers/platform-check/platform-check';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { FCM } from '@ionic-native/fcm';                                            //FCM imported to allow for cloud services (primarily for push notifications)
+import { LocalNotifications } from '@ionic-native/local-notifications';             //LocalNotifications imported to allow scheduling of a user's notifications
+import { PlatformCheckProvider } from '../providers/platform-check/platform-check'; //PlatformCheckProvider imported to check the platform version
+import { AngularFireAuth } from 'angularfire2/auth';                                //AngularFireAuth imported to allow the user to be authenticated.
 
 
 @Component({
@@ -16,7 +16,7 @@ export class MyApp {
 
   constructor(platform: Platform, 
               statusBar: StatusBar, 
-              splashScreen: SplashScreen, 
+              splashScreen: SplashScreen,                                       //Various Constructor declarations
               private fcm : FCM, 
               private localNotifications: LocalNotifications,
               private pltCheck: PlatformCheckProvider,

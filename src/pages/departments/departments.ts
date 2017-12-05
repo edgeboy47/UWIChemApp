@@ -1,12 +1,8 @@
+//Darrion, Gideon, Ravish, Nathan, Krystel
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the DepartmentsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+/* This page navigates to the Login page when a department is selected. */
 
 @IonicPage()
 @Component({
