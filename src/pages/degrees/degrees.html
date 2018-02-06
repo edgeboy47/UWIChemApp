@@ -8,6 +8,12 @@
 
   <ion-navbar>
     <ion-title>Manage Degrees</ion-title>
+    <ion-buttons *ngIf="showButtons" end>
+      <button ion-button  (click)="addDegree()">
+        <ion-icon name="add"></ion-icon>
+        Degree
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +26,7 @@
     </div>
     <ion-item *ngFor="let degree of showdegrees">
       <ion-item no-lines >{{degree.Name}}</ion-item>
-      <ion-icon name="close" item-end></ion-icon>
+      <ion-icon *ngIf="showButtons" name="close" item-end></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
