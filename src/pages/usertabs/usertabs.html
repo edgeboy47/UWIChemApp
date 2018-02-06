@@ -3,4 +3,5 @@
   <ion-tab [root]="AllCoursesPage" tabTitle="All Courses" tabIcon="list"></ion-tab>
   <ion-tab [root]="NoticesPage" tabTitle="Notices" tabIcon="notifications"></ion-tab>
   <ion-tab *ngIf="showAdmin" [root]="AdminPage" [rootParams]="{'show':showAdmin}" tabTitle="Admin Tools" tabIcon="settings"></ion-tab>
+  <ion-tab *ngIf="showAdmin" [root]="DegreesPage" [rootParams]="{'show':showAdmin}" tabTitle="Degrees" tabIcon="settings"></ion-tab>  
 </ion-tabs>

@@ -22,6 +22,7 @@ export class UsertabsPage implements OnDestroy{
   AllCoursesPage:any="AllCoursesPage";
   NoticesPage:any="NoticesPage";
   AdminPage:any="AdminPage";
+  DegreesPage:any="DegreesPage";
 
   showAdmin:boolean = false;
 
