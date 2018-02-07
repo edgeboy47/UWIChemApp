@@ -20,6 +20,17 @@
 
 <ion-content>
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+
+  <ion-item>
+    <ion-label>Select Degree</ion-label>
+    <ion-select [(ngModel)]="degree" (ionChange)="onChange()">
+      <ion-option value="">All</ion-option>
+      <ion-option *ngFor="let degree of showdegrees" [value]="degree">{{degree.Name}}</ion-option>
+    </ion-select>
+  </ion-item>
+  
+
+
   <ion-list>
     <div  text-capitalize id="notice1" *ngIf="courses.length==0">
       No Courses Added Yet..

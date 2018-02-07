@@ -17,6 +17,10 @@ export class AllCoursesPage implements OnDestroy{
   courses:any = [];                                 //Stores all the courses from the firebase.
   dCourses=[];                                      //Stores courses to be displayed to user. (Facilitates search function)
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
+  degree;
+  degreeSub;
+  degrees = [];
+  showdegrees = [];
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -39,10 +43,27 @@ export class AllCoursesPage implements OnDestroy{
       this.typeSub.unsubscribe();
     if(this.userSub)
       this.userSub.unsubscribe();
+    if(this.degreeSub){
+      this.degreeSub.unsubscribe();
+    }
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AllCoursesPage');
+
+    this.degreeSub = this.db.object('/Degrees').valueChanges().subscribe(data=>{
+      this.degrees = [];
+      this.showdegrees = [];
+      if(data){
+        for(let key in data){
+          let d = data[key];
+          d['Name'] = key;
+          this.degrees.push(d);
+        }
+        this.showdegrees = this.degrees;
+      }
+    });
+
     this.coursesSubscription = this.db.object('/Courses').valueChanges().subscribe(data=>{      //Subscribe to the Courses object 
       this.courses = [];                                                                        //Reset courses
       this.dCourses = [];
@@ -64,6 +85,19 @@ export class AllCoursesPage implements OnDestroy{
         }
       });
     });
+  }
+
+  onChange(){
+    if(this.degree!=""){
+      this.dCourses = [];
+      for(let key in this.degree['Courses']){
+        for(let course of this.courses){
+          if(course['courseID']==key+" "){
+            this.dCourses.push(course);
+          }
+        }
+      }
+    }else this.dCourses = this.courses;
   }
 
   navigateToDetails(courseID:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument
