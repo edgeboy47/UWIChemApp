@@ -26,7 +26,7 @@
     </div>
     <ion-item *ngFor="let degree of showdegrees">
       <ion-item no-lines >{{degree.Name}}</ion-item>
-      <ion-icon *ngIf="showButtons" name="close" item-end></ion-icon>
+      <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeDegree(degree.Name)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

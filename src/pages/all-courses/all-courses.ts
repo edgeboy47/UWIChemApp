@@ -45,6 +45,7 @@ export class AllCoursesPage implements OnDestroy{
     console.log('ionViewDidLoad AllCoursesPage');
     this.coursesSubscription = this.db.object('/Courses').valueChanges().subscribe(data=>{      //Subscribe to the Courses object 
       this.courses = [];                                                                        //Reset courses
+      this.dCourses = [];
       if(data){                       //If there is data in the courses object then store it in the global courses list.
         for(let key in data){
           let d = data[key];

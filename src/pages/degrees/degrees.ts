@@ -1,14 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController,AlertController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-/**
- * Generated class for the DegreesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -28,7 +22,8 @@ export class DegreesPage implements OnDestroy {
               public navParams: NavParams,
               public db: AngularFireDatabase,
               public auth:AngularFireAuth,
-              public modalCtrl: ModalController
+              public modalCtrl: ModalController,
+              public alertCtrl: AlertController
               ) {
   }
 
@@ -45,6 +40,7 @@ export class DegreesPage implements OnDestroy {
     console.log('ionViewDidLoad DegreesPage');
     this.degreeSub = this.db.object('/Degrees').valueChanges().subscribe(data=>{
       this.degrees = [];
+      this.showdegrees = [];
       if(data){
         for(let key in data){
           let d = data[key];
@@ -71,25 +67,43 @@ export class DegreesPage implements OnDestroy {
     let modal = this.modalCtrl.create('AddDegreeModalPage');      //Create a modal to allow admin to enter new course details
     modal.present();
     modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the course to the firebase.
-      // if(data){
-      //   let obj = {
-      //     Available: data.Available,
-      //     Name: data.Name,                                        //Create an object with the data returned.
-      //     Credits: data.Credits,
-      //     Outline: data.Outline,
-      //   }
+      if(data){
+        let obj = {
+          credits: 0,                                        //Create an object with the data returned.
+        }
 
-      //   this.db.database.ref('/Courses/').child(data.courseID).set(obj);      //Add the new course to the database.
+        this.db.database.ref('/Degrees/').child(data.Name).set(obj);      //Add the new course to the database.
 
-      //   let newCourses = this.courses;
-      //   data.courseID = data.courseID+" ";                                    //Add space for GUI functioning.
-      //   newCourses.push(data);
+        let newDegrees = this.degrees;                                  //Add space for GUI functioning.
+        newDegrees.push(data);
         
-      //   this.courses = [];
-      //   setTimeout(()=>{
-      //     this.courses = newCourses;                                        //Timeout set so that all course list is update in the interface.
-      //   });
-      // }
+        this.degrees = [];
+        setTimeout(()=>{
+          this.degrees = newDegrees;                                        //Timeout set so that all course list is update in the interface.
+        });
+      }
     });
+  }
+
+  /*
+    Facilitates admin functionality of removing degrees.
+  */
+  removeDegree(degreeName:string){
+    let alert = this.alertCtrl.create({                     //Create an alert that the action cannot be undone.
+      title: 'Are You Sure?',
+      message: 'This cannot be undone',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Remove',
+          handler: ()=>{
+            this.db.object('/Degrees/'+degreeName).remove();    //Remove the Degree
+          }
+        }
+      ]
+    });
+    alert.present();        //Present the alert.
   }
 }
