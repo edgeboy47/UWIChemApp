@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
@@ -25,7 +25,8 @@ export class EditDegreePage implements OnDestroy{
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              public fb:AngularFireDatabase) {
+              public fb:AngularFireDatabase,
+              public toasty:ToastController) {
     
   }
 
@@ -72,5 +73,15 @@ export class EditDegreePage implements OnDestroy{
       Courses: c
     }
     this.fb.database.ref('/Degrees/').child(this.degree).set(obj);      //Add the new degree to the database.
+
+    let toast = this.toasty.create({
+      message: "Degree Saved",
+      duration: 1000,
+      showCloseButton: true,
+      position: 'bottom'
+    });
+
+    //Display notification:
+    toast.present();
   }
 }
