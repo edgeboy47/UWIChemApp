@@ -64,25 +64,30 @@ export class DegreesPage implements OnDestroy {
     This function allows the admin to add a course
   */ 
   addDegree(){
-    let modal = this.modalCtrl.create('AddDegreeModalPage');      //Create a modal to allow admin to enter new course details
+    let modal = this.modalCtrl.create('AddDegreeModalPage');      //Create a modal to allow admin to enter new degree details
     modal.present();
-    modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the course to the firebase.
+    modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the degree to the firebase.
       if(data){
         let obj = {
           credits: 0,                                        //Create an object with the data returned.
         }
 
-        this.db.database.ref('/Degrees/').child(data.Name).set(obj);      //Add the new course to the database.
+        this.db.database.ref('/Degrees/').child(data.Name).set(obj);      //Add the new degree to the database.
 
         let newDegrees = this.degrees;                                  //Add space for GUI functioning.
         newDegrees.push(data);
         
         this.degrees = [];
         setTimeout(()=>{
-          this.degrees = newDegrees;                                        //Timeout set so that all course list is update in the interface.
+          this.degrees = newDegrees;                                        //Timeout set so that degree list is updated in the interface.
         });
       }
     });
+  }
+
+
+  editDegree(degreeName:string){
+    this.navCtrl.push('EditDegreePage',{degreeName});
   }
 
   /*

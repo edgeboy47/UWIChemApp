@@ -1,0 +1,56 @@
+<!--
+  Generated template for the EditDegreePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit Degree</ion-title>
+
+    <ion-buttons end>
+        <button ion-button  (click)="save()">
+          <ion-icon name="add"></ion-icon>
+          Save
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-card>
+      <ion-card-header>
+        Name
+      </ion-card-header>
+      <ion-card-content>
+        {{degree}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+        <ion-card-header>
+          Total Credits
+        </ion-card-header>
+        <ion-card-content >
+            <ion-input [(ngModel)]="credits"></ion-input>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+          <ion-card-header>
+            Courses in Degree
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor = "let course of allcourses">
+                <ion-label>{{course.courseID}}</ion-label>
+                <ion-checkbox [(ngModel)]="course.Chosen"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+  </ion-list>
+
+</ion-content>
