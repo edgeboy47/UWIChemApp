@@ -5,13 +5,6 @@ import {AngularFireDatabase} from 'angularfire2/database';  //Import AngularFire
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 import { ToastController } from 'ionic-angular';
 
-/**
- * Generated class for the UserCoursesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-user-courses',
