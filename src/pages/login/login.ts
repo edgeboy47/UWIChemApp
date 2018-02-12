@@ -40,7 +40,6 @@ export class LoginPage {
       }
     })
 
-    console.log('ionViewDidLoad LoginPage');
   }
 
   // The user login function

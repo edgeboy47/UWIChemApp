@@ -29,7 +29,6 @@ export class EventModalPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EventModalPage');
   }
 
 
@@ -38,7 +37,6 @@ export class EventModalPage {
     and passes it back to the calendar page.
   */
   save(){
-    console.log(this.event.title)
     if(this.event.title!=="" && this.event.type!==""){      //If Data is not empty then allow the event to be added.
       this.event.startTime = this.event.endTime;
 

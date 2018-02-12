@@ -35,7 +35,6 @@ export class UsertabsPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UsertabsPage');
     this.userSub = this.fbAuth.authState.subscribe(data=>{
       if(data){
         //Checking if user is an admin, which will display the 'Admin Options' tab

@@ -42,7 +42,6 @@ export class UserCoursesPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserCoursesPage');
     this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{      //Get all courses, this subscription is to update the user's courses if the courses in the database change (all courses).
       this.loadUserCourses();
     });
@@ -130,7 +129,6 @@ export class UserCoursesPage implements OnDestroy{
   */
   realLogOut(){
     return this.fbAuth.auth.signOut().then(()=>{
-      console.log("it worked");                     //Upon signOut promise, simply send the user back to the starting page.
       this.navCtrl.setRoot("DepartmentsPage");
     })
   }

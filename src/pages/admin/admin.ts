@@ -26,7 +26,6 @@ export class AdminPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AdminPage');
     this.users = [];
 
     this.showContent = this.navParams.get('show');

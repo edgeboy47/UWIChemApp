@@ -33,7 +33,6 @@ export class UserEditPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserEditPage');
 
     //Getting the selected user's ID, as well as their email and account type:
     this.userID = this.navParams.get('userID');

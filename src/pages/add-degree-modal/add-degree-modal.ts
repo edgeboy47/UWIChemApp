@@ -25,7 +25,6 @@ export class AddDegreeModalPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddDegreeModalPage');
   }
 
   goBack(){

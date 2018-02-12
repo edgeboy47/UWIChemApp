@@ -37,7 +37,6 @@ export class DegreesPage implements OnDestroy {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DegreesPage');
     this.degreeSub = this.db.object('/Degrees').valueChanges().subscribe(data=>{
       this.degrees = [];
       this.showdegrees = [];

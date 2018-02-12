@@ -31,7 +31,6 @@ export class DepartmentsPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DepartmentsPage');
   }
 
   navigateToLogin(){

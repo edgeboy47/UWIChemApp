@@ -68,7 +68,6 @@ export class NoticesPage implements OnDestroy{
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NoticesPage');
     this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{
       this.noticeSub= this.db.object('/Events/').valueChanges().subscribe(events=>{
         this.userSubscription = this.fbAuth.authState.subscribe(user=>{

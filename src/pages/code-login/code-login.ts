@@ -16,7 +16,6 @@ export class CodeLoginPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CodeLoginPage');
   }
 
   login(){

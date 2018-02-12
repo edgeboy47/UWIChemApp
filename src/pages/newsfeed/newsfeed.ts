@@ -19,7 +19,6 @@ export class NewsfeedPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NewsfeedPage');
   }
 
 }
