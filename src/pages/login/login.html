@@ -23,12 +23,4 @@
     <button ion-button (click)="login()">Login</button>
     <button ion-button (click)="register()">Register</button>
   </div>
-
-<!-- If the user is already logged in, show the skip login screen -->
-  <div *ngIf="skip">
-    <ion-title>You are already signed in!</ion-title>
-    <button ion-button (click)="skipLogin()">Go to courses</button>
-  </div>
-  
-
 </ion-content>

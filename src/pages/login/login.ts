@@ -32,7 +32,10 @@ export class LoginPage {
     this.fbAuth.authState.subscribe(data=>{
       if(data){
         this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe(val => {
-          if(val === 'True') this.skip = true
+          if(val === 'True'){
+            this.skip = true;
+            this.navCtrl.setRoot('UsertabsPage');
+          }
         })
       }
     })
@@ -83,10 +86,6 @@ export class LoginPage {
       toast.present();
       console.error(err)
     }
-  }
-
-  skipLogin(){
-    this.navCtrl.setRoot('UsertabsPage')
   }
 
   // Navigate to the register page to create a new user account

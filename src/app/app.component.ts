@@ -34,7 +34,7 @@ export class MyApp {
       if(data && data.uid){
         // If the user is verified, set the root to the main tabs page
         this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe( user => {
-          if(user === "true") this.rootPage="UsertabsPage";
+          if(user === "True") this.rootPage="UsertabsPage";
           else this.rootPage = "DepartmentsPage";
         })
       }else{

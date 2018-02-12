@@ -42,8 +42,12 @@ export class UsertabsPage implements OnDestroy{
         this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().take(1).subscribe(d2=>{
           if(d2=='Admin'){
             this.showAdmin = true;
+          }else{
+            this.showAdmin = false;
           }
         });
+      }else{
+        this.showAdmin = false;
       }
     });
   }
