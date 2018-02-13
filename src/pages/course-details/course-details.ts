@@ -43,7 +43,6 @@ export class CourseDetailsPage  implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CourseDetailsPage');
     this.course.courseID = this.navParams.get('courseID');
 
     

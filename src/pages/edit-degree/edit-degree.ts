@@ -38,13 +38,11 @@ export class EditDegreePage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditDegreePage');
     this.degree = this.navParams.get('degreeName');
 
     this.degreeSub = this.fb.object('/Degrees/'+this.degree).valueChanges().subscribe(data=>{
       this.credits = data['credits'];
       this.courses = data['Courses'];
-      console.log(this.courses)
 
       this.coursesSubscription = this.fb.object('/Courses').valueChanges().subscribe(data2=>{      //Subscribe to the Courses object 
         this.allcourses = [];                                                                        //Reset courses

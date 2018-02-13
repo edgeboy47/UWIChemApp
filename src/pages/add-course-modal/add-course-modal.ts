@@ -25,7 +25,6 @@ export class AddCourseModalPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddCourseModalPage');
   }
 
   goBack(){

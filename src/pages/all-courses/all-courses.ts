@@ -49,7 +49,6 @@ export class AllCoursesPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AllCoursesPage');
 
     this.degreeSub = this.db.object('/Degrees').valueChanges().subscribe(data=>{
       this.degrees = [];
@@ -64,7 +63,7 @@ export class AllCoursesPage implements OnDestroy{
       }
     });
 
-    this.coursesSubscription = this.db.object('/Courses').valueChanges().subscribe(data=>{      //Subscribe to the Courses object 
+    this.coursesSubscription = this.db.object('/Courses').valueChanges().subscribe(data=>{      //Subscribe to the Courses object
       this.courses = [];                                                                        //Reset courses
       this.dCourses = [];
       if(data){                       //If there is data in the courses object then store it in the global courses list.
@@ -79,11 +78,13 @@ export class AllCoursesPage implements OnDestroy{
 
 
     this.userSub = this.auth.authState.subscribe(data=>{
-      this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
-        if(d2=='Admin'){
-          this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
-        }
-      });
+      if(data){
+        this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+          if(d2=='Admin'){
+            this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+          }
+        });
+      }
     });
   }
 

@@ -6,7 +6,8 @@ import { FCM } from '@ionic-native/fcm';                                        
 import { LocalNotifications } from '@ionic-native/local-notifications';             //LocalNotifications imported to allow scheduling of a user's notifications
 import { PlatformCheckProvider } from '../providers/platform-check/platform-check'; //PlatformCheckProvider imported to check the platform version
 import { AngularFireAuth } from 'angularfire2/auth';                                //AngularFireAuth imported to allow the user to be authenticated.
-
+import { AngularFireDatabase } from 'angularfire2/database';
+import 'rxjs/add/operator/take';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +21,8 @@ export class MyApp {
               private fcm : FCM, 
               private localNotifications: LocalNotifications,
               private pltCheck: PlatformCheckProvider,
-              public fbAuth:AngularFireAuth) {
+              public fbAuth:AngularFireAuth,
+              private db: AngularFireDatabase) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
@@ -29,8 +31,12 @@ export class MyApp {
 
     // If the user is signed in, navigate to the Usertabs page, else navigate to the departments page
     this.fbAuth.authState.subscribe(data=>{
-      if(data){
-        this.rootPage="UsertabsPage";
+      if(data && data.uid){
+        // If the user is verified, set the root to the main tabs page
+        this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe( user => {
+          if(user === "True") this.rootPage="UsertabsPage";
+          else this.rootPage = "DepartmentsPage";
+        })
       }else{
         this.rootPage="DepartmentsPage"
       }

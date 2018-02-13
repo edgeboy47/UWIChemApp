@@ -5,13 +5,6 @@ import {AngularFireDatabase} from 'angularfire2/database';  //Import AngularFire
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 import { ToastController } from 'ionic-angular';
 
-/**
- * Generated class for the UserCoursesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-user-courses',
@@ -49,7 +42,6 @@ export class UserCoursesPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserCoursesPage');
     this.courseSubscription = this.db.list('/Courses/').valueChanges().subscribe(()=>{      //Get all courses, this subscription is to update the user's courses if the courses in the database change (all courses).
       this.loadUserCourses();
     });
@@ -137,7 +129,6 @@ export class UserCoursesPage implements OnDestroy{
   */
   realLogOut(){
     return this.fbAuth.auth.signOut().then(()=>{
-      console.log("it worked");                     //Upon signOut promise, simply send the user back to the starting page.
       this.navCtrl.setRoot("DepartmentsPage");
     })
   }

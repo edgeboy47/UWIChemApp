@@ -27,7 +27,6 @@ export class RegisterPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
   }
 
   // Function to create a new user account
@@ -37,10 +36,9 @@ export class RegisterPage {
       if(this.email.length === 0 || this.password.length === 0){
         let toast = this.toasty.create({
           message: "Invalid Email or Password",
-          duration: 1000,
+          duration: 1500,
           position: 'bottom',
           cssClass:"toast-success",
-          showCloseButton:true,
         });
         toast.present();
       }else{
@@ -50,7 +48,7 @@ export class RegisterPage {
         // Retrieve the user information
         this.fbAuth.authState.subscribe( user => {
           // Add the user to the Firebase database
-          this.db.object(`Users/${user.uid}`).set({ email: this.email, type: "Student" })
+          this.db.object(`Users/${user.uid}`).set({ email: this.email, type: "Student", verified: "False"})
           .then( () => {
             // If the user agent is not a desktop browser
             if(!this.pltCheck.contains('core')) {
@@ -60,8 +58,8 @@ export class RegisterPage {
                 this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
               })
             }
-            // Navigate to the usertabs page
-            this.navCtrl.setRoot('UsertabsPage')
+            // Navigate to the code entry page
+            this.navCtrl.setRoot('CodeLoginPage')
           })
         })
       }
@@ -70,10 +68,9 @@ export class RegisterPage {
       // Create a toast showing any error messages
       let toast = this.toasty.create({
         message: err['message'],
-        duration: 1000,
+        duration: 1500,
         position: 'bottom',
         cssClass:"toast-success",
-        showCloseButton:true,
       });
       
       toast.present();

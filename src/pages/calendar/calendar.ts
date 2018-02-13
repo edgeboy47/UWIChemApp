@@ -68,7 +68,6 @@ export class CalendarPage implements OnDestroy{
 
   ionViewDidLoad() {
     this.courseID = this.navParams.get('courseID');       //Get selected courseID from the navParams
-    console.log(this.courseID);
     this.eventSub = this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{           //Get all the events of the current course.
       if(data){                                 //If the course has events then continue.
         let events= this.eventSource;
@@ -242,9 +241,7 @@ export class CalendarPage implements OnDestroy{
     from the list of events in the calendar.
   */
   onEventSelected(event){
-    console.log(event.endTime);
     let end = moment(event.endTime).format('LLLL');
-    console.log(end);
 
     if(this.showButtons){                               //If the user is a teacher or admin then allow them to remove courses.
       let alert = this.alertCtrl.create({

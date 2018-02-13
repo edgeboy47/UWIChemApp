@@ -1,7 +1,8 @@
 //Darrion, Gideon, Ravish, Nathan, Krystel
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 /* This page navigates to the Login page when a department is selected. */
 
 @IonicPage()
@@ -9,17 +10,42 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-departments',
   templateUrl: 'departments.html',
 })
-export class DepartmentsPage {
+export class DepartmentsPage implements OnDestroy{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  val = "";
+  authSub;
+  verSub;
+
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              private db: AngularFireDatabase, 
+              private fbAuth: AngularFireAuth) {
+  }
+
+  ngOnDestroy(){
+    if(this.authSub)
+      this.authSub.unsubscribe();
+    if(this.verSub)
+      this.verSub.unsubscribe();
+    
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DepartmentsPage');
   }
 
   navigateToLogin(){
-    this.navCtrl.push("LoginPage");
+    this.authSub = this.fbAuth.authState.subscribe(data=>{
+      if(data){
+        this.verSub = this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe(val => {
+          if(val === 'True'){
+            this.navCtrl.setRoot('UsertabsPage');
+          }else{
+            this.navCtrl.push('CodeLoginPage');
+          }
+        })
+      }else{
+        this.navCtrl.push("LoginPage"); 
+      }
+    })
   }
-
 }

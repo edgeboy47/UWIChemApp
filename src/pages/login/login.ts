@@ -28,14 +28,18 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
-    // If a user is already logged in, skip the login page
+    // If a user is already logged in and verified, skip the login page
     this.fbAuth.authState.subscribe(data=>{
       if(data){
-        this.skip=true;
+        this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe(val => {
+          if(val === 'True'){
+            this.skip = true;
+            this.navCtrl.setRoot('UsertabsPage');
+          }
+        })
       }
     })
 
-    console.log('ionViewDidLoad LoginPage');
   }
 
   // The user login function
@@ -50,27 +54,32 @@ export class LoginPage {
         this.fbAuth.authState.subscribe( user => {
           // Retrieve the user's firebase cloud messaging notification token
           this.fcm.getToken().then( token => {
-            // Add the token to the user's table in the firebase databse
+            // Add the token to the user's table in the firebase database
             this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
           })
-          // Whenever the user's notification token chenges
+          // Whenever the user's notification token changes
           this.fcm.onTokenRefresh().subscribe( token => {
             // Update its value in the databsae
             this.db.object(`Users/${user.uid}`).update({ notificationToken: token })
           })
         })
       }
-      // Navigate to the User Tabs Page
-      this.navCtrl.setRoot('UsertabsPage')
+      // If the user has already given the token, go to the main tabs page
+      // else go to the code entry page
+      let uid = this.fbAuth.auth.currentUser.uid
+      
+      this.db.object(`Users/${uid}/verified`).valueChanges().take(1).subscribe( val => {
+        if(val === "True") this.navCtrl.setRoot('UsertabsPage')
+        else this.navCtrl.push('CodeLoginPage')
+      })
     }
     catch(err){
       // Create a toast showing an error message if the login failed
       let toast = this.toasty.create({
         message: "Invalid Email or Password",
-        duration: 1000,
+        duration: 1500,
         position: 'bottom',
         cssClass:"toast-success",
-        showCloseButton:true,
       });
       
       toast.present();
@@ -78,12 +87,8 @@ export class LoginPage {
     }
   }
 
-  skipLogin(){
-    this.navCtrl.setRoot('UsertabsPage')
-  }
-
   // Navigate to the register page to create a new user account
-  createUser(){
+  register(){
     this.navCtrl.push('RegisterPage')
   }
 }
