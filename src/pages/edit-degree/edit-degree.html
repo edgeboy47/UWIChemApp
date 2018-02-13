@@ -39,18 +39,18 @@
         </ion-card-content>
       </ion-card>
       <ion-card>
-          <ion-card-header>
-            Courses in Degree
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item *ngFor = "let course of allcourses">
-                <ion-label>{{course.courseID}}</ion-label>
-                <ion-checkbox [(ngModel)]="course.Chosen"></ion-checkbox>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
+        <ion-card-header>
+          Courses in Degree
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor = "let course of allcourses">
+              <ion-label>{{course.courseID}}</ion-label>
+              <ion-checkbox [(ngModel)]="course.Chosen"></ion-checkbox>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
   </ion-list>
 
 </ion-content>

@@ -9,8 +9,9 @@
   <ion-navbar>
     <ion-title>{{course.courseID}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="showButton" ion-button icon-only  (click)="addCourse()">
-        <ion-icon name="add"></ion-icon>         
+      <button *ngIf="showButton" ion-button (click)="addCourse()">
+        <ion-icon name="add"></ion-icon> 
+        Enroll        
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -54,6 +55,20 @@
       <ion-card-content>
         {{course.outline}}
       </ion-card-content>
-    </ion-card>       
+    </ion-card>
+    
+    <ion-card>
+      <ion-card-header>
+        Degrees containing course
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor = "let degree of alldegrees">
+            <ion-label>{{degree.Name}}</ion-label>
+            <ion-checkbox [(ngModel)]="degree.Chosen"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>

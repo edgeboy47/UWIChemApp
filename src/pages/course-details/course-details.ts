@@ -23,6 +23,8 @@ export class CourseDetailsPage  implements OnDestroy{
   userSub; 
   userCourseSub; 
   courseSub; //Variable to hold the course chosen
+  alldegrees = [];
+  degrees = [];
 
   constructor(private fbAuth: AngularFireAuth, 
               public navCtrl: NavController, 
@@ -63,6 +65,21 @@ export class CourseDetailsPage  implements OnDestroy{
       this.course.outline = data['Outline'];
       this.course.available = data['Available'];
       this.course.credits = data['Credits'];
+      this.degrees = data['Degrees'];
+
+      this.db.object('/Degrees/').valueChanges().subscribe(data2=>{
+        this.alldegrees = [];
+        
+        if(data2){
+          for(let key in data2){
+            let d = data2[key];
+            d['Name'] = key;
+            if(this.degrees)
+              d['Chosen'] = this.degrees[key];
+            this.alldegrees.push(d);
+          }
+        }
+      });
     });
   }
   

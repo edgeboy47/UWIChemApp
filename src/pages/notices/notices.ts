@@ -143,7 +143,7 @@ IonViewDidLoad() contains the instructions used to read data from the database u
   
 
 addDepartmentEvent(){
-  let modal = this.modalCtrl.create('DepartmentEventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
+  let modal = this.modalCtrl.create('DepartmentEventModalPage');     //Create modal for user to enter relevant info
   modal.present();                                                                        //Present that modal
   modal.onDidDismiss(data=>{
     if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
