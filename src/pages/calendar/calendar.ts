@@ -31,12 +31,14 @@ export class CalendarPage implements OnDestroy{
 
   viewTitle: string;
   eventSource = [];
+  departmentNoticeSource = [];
   selectedDay = new Date();
 
   //Variables to store user subscriptions
   userSub;
   typeSub;
   eventSub;
+  departmentNoticeSub;
 
   constructor(private fbAuth: AngularFireAuth, 
               public navCtrl: NavController,            //Various Constructor declarations.
@@ -60,6 +62,8 @@ export class CalendarPage implements OnDestroy{
       this.typeSub.unsubscribe();
     if(this.userSub)
       this.userSub.unsubscribe();
+    if(this.departmentNoticeSub)
+      this.departmentNoticeSub.unsubscribe();
   }
 
   ionViewDidLoad() {
@@ -97,6 +101,33 @@ export class CalendarPage implements OnDestroy{
         }
       });
     });
+
+    this.departmentNoticeSub = this.db.object('/DepartmentEvents/'+this.courseID).valueChanges().subscribe(data=>{           //Get all the events of the current course.
+      if(data){                                 //If the course has events then continue.
+        let departmentNotices= this.departmentNoticeSource;
+        for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
+          let d = data[key];
+          let ev = {startTime: new Date(), endTime: new Date(), title: "",type: "", id:""};
+          
+          ev.endTime = new Date(d['date']);
+          ev.startTime = ev.endTime;
+          ev.title = d['Notes'];              //Set the corresponding fields of the newly created object
+          ev.type = d['Type'];
+          
+          ev.id = key;
+
+          departmentNotices.push(ev);                    //Add object to the temp events list.
+        }
+
+        this.departmentNoticeSource = [];
+        setTimeout(()=>{                      //Set Timeout that will allow interface to be update
+          this.departmentNoticeSource = departmentNotices;          //Update global eventSource list for calendar element.
+        });
+      }
+    });
+
+
+
   }
 
   /*
@@ -130,6 +161,35 @@ export class CalendarPage implements OnDestroy{
     })
   }
 
+  addDepartmentEvent(){
+    let modal = this.modalCtrl.create('DepartmentEventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
+    modal.present();                                                                        //Present that modal
+    modal.onDidDismiss(data=>{
+      if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
+        let eventData = data;
+
+        eventData.startTime = new Date(data.startTime);
+        eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
+
+        this.db.list('/DepartmentEvents/'+this.courseID).push({         //Push retrieved event to the database.
+          date: eventData.endTime.toISOString(),
+          Notes: eventData.title, 
+          Type: eventData.type,
+        });
+
+        let departmentNotices = this.departmentNoticeSource;
+        departmentNotices.push(eventData);
+        
+        this.departmentNoticeSource = [];
+        setTimeout(()=>{                            //Set timeout to update user interface.
+          this.departmentNoticeSource = departmentNotices;                //Set global eventsSource list for the calendar element.
+        });
+      }
+    })
+  }
+
+
+
   /*
     Funcition that the calendar uses to set the title.
   */
@@ -159,6 +219,19 @@ export class CalendarPage implements OnDestroy{
     this.eventSource = [];
     setTimeout(()=>{
       this.eventSource = events;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
+    });
+    
+  }
+
+  removeDepartmentEvent(event){
+    let departmentNotices = this.departmentNoticeSource;
+    departmentNotices.splice(departmentNotices.indexOf(event),1);   //get event that is selected.
+    
+    this.db.object('/DepartmentEvents/'+this.courseID+'/'+event.id+'/').remove();   //Remove it from firebase.
+
+    this.eventSource = [];
+    setTimeout(()=>{
+      this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
     });
     
   }

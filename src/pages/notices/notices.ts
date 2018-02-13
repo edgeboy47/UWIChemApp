@@ -1,4 +1,4 @@
-//Darrion, Gideon, Ravish, Nathan, Krystel
+//Darrion, Gideon, Nathan, Krystel
 
 /*The notices page loads all the events (Which can be an assignment, test or general notice per course)
 to every course the user(student, teacher or admin) has subscribed. If the user is an admin or teacher, 
