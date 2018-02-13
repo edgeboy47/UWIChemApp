@@ -101,7 +101,7 @@ export class CalendarPage implements OnDestroy{
       });
     });
 
-    this.departmentNoticeSub = this.db.object('/DepartmentEvents/'+this.courseID).valueChanges().subscribe(data=>{           //Get all the events of the current course.
+    this.departmentNoticeSub = this.db.object('/DepartmentEvents/').valueChanges().subscribe(data=>{     //took our +this.courseID from the path      //Get all the events of the current course.
       if(data){                                 //If the course has events then continue.
         let departmentNotices= this.departmentNoticeSource;
         for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
@@ -127,7 +127,7 @@ export class CalendarPage implements OnDestroy{
 
 
 
-  }
+  }// end ionViewDidLoad()
 
   /*
     This function allows users to add events.
@@ -160,32 +160,8 @@ export class CalendarPage implements OnDestroy{
     })
   }
 
-  addDepartmentEvent(){
-    let modal = this.modalCtrl.create('DepartmentEventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
-    modal.present();                                                                        //Present that modal
-    modal.onDidDismiss(data=>{
-      if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
-        let eventData = data;
-
-        eventData.startTime = new Date(data.startTime);
-        eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
-
-        this.db.list('/DepartmentEvents/'+this.courseID).push({         //Push retrieved event to the database.
-          date: eventData.endTime.toISOString(),
-          Notes: eventData.title, 
-          Type: eventData.type,
-        });
-
-        let departmentNotices = this.departmentNoticeSource;
-        departmentNotices.push(eventData);
-        
-        this.departmentNoticeSource = [];
-        setTimeout(()=>{                            //Set timeout to update user interface.
-          this.departmentNoticeSource = departmentNotices;                //Set global eventsSource list for the calendar element.
-        });
-      }
-    })
-  }
+  //addDepartmentEvent() used to be here.
+  
 
 
 
@@ -221,14 +197,14 @@ export class CalendarPage implements OnDestroy{
     });
     
   }
-
+  // removeDepartmentEvent(event) used to be here
   removeDepartmentEvent(event){
     let departmentNotices = this.departmentNoticeSource;
     departmentNotices.splice(departmentNotices.indexOf(event),1);   //get event that is selected.
     
-    this.db.object('/DepartmentEvents/'+this.courseID+'/'+event.id+'/').remove();   //Remove it from firebase.
+    this.db.object('/DepartmentEvents/'+event.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
 
-    this.eventSource = [];
+    this.departmentNoticeSource  = [];
     setTimeout(()=>{
       this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
     });
@@ -240,7 +216,7 @@ export class CalendarPage implements OnDestroy{
     This function shows an alert with more information about an event when it is selected
     from the list of events in the calendar.
   */
-  onEventSelected(event){
+  onEventSelected(event){// may have to duplicate this for a department notice
     let end = moment(event.endTime).format('LLLL');
 
     if(this.showButtons){                               //If the user is a teacher or admin then allow them to remove courses.

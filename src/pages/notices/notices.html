@@ -8,10 +8,14 @@
 
   <ion-navbar>
     <ion-title>Notices</ion-title>
-  </ion-navbar>
-
+    <ion-buttons *ngIf="showButtons" end>
+      <button ion-button  (click)="addDepartmentEvent()">
+        <ion-icon name="add"></ion-icon>
+        Department Notice       
+      </button>
+    </ion-buttons>
+  </ion-navbar>  
 </ion-header>
-
 
 <ion-content padding>
   <!--<button ion-button (click)="addNotice()">Add a notice</button>-->
@@ -20,6 +24,10 @@
     <ion-item *ngFor="let notice of noticeSource"  (click)="onNoticeSelected(notice)" has-bouncing="false" overflow-scroll="false" >
       {{notice.CourseID}} {{notice.Notes}}
       <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNotice(notice)"></ion-icon>
+    </ion-item>
+    <ion-item *ngFor="let departmentNotices of departmentNoticeSource"  (click)="onNoticeSelected(departmentNotices)" has-bouncing="false" overflow-scroll="false" >
+      {{departmentNotices.title}} {{departmentNotices.type}}
+      <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeDepartmentEvent(departmentNotices)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

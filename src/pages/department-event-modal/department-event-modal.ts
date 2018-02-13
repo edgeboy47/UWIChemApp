@@ -44,7 +44,7 @@ export class DepartmentEventModalPage {
       this.event.startTime = this.event.endTime;
 
       let toast = this.toasty.create({
-        message: "Event Saved",
+        message: "Department Notice Saved",
         duration: 1000,                   //Create Post that event was saved.
         position: 'bottom',
         showCloseButton: true

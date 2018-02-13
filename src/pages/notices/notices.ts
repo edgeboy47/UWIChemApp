@@ -22,8 +22,6 @@ import { IonicPage, ModalController ,NavController, NavParams, AlertController }
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
 import * as moment from 'moment';
-
-
 @IonicPage()
 @Component({
   selector: 'page-notices',
@@ -33,21 +31,25 @@ import * as moment from 'moment';
 
 export class NoticesPage implements OnDestroy{
   noticeSource= [];// An array that will contain all notices read from the firebase
-  showButtons = false; // A variable used as a flag and is set depending on the type of user.
+  courses:any = [];// An array that will contain all courses read from the firebase
+  departmentNoticeSource = [];
   notices:any=[];// An array that will contain notices read from the firebase.
 
+  showButtons = false; // A variable used as a flag and is set depending on the type of user.
+  user;//A variable that will contain the user.
+  
   noticeSub;//A varibale used to subscribe to the notices section in the firebase database.
   typeSub;// A variable used to subscribe to the users type section in the firebase.
   userCoursesSubscription; // A variable used to subscribe to the user courses section in the firebase.
   userSubscription;// A variable used to subscribe to the user section in the firebase.
   courseSubscription;// A variable used to subscribe to the courses section in the firebase.
-
-  courses:any = [];// An array that will contain all courses read from the firebase
-
-
-  user;//A variable that will contain the user.
-
-  constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public modalCtrl:ModalController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController) {
+  departmentNoticeSub;
+  constructor(private fbAuth: AngularFireAuth, 
+              public db: AngularFireDatabase, 
+              public modalCtrl:ModalController, 
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public alertCtrl:AlertController) {
   }
 
 
@@ -62,6 +64,8 @@ export class NoticesPage implements OnDestroy{
       this.userSubscription.unsubscribe();
     if(this.courseSubscription)
       this.courseSubscription.unsubscribe();
+    if(this.departmentNoticeSub)
+      this.departmentNoticeSub.unsubscribe();
   }
   // NgOnDestroy is a function used to execute instructions when the user leaved the page. In this case, it is used to unsubcribe from
   //all subscription made in the ionViewDidLoad function.
@@ -109,11 +113,77 @@ export class NoticesPage implements OnDestroy{
         });
       });
     });
+    this.departmentNoticeSub = this.db.object('/DepartmentEvents/').valueChanges().subscribe(data=>{     //took our +this.courseID from the path      //Get all the events of the current course.
+      if(data){                                 //If the course has events then continue.
+        let departmentNotices= this.departmentNoticeSource;
+        for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
+          let d = data[key];
+          let ev = {startTime: new Date(), endTime: new Date(), title: "",type: "", id:""};
+          
+          ev.endTime = new Date(d['date']);
+          ev.startTime = ev.endTime;
+          ev.title = d['Notes'];              //Set the corresponding fields of the newly created object
+          ev.type = d['Type'];
+          
+          ev.id = key;
+
+          departmentNotices.push(ev);                    //Add object to the temp events list.
+        }
+
+        this.departmentNoticeSource = [];
+        setTimeout(()=>{                      //Set Timeout that will allow interface to be update
+          this.departmentNoticeSource = departmentNotices;          //Update global eventSource list for calendar element.
+        });
+      }
+    });
   }
 /*
 IonViewDidLoad() contains the instructions used to read data from the database using subsciptions and stores that data in arrays.
 */
   
+
+addDepartmentEvent(){
+  let modal = this.modalCtrl.create('DepartmentEventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
+  modal.present();                                                                        //Present that modal
+  modal.onDidDismiss(data=>{
+    if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
+      let eventData = data;
+
+      eventData.startTime = new Date(data.startTime);
+      eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
+
+      this.db.list('/DepartmentEvents/').push({    //tooke out  +this.courseID from path     //Push retrieved event to the database.
+        date: eventData.endTime.toISOString(),
+        Notes: eventData.title, 
+        Type: eventData.type,
+      });
+
+      let departmentNotices = this.departmentNoticeSource;
+      departmentNotices.push(eventData);
+      
+      this.departmentNoticeSource = [];
+      setTimeout(()=>{                            //Set timeout to update user interface.
+        this.departmentNoticeSource = departmentNotices;                //Set global eventsSource list for the calendar element.
+      });
+    }
+  })
+}
+
+removeDepartmentEvent(event){
+  let departmentNotices = this.departmentNoticeSource;
+  departmentNotices.splice(departmentNotices.indexOf(event),1);   //get event that is selected.
+  
+  this.db.object('/DepartmentEvents/'+event.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
+
+  this.departmentNoticeSource  = [];
+  setTimeout(()=>{
+    this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
+  });
+  
+}
+
+
+
   removeNotice(notice){
     this.notices = this.noticeSource;
     this.notices.splice(this.notices.indexOf(notice),1);

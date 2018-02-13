@@ -13,22 +13,22 @@
           <ion-icon name="add"></ion-icon>
           Event        
         </button>
-        <button ion-button  (click)="addDepartmentEvent()">
-          <ion-icon name="add"></ion-icon>
-          Department Notice       
-        </button>
       </ion-buttons>
-    </ion-navbar>
-  
-  </ion-header>
+    </ion-navbar>  
+</ion-header>
   
 
-  <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+  <!--<ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
     <ion-item *ngFor="let event of eventSource">
       {{event.endTime|date: 'HH:mm'}}|{{event.title}}
     </ion-item>
-  </ng-template>
+  </ng-template>[departmentNoticeSource]="departmentNoticeSource"-->
 
+  <ng-template #template3 let-showdepartmentEventDetail="showDepartmentEventDetail" let-selectedDate="selectedDate" let-noDepartmentEventsLabel="noDepartmentEventsLabel">
+    <ion-item *ngFor="let DepartmentNotice of departmentNoticeSource">
+      {{DepartmentNotice.endTime|date: 'HH:mm'}}|{{DepartmentNotice.title}}
+    </ion-item>
+  </ng-template>
 
   <ng-template #template2 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
       <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
@@ -45,11 +45,12 @@
           </ion-item>
       </ion-list>
   </ng-template>
-
+  
   
   
   <ion-content padding>
     <calendar [eventSource]="eventSource"
+      
       [calendarMode]="calendar.mode"
       [monthviewEventDetailTemplate] = "template2"
       [currentDate]="calendar.currentDate"
