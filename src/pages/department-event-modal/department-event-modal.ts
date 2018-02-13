@@ -16,7 +16,7 @@ import * as moment from 'moment';       //Moment used for formatting dates.
 })
 export class DepartmentEventModalPage {
 
-  event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), title: "", type: ""}
+  event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), title: "",Notes: "", type: ""}
   
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 

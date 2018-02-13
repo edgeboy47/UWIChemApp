@@ -15,7 +15,7 @@ import * as moment from 'moment';       //Moment used for formatting dates.
   templateUrl: 'event-modal.html',
 })
 export class EventModalPage {
-  event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), title: "", type: "", resource:""}
+  event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), title: "", Notes:"", type: "", resource:""}
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 

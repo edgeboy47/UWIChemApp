@@ -118,13 +118,13 @@ export class NoticesPage implements OnDestroy{
         let departmentNotices= this.departmentNoticeSource;
         for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
           let d = data[key];
-          let ev = {startTime: new Date(), endTime: new Date(), title: "",type: "", id:""};
+          let ev = {startTime: new Date(), endTime: new Date(), Notes:"",title: "",type: "", id:""};
           
           ev.endTime = new Date(d['date']);
           ev.startTime = ev.endTime;
-          ev.title = d['Notes'];              //Set the corresponding fields of the newly created object
+          ev.title = d['title'];              //Set the corresponding fields of the newly created object
           ev.type = d['Type'];
-          
+          ev.Notes=d['Notes']; 
           ev.id = key;
 
           departmentNotices.push(ev);                    //Add object to the temp events list.
@@ -136,7 +136,7 @@ export class NoticesPage implements OnDestroy{
         });
       }
     });
-  }
+  }// end ionViewDidLoad()
 /*
 IonViewDidLoad() contains the instructions used to read data from the database using subsciptions and stores that data in arrays.
 */
@@ -154,8 +154,9 @@ addDepartmentEvent(){
 
       this.db.list('/DepartmentEvents/').push({    //tooke out  +this.courseID from path     //Push retrieved event to the database.
         date: eventData.endTime.toISOString(),
-        Notes: eventData.title, 
+        Notes: eventData.Notes, 
         Type: eventData.type,
+        title: eventData.title,
       });
 
       let departmentNotices = this.departmentNoticeSource;
@@ -167,20 +168,20 @@ addDepartmentEvent(){
       });
     }
   })
-}
+} // end addDepartmentEvent()
 
-removeDepartmentEvent(event){
+removeDepartmentEvent(D_notice){
   let departmentNotices = this.departmentNoticeSource;
-  departmentNotices.splice(departmentNotices.indexOf(event),1);   //get event that is selected.
+  departmentNotices.splice(departmentNotices.indexOf(D_notice),1);   //get event that is selected.
   
-  this.db.object('/DepartmentEvents/'+event.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
+  this.db.object('/DepartmentEvents/'+D_notice.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
 
   this.departmentNoticeSource  = [];
   setTimeout(()=>{
     this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
   });
   
-}
+}// end removeDepartmentEvent(event)
 
 
 
@@ -194,7 +195,7 @@ removeDepartmentEvent(event){
     setTimeout(()=>{
       this.noticeSource = this.notices;
     });
-  }
+  }// end removeNotice(notice)
 
   onNoticeSelected(notice){
     let date = moment(notice.date).format('LLLL');
@@ -231,5 +232,43 @@ removeDepartmentEvent(event){
       });
       alert.present();
     }
-  }
-}
+  }//end onNoticeSelected(notice)
+
+
+  onD_NoticeSelected(departmentNotice){
+    let date = moment(departmentNotice.date).format('LLLL');
+
+    if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
+                          // that the user is a teacher or an admin.
+      let alert = this.alertCtrl.create({
+        title: ''+departmentNotice.type +'|' +departmentNotice.title ,
+        subTitle: 'Date: '+date,
+        message: 'Message: '+departmentNotice.Notes,
+        buttons: [
+          {
+            text: 'OK',
+          },
+          {
+            text: 'Remove',
+            handler: ()=>{
+              this.removeDepartmentEvent(departmentNotice);
+            }
+          }
+        ]
+      });
+      alert.present();
+    }else{//If the user is a student then the option to remove the event is not given.
+      let alert = this.alertCtrl.create({
+        title: ''+departmentNotices.title,
+        subTitle: 'Due Date: '+date,
+        message: 'Message: '+departmentNotices.Notes,
+        buttons: [
+          {
+            text: 'OK',
+          },
+        ]
+      });
+      alert.present();
+    }
+  }// end onD_NoticeSelected(departmentNotices)
+}// end export class

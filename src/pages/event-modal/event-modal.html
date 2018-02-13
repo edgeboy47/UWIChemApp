@@ -19,7 +19,10 @@
       <ion-label color="primary" stacked>Title</ion-label>
       <ion-input type="text" placeholder="" [(ngModel)]="event.title"></ion-input>
     </ion-item> 
-
+    <ion-item>
+      <ion-label color="primary" stacked>Message</ion-label>
+      <ion-input type="text" placeholder="" [(ngModel)]="event.Notes"></ion-input>
+    </ion-item> 
     <ion-item>
       <ion-label color="primary" stacked>Time</ion-label>
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"></ion-datetime>      
