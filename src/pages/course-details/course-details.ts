@@ -104,4 +104,23 @@ export class CourseDetailsPage  implements OnDestroy{
     }
   }
 
+  save(){
+    let c = {};
+    for(let key in this.alldegrees){
+      if(this.alldegrees[key]['Chosen']){
+        c[this.alldegrees[key]['Name']] = true;
+        this.db.database.ref('/Degrees/'+this.alldegrees[key]['Name']+'/Courses').child(this.course.courseID).set(true);        
+      }
+    }
+    this.db.database.ref('/Courses/'+this.course.courseID+'/Degrees/').set(c);
+    
+    let toast = this.toasty.create({
+      message: "Degree Saved",
+      duration: 1000,
+      showCloseButton: true,
+      position: 'bottom'
+    });
+
+    toast.present();
+  }
 }
