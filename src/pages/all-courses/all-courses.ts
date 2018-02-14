@@ -165,8 +165,11 @@ export class AllCoursesPage implements OnDestroy{
           text: 'Remove',
           handler: ()=>{
             this.db.object('/Courses/'+courseID).remove();    //Remove the Course and the Events related to that course from the database.
-            this.db.object('/Events/'+courseID).remove();
-                                                              //A particular user's courses list will be updated once they log in so that the remove function is not processing power intensive.
+            this.db.object('/Events/'+courseID).remove();     //A particular user's courses list will be updated once they log in so that the remove function is not processing power intensive.
+            
+            for(let degree of this.degrees){
+              this.db.object('/Degrees/'+degree['Name']+'/Courses/'+courseID).remove();
+            }
           }
         }
       ]
