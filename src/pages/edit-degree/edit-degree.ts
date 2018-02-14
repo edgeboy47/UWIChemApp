@@ -40,15 +40,15 @@ export class EditDegreePage implements OnDestroy{
   ionViewDidLoad() {
     this.degree = this.navParams.get('degreeName');
 
-    this.degreeSub = this.fb.object('/Degrees/'+this.degree).valueChanges().subscribe(data=>{
-      this.credits = data['credits'];
-      this.courses = data['Courses'];
+    this.degreeSub = this.fb.object('/Degrees/'+this.degree).valueChanges().subscribe(degree=>{
+      this.credits = degree['credits'];
+      this.courses = degree['Courses'];
 
-      this.coursesSubscription = this.fb.object('/Courses').valueChanges().subscribe(data2=>{      //Subscribe to the Courses object 
+      this.coursesSubscription = this.fb.object('/Courses').valueChanges().subscribe(courses=>{      //Subscribe to the Courses object 
         this.allcourses = [];                                                                        //Reset courses
-        if(data2){                       //If there is data in the courses object then store it in the global courses list.
-          for(let key in data2){
-            let d = data2[key];
+        if(courses){                       //If there is data in the courses object then store it in the global courses list.
+          for(let key in courses){
+            let d = courses[key];
             d['courseID'] = key;    //Insert courseID in the object stored for ease of use.
             if(this.courses)
               d['Chosen'] = this.courses[key];           
@@ -66,7 +66,7 @@ export class EditDegreePage implements OnDestroy{
         c[this.allcourses[key]['courseID']] = true;
         this.fb.database.ref('/Courses/'+this.allcourses[key]['courseID']+'/Degrees').child(this.degree).set(true);
       }else{
-        this.fb.object('/Courses/'+this.allcourses[key]['courseID']+'/Degrees/'+this.degree).remove();        
+        this.fb.object('/Courses/'+this.allcourses[key]['courseID']+'/Degrees/'+this.degree).remove();      
       }
     }
 

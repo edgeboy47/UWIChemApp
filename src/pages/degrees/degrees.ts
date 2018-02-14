@@ -14,6 +14,8 @@ export class DegreesPage implements OnDestroy {
   degreeSub;
   userSub;
   typeSub;
+  coursesSub;
+
   degrees:any = [];
   showdegrees = [];
   showButtons = false;
@@ -34,6 +36,8 @@ export class DegreesPage implements OnDestroy {
       this.typeSub.unsubscribe();
     if(this.userSub)
       this.userSub.unsubscribe();
+    if(this.coursesSub)
+      this.coursesSub.unsubscribe();      
   }
 
   ionViewDidLoad() {
@@ -104,6 +108,14 @@ export class DegreesPage implements OnDestroy {
           text: 'Remove',
           handler: ()=>{
             this.db.object('/Degrees/'+degreeName).remove();    //Remove the Degree
+
+            this.coursesSub = this.db.object('/Courses/').valueChanges().subscribe(courses=>{
+              for(let key in courses){
+                this.db.object('/Courses/'+key+'/Degrees/'+degreeName).remove();
+              }
+            });
+
+
           }
         }
       ]
