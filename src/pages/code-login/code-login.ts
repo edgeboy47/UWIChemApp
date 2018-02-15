@@ -10,7 +10,8 @@ import 'rxjs/add/operator/take';
   templateUrl: 'code-login.html',
 })
 export class CodeLoginPage {
-  token:string = ''
+  token: string = ''
+  verified: boolean = false
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private fbAuth: AngularFireAuth, private db: AngularFireDatabase, private toast: ToastController) {
   }
@@ -20,15 +21,19 @@ export class CodeLoginPage {
 
   login(){
     let uid = this.fbAuth.auth.currentUser.uid
-    let codes = this.db.list('/Codes/').valueChanges()
+    let codes = this.db.object('/Codes/').valueChanges()
     codes.take(1).subscribe(list => {
-      // If the code given is in the list of codes, set the user to verified
+      // If the code given is in the list of codes, set the user to verified, set the user's account type
       // and navigate to the main tabs page
-      if(list.some(arr => arr === this.token)){
-         this.db.object(`Users/${uid}/`).update({ verified: 'True'})
-         this.navCtrl.setRoot("UsertabsPage")
+      for(let prop in list){
+        if(this.token === list[prop]){
+          this.db.object(`Users/${uid}`).update({type: prop, verified: "True"})
+          this.verified = true
+          this.navCtrl.setRoot("UsertabsPage")
+        }
       }
-      else{
+      
+      if(!this.verified){
         this.toast.create({
           message: "Invalid Code",
           duration: 1500,
