@@ -37,7 +37,7 @@ export class EventModalPage {
     and passes it back to the calendar page.
   */
   save(){
-    if(this.event.title!=="" && this.event.type!==""){      //If Data is not empty then allow the event to be added.
+    if(this.event.title!=="" && this.event.type!=="" && this.event.Notes!==""){      //If Data is not empty then allow the event to be added.
       this.event.startTime = this.event.endTime;
 
       let toast = this.toasty.create({
@@ -55,7 +55,8 @@ export class EventModalPage {
       let extraMessage = "Title";
       if(this.event.title)
         extraMessage = 'Type';
-
+        if(this.event.type)
+        extraMessage = 'Message';
 
       let alert = this.alertCtrl.create({
         title: extraMessage+' Required',

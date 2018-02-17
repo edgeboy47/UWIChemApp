@@ -95,9 +95,10 @@ export class NoticesPage implements OnDestroy{
                     let courseNotices = events[key];
                     for(let notice in courseNotices){
                       let d = courseNotices[notice];
-                      let note = { Type: "", date:"", Notes:"", CourseID:"",id:""};
+                      let note = { Type: "", date:"",title:"", Notes:"", CourseID:"",id:""};
                       note.Type=d['Type']; 
                       note.date=d['date'];
+                      note.title=d['title'];
                       note.Notes=d['Notes'];  
                       note.CourseID=key; 
                       note.id=notice;

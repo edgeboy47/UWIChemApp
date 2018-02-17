@@ -133,6 +133,7 @@ export class CalendarPage implements OnDestroy{
     This function allows users to add events.
   */
   addEvent(){
+    this.courseID = this.navParams.get('courseID');
     let modal = this.modalCtrl.create('EventModalPage',{selectedDay:this.selectedDay});     //Create modal for user to enter relevant info
     modal.present();                                                                        //Present that modal
     modal.onDidDismiss(data=>{
@@ -144,7 +145,8 @@ export class CalendarPage implements OnDestroy{
 
         this.db.list('/Events/'+this.courseID).push({         //Push retrieved event to the database.
           date: eventData.endTime.toISOString(),
-          Notes: eventData.title,                 
+          Notes: eventData.Notes,
+          title:eventData.title,                 
           Type: eventData.type,
           resource: eventData.resource,
         });
@@ -186,6 +188,7 @@ export class CalendarPage implements OnDestroy{
     Function allows the removal of events.
   */
   removeEvent(event){
+    this.courseID = this.navParams.get('courseID');
     let events = this.eventSource;
     events.splice(events.indexOf(event),1);   //get event that is selected.
     
@@ -223,7 +226,7 @@ export class CalendarPage implements OnDestroy{
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
-        message: 'Type: '+event.type,
+        message: 'Message: '+event.type,
         buttons: [
           {
             text: 'OK',
@@ -241,7 +244,7 @@ export class CalendarPage implements OnDestroy{
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
-        message: 'Type: '+event.type,
+        message: 'Message: '+event.type,
         buttons: [
           {
             text: 'OK',
