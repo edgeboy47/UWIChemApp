@@ -4,6 +4,8 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
+
 <ion-header>
   
     <ion-navbar>
@@ -17,6 +19,12 @@
     </ion-navbar>  
 </ion-header>
   
+<script>
+  function myFunction() {
+      var x = "www.google.tt/";
+      
+  }
+</script>
 
   <!--<ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
     <ion-item *ngFor="let event of eventSource">
@@ -38,7 +46,7 @@
               </span>
               <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
               <span class="event-detail">  |  {{event.title}}</span>
-              <span class="event-detail">&nbsp;&nbsp;&nbsp;| Resource: <a>{{event.resource}}</a></span>
+              <span class="event-detail">&nbsp;&nbsp;&nbsp;| Resource: <a href= {{event.resource}} target="_blank">{{event.resource}}</a></span>
           </ion-item>
           <ion-item *ngIf="selectedDate?.events.length==0">
               <div class="no-events-label">{{noEventsLabel}}</div>
