@@ -226,7 +226,7 @@ export class CalendarPage implements OnDestroy{
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
-        message: 'Message: '+event.type,
+        message: 'Message: '+event.type +'\nResourse:'+event.resource,
         buttons: [
           {
             text: 'OK',
@@ -244,7 +244,7 @@ export class CalendarPage implements OnDestroy{
       let alert = this.alertCtrl.create({
         title: ''+event.title,
         subTitle: 'Due Date: '+end,
-        message: 'Message: '+event.type,
+        message: 'Message: '+event.type +'\nResourse:'+event.resource,
         buttons: [
           {
             text: 'OK',

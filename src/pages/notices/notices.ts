@@ -206,7 +206,7 @@ removeDepartmentEvent(D_notice){
       let alert = this.alertCtrl.create({
         title: ''+notice.Type,
         subTitle: 'Due Date: '+date,
-        message: 'Message: '+notice.Notes,
+        message: 'Message: '+notice.Notes+ '\n Resource: '+notice.resource,
         buttons: [
           {
             text: 'OK',
