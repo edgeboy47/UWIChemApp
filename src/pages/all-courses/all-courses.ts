@@ -21,6 +21,7 @@ export class AllCoursesPage implements OnDestroy{
   degreeSub;
   degrees = [];
   showdegrees = [];
+  test = {};
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -71,6 +72,7 @@ export class AllCoursesPage implements OnDestroy{
           let d = data[key];
           d['courseID'] = key+" ";    //Insert courseID in the object stored for ease of use.
           this.courses.push(d);
+          this.test[key] = d;
         }
         this.dCourses = this.courses; //Update the courses to the read courses to be displayed to the user.
       }
@@ -92,11 +94,7 @@ export class AllCoursesPage implements OnDestroy{
     if(this.degree!=""){
       this.dCourses = [];
       for(let key in this.degree['Courses']){
-        for(let course of this.courses){
-          if(course['courseID']==key+" "){
-            this.dCourses.push(course);
-          }
-        }
+        this.dCourses.push(this.test[key]);
       }
     }else this.dCourses = this.courses;
   }
