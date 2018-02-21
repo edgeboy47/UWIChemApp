@@ -61,12 +61,12 @@ export class EditDegreePage implements OnDestroy{
 
   save(){
     let c = {};
-    for(let key in this.allcourses){
-      if(this.allcourses[key]['Chosen']){
-        c[this.allcourses[key]['courseID']] = true;
-        this.fb.database.ref('/Courses/'+this.allcourses[key]['courseID']+'/Degrees').child(this.degree).set(true);
+    for(let degree of this.allcourses){
+      if(degree['Chosen']){
+        c[degree['courseID']] = true;
+        this.fb.database.ref('/Courses/'+degree['courseID']+'/Degrees').child(this.degree).set(true);
       }else{
-        this.fb.object('/Courses/'+this.allcourses[key]['courseID']+'/Degrees/'+this.degree).remove();      
+        this.fb.object('/Courses/'+degree['courseID']+'/Degrees/'+this.degree).remove();      
       }
     }
 
