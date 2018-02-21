@@ -199,9 +199,11 @@ removeDepartmentEvent(D_notice){
   }// end removeNotice(notice)
 
   onNoticeSelected(notice){
-    let date = moment(notice.date).format('LLLL');
-
-    if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
+    //let date = moment(notice.date).format('LLLL');
+    let modal = this.modalCtrl.create('EventViewModalPage',{Notice:notice});
+    //,{Date:this.notice.date},{Title:this.notice.title},{Notes:this.notice.Notes},{Resource:this.notice.resource});     //Create modal for user to enter relevant info
+    modal.present();                                                                        //Present that modal
+   /* if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
                           // that the user is a teacher or an admin.
       let alert = this.alertCtrl.create({
         title: ''+notice.Type,
@@ -232,7 +234,7 @@ removeDepartmentEvent(D_notice){
         ]
       });
       alert.present();
-    }
+    }*/
   }//end onNoticeSelected(notice)
 
 
