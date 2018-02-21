@@ -106,16 +106,18 @@ export class CourseDetailsPage  implements OnDestroy{
 
   save(){
     let c = {};
-    for(let key in this.alldegrees){
-      if(this.alldegrees[key]['Chosen']){
-        c[this.alldegrees[key]['Name']] = true;
-        this.db.database.ref('/Degrees/'+this.alldegrees[key]['Name']+'/Courses').child(this.course.courseID).set(true);        
+    for(let degree of this.alldegrees){
+      if(degree['Chosen']){
+        c[degree['Name']] = true;
+        this.db.database.ref('/Degrees/'+degree['Name']+'/Courses').child(this.course.courseID).set(true);        
+      }else{
+        this.db.database.ref('/Degrees/'+degree['Name']+'/Courses').child(this.course.courseID).remove();                
       }
     }
     this.db.database.ref('/Courses/'+this.course.courseID+'/Degrees/').set(c);
     
     let toast = this.toasty.create({
-      message: "Degree Saved",
+      message: "Course Saved",
       duration: 1000,
       showCloseButton: true,
       position: 'bottom'
