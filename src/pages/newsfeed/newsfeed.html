@@ -35,6 +35,7 @@
 </ion-content> -->
 
 <ion-content class="card-background-page">
+   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
     <ion-card>
       <img width="100%" height="200" src="https://www.almanac.com/sites/default/files/styles/primary_image_in_article/public/image_nodes/fall-1072821_1920_0.jpg"/>
       <div class="card-title">Hackathon</div>
@@ -53,4 +54,17 @@
       </ion-row>
 
     </ion-card>
+
+    <ion-list>
+      <!-- <div  text-capitalize id="notice1" *ngIf="news.length==0"> -->
+        No News Added Yet..
+      <!-- </div> -->
+      <ion-item *ngFor="let news of News">
+        <ion-item no-lines (click)="navigateToDetails(news.newsID)" >{{news.newsID}}{{news.title}}</ion-item>
+        <!-- <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNewsEvent(news.newsID)"></ion-icon> -->
+      </ion-item>
+    </ion-list> 
+    <ion-item>
+
+    </ion-item>
 </ion-content>
