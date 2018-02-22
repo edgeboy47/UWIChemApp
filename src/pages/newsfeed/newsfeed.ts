@@ -16,7 +16,9 @@ import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFire
   templateUrl: 'newsfeed.html',
 })
 export class NewsfeedPage {
-
+  newsSubscription;
+  news=[];
+  News=[];
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
   userSub;
   typeSub;
@@ -38,9 +40,45 @@ export class NewsfeedPage {
         });
       }
     });
+    this.newsSubscription = this.db.object('/News').valueChanges().subscribe(data=>{      //Subscribe to the Courses object
+    this.news = [];
+    this.News = [];
+    if(data){                       //If there is data in the news object then store it in the global news list.
+      for(let key in data){
+        let d = data[key];
+        // d['newsID'] = key+" ";    //Insert newsID in the object stored for ease of use.
+        this.news.push(d);
+        
+      }
+      this.News = this.news; //
+      this.News.sort();
+    }
+  });
   }
 
   addNews(){
-    
+    // let modal = this.modalCtrl.create('AddCourseModalPage');      //Create a modal to allow admin to enter new course details
+    // modal.present();
+    // modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the course to the firebase.
+    //   if(data){
+    //     let obj = {
+    //       Available: data.Available,
+    //       Name: data.Name,                                        //Create an object with the data returned.
+    //       Credits: data.Credits,
+    //       Outline: data.Outline,
+    //     }
+
+    //     this.db.database.ref('/Courses/').child(data.courseID).set(obj);      //Add the new course to the database.
+
+    //     let newCourses = this.courses;
+    //     data.courseID = data.courseID+" ";                                    //Add space for GUI functioning.
+    //     newCourses.push(data);
+        
+    //     this.courses = [];
+    //     setTimeout(()=>{
+    //       this.courses = newCourses;                                        //Timeout set so that all course list is update in the interface.
+    //     });
+    //   }
+    // });
   }
 }
