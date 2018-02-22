@@ -21,7 +21,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ModalController ,NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 @IonicPage()
 @Component({
   selector: 'page-notices',
@@ -95,9 +95,10 @@ export class NoticesPage implements OnDestroy{
                     let courseNotices = events[key];
                     for(let notice in courseNotices){
                       let d = courseNotices[notice];
-                      let note = { Type: "", date:"",title:"", Notes:"", CourseID:"",id:""};
+                      let note = { Type: "", date:"",title:"", Notes:"", CourseID:"",id:"",resource:""};
                       note.Type=d['Type']; 
                       note.date=d['date'];
+                      note.resource=d['resource'];
                       note.title=d['title'];
                       note.Notes=d['Notes'];  
                       note.CourseID=key; 
@@ -119,13 +120,14 @@ export class NoticesPage implements OnDestroy{
         let departmentNotices= this.departmentNoticeSource;
         for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
           let d = data[key];
-          let ev = {startTime: new Date(), endTime: new Date(), Notes:"",title: "",type: "", id:""};
+          let ev = {resource:"",startTime: new Date(), endTime: new Date(), Notes:"",title: "",type: "", id:""};
           
           ev.endTime = new Date(d['date']);
           ev.startTime = ev.endTime;
           ev.title = d['title'];              //Set the corresponding fields of the newly created object
           ev.type = d['Type'];
           ev.Notes=d['Notes']; 
+          ev.resource= d['resource'];
           ev.id = key;
 
           departmentNotices.push(ev);                    //Add object to the temp events list.
@@ -158,6 +160,7 @@ addDepartmentEvent(){
         Notes: eventData.Notes, 
         Type: eventData.type,
         title: eventData.title,
+        resource:eventData.resource,
       });
 
       let departmentNotices = this.departmentNoticeSource;
@@ -200,7 +203,7 @@ removeDepartmentEvent(D_notice){
 
   onNoticeSelected(notice){
     //let date = moment(notice.date).format('LLLL');
-    let modal = this.modalCtrl.create('EventViewModalPage',{Notice:notice});
+    let modal = this.modalCtrl.create('NoticeViewModalPage',{noticeG:notice});
     //,{Date:this.notice.date},{Title:this.notice.title},{Notes:this.notice.Notes},{Resource:this.notice.resource});     //Create modal for user to enter relevant info
     modal.present();                                                                        //Present that modal
    /* if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
@@ -239,9 +242,10 @@ removeDepartmentEvent(D_notice){
 
 
   onD_NoticeSelected(departmentNotice){
-    let date = moment(departmentNotice.date).format('LLLL');
-
-    if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
+    //let date = moment(departmentNotice.date).format('LLLL');
+    let modal = this.modalCtrl.create('NoticeViewModalPage',{noticeG:departmentNotice});
+    modal.present();                                                                        
+    /*if(this.showButtons){ // This alert will contain the option to remove an avent when selection since showButtons is true and that indicates 
                           // that the user is a teacher or an admin.
       let alert = this.alertCtrl.create({
         title: ''+departmentNotice.type +'|' +departmentNotice.title ,
@@ -272,6 +276,6 @@ removeDepartmentEvent(D_notice){
         ]
       });
       alert.present();
-    }
+    }*/
   }// end onD_NoticeSelected(departmentNotices)
 }// end export class

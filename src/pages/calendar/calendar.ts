@@ -220,7 +220,10 @@ export class CalendarPage implements OnDestroy{
     from the list of events in the calendar.
   */
   onEventSelected(event){// may have to duplicate this for a department notice
-    let end = moment(event.endTime).format('LLLL');
+    let modal = this.modalCtrl.create('NoticeViewModalPage',{noticeG:event});
+    modal.present(); 
+    
+    /*let end = moment(event.endTime).format('LLLL');
 
     if(this.showButtons){                               //If the user is a teacher or admin then allow them to remove courses.
       let alert = this.alertCtrl.create({
@@ -252,6 +255,6 @@ export class CalendarPage implements OnDestroy{
         ]
       });
       alert.present();                        //Present alert
-    }
+    }*/
   }
 }
