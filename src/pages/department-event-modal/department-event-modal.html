@@ -28,6 +28,11 @@
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"></ion-datetime>      
     </ion-item>
 
+    <ion-item>
+      <ion-label color="primary" stacked>Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY" [(ngModel)]="event.endTime"></ion-datetime>      
+    </ion-item>
+
     
     
     <ion-list radio-group [(ngModel)]="event.type">
