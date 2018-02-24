@@ -63,7 +63,7 @@
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item *ngFor = "let degree of alldegrees">
+          <ion-item *ngFor = "let degree of alldegrees" text-wrap>
             <ion-label>{{degree.Name}}</ion-label>
             <ion-checkbox [(ngModel)]="degree.Chosen"></ion-checkbox>
           </ion-item>

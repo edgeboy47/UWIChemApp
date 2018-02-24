@@ -65,7 +65,7 @@ export class CalendarPage implements OnDestroy{
     this.courseID = this.navParams.get('courseID');       //Get selected courseID from the navParams
     this.eventSub = this.db.object('/Events/'+this.courseID).valueChanges().subscribe(data=>{           //Get all the events of the current course.
       if(data){                                 //If the course has events then continue.
-        let events= this.eventSource;
+        let events= [];
         for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
           let d = data[key];
           let ev = {startTime: new Date(), endTime: new Date(), title: "", Type: "", resource: "", id:"",CourseID:"", Notes:"",date: ""};

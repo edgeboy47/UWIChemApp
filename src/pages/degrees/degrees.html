@@ -24,7 +24,7 @@
     <div  text-capitalize id="notice1" *ngIf="degrees.length==0">
       No Degrees Added Yet..
     </div>
-    <ion-item *ngFor="let degree of showdegrees">
+    <ion-item *ngFor="let degree of showdegrees" text-wrap>
       <ion-item no-lines (click)="editDegree(degree.Name)" >{{degree.Name}}</ion-item>
       <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeDegree(degree.Name)"></ion-icon>
     </ion-item>
