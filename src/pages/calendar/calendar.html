@@ -39,8 +39,9 @@
                 {{event.endTime|date: 'HH:mm'}} 
               </span>
               <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>-->
-              <span class="event-detail">Title: {{event.title}}</span>
-              <span class="event-detail">Date: {{event.date}}</span>
+              <span class="event-detail">{{event.title}} |</span>
+              <span class="event-detail">{{event.Type}}</span>
+              <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeEvent(event)"></ion-icon>
               <!--<span class="event-detail">&nbsp;&nbsp;&nbsp; Resource: <a href= {{event.resource}} target="_blank">{{event.resource}}</a></span>-->
           </ion-item>
           <ion-item *ngIf="selectedDate?.events.length==0">

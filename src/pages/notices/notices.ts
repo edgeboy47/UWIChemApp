@@ -21,7 +21,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ModalController ,NavController, NavParams, AlertController } from 'ionic-angular';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase } from 'angularfire2/database';
-//import * as moment from 'moment';
+import * as moment from 'moment';
 @IonicPage()
 @Component({
   selector: 'page-notices',
@@ -96,8 +96,8 @@ export class NoticesPage implements OnDestroy{
                     for(let notice in courseNotices){
                       let d = courseNotices[notice];
                       let note = { Type: "", date:"",title:"", Notes:"", CourseID:"",id:"",resource:""};
-                      note.Type=d['Type']; 
-                      note.date=d['date'];
+                      note.Type=d['Type'];
+                      note.date=moment(new Date(d['date'])).format('LLLL');
                       note.resource=d['resource'];
                       note.title=d['title'];
                       note.Notes=d['Notes'];  
@@ -120,12 +120,11 @@ export class NoticesPage implements OnDestroy{
         let departmentNotices= this.departmentNoticeSource;
         for(let key in data){                   //For each event retrieved, create an object to store the relevant info and add it to the global events list.
           let d = data[key];
-          let ev = {resource:"",startTime: new Date(), endTime: new Date(), Notes:"",title: "",type: "", id:""};
+          let ev = {resource:"",date:"", Notes:"",title: "",Type: "", id:""};
           
-          ev.endTime = new Date(d['date']);
-          ev.startTime = ev.endTime;
+          ev.date=moment(new Date(d['date'])).format('LLLL');
           ev.title = d['title'];              //Set the corresponding fields of the newly created object
-          ev.type = d['Type'];
+          ev.Type = d['Type'];
           ev.Notes=d['Notes']; 
           ev.resource= d['resource'];
           ev.id = key;
@@ -145,47 +144,47 @@ IonViewDidLoad() contains the instructions used to read data from the database u
 */
   
 
-addDepartmentEvent(){
-  let modal = this.modalCtrl.create('DepartmentEventModalPage',{});     //Create modal for user to enter relevant info
-  modal.present();                                                                        //Present that modal
-  modal.onDidDismiss(data=>{
-    if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
-      let eventData = data;
+  addDepartmentEvent(){
+    let modal = this.modalCtrl.create('DepartmentEventModalPage',{});     //Create modal for user to enter relevant info
+    modal.present();                                                                        //Present that modal
+    modal.onDidDismiss(data=>{
+      if(data){                             //If data was retrieved from the modal then continue to add the event to the firebase
+        let eventData = data;
 
-      eventData.startTime = new Date(data.startTime);
-      eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
+        eventData.startTime = new Date(data.startTime);
+        eventData.endTime = new Date(data.endTime);           //Convert dates strings to actual dates
 
-      this.db.list('/DepartmentEvents/').push({    //tooke out  +this.courseID from path     //Push retrieved event to the database.
-        date: eventData.endTime.toISOString(),
-        Notes: eventData.Notes, 
-        Type: eventData.type,
-        title: eventData.title,
-        resource:eventData.resource,
-      });
+        this.db.list('/DepartmentEvents/').push({    //tooke out  +this.courseID from path     //Push retrieved event to the database.
+          date: eventData.endTime.toISOString(),
+          Notes: eventData.Notes, 
+          Type: eventData.type,
+          title: eventData.title,
+          resource:"",
+        });
 
-      let departmentNotices = this.departmentNoticeSource;
-      departmentNotices.push(eventData);
-      
-      this.departmentNoticeSource = [];
-      setTimeout(()=>{                            //Set timeout to update user interface.
-        this.departmentNoticeSource = departmentNotices;                //Set global eventsSource list for the calendar element.
-      });
-    }
-  })
-} // end addDepartmentEvent()
+        let departmentNotices = this.departmentNoticeSource;
+        departmentNotices.push(eventData);
+        
+        this.departmentNoticeSource = [];
+        setTimeout(()=>{                            //Set timeout to update user interface.
+          this.departmentNoticeSource = departmentNotices;                //Set global eventsSource list for the calendar element.
+        });
+      }
+    })
+  } // end addDepartmentEvent()
 
-removeDepartmentEvent(D_notice){
-  let departmentNotices = this.departmentNoticeSource;
-  departmentNotices.splice(departmentNotices.indexOf(D_notice),1);   //get event that is selected.
-  
-  this.db.object('/DepartmentEvents/'+D_notice.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
+  removeDepartmentEvent(D_notice){
+    let departmentNotices = this.departmentNoticeSource;
+    departmentNotices.splice(departmentNotices.indexOf(D_notice),1);   //get event that is selected.
+    
+    this.db.object('/DepartmentEvents/'+D_notice.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
 
-  this.departmentNoticeSource  = [];
-  setTimeout(()=>{
-    this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
-  });
-  
-}// end removeDepartmentEvent(event)
+    this.departmentNoticeSource  = [];
+    setTimeout(()=>{
+      this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
+    });
+    
+  }// end removeDepartmentEvent(event)
 
 
 
