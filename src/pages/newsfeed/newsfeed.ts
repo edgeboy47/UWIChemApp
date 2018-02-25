@@ -53,5 +53,26 @@ export class NewsfeedPage {
   addNews(){
     let modal = this.modalCtrl.create('AddNewsModalPage',{});     //Create modal for user to enter relevant info
     modal.present();                                                                        //Present that modal
+    let cost = "";
+    modal.onDidDismiss(data=>{
+      if(data.cost==="")
+        cost = "free";
+      else 
+        cost = data.cost;
+
+      if(data){
+        let obj = {
+          title:data.title,
+          description:data.description,
+          cost:cost,
+          type:data.type,
+          location:data.location,
+          date:data.date,
+        }
+
+        this.db.database.ref('/News/').push(obj);
+        
+      }
+    });
   }
 }
