@@ -16,9 +16,9 @@ import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFire
   templateUrl: 'newsfeed.html',
 })
 export class NewsfeedPage {
-  newsSubscription;
   news=[];
-  News=[];
+  newsSub;
+
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
   userSub;
   typeSub;
@@ -41,20 +41,13 @@ export class NewsfeedPage {
         });
       }
     });
-    this.newsSubscription = this.db.object('/News').valueChanges().subscribe(data=>{      //Subscribe to the Courses object
-    this.news = [];
-    this.News = [];
-    if(data){                       //If there is data in the news object then store it in the global news list.
-      for(let key in data){
-        let d = data[key];
-        // d['newsID'] = key+" ";    //Insert newsID in the object stored for ease of use.
-        this.news.push(d);
-        
+    this.newsSub = this.db.list('/News/').valueChanges().subscribe(data=>{
+      if (data){
+        this.news=data;
+        this.news.sort();
       }
-      this.News = this.news; //
-      this.News.sort();
-    }
-  });
+        
+    });
   }
 
   addNews(){

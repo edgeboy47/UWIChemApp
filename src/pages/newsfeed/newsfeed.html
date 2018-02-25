@@ -56,15 +56,14 @@
     </ion-card>
 
     <ion-list>
-      <!-- <div  text-capitalize id="notice1" *ngIf="news.length==0"> -->
+      <div  text-capitalize id="notice1" *ngIf="news.length==0">
         No News Added Yet..
-      <!-- </div> -->
-      <ion-item *ngFor="let news of News">
-        <ion-item no-lines (click)="navigateToDetails(news.newsID)" >{{news.newsID}}{{news.title}}</ion-item>
-        <!-- <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNewsEvent(news.newsID)"></ion-icon> -->
+      </div>
+      <ion-item *ngFor = "let n of news">
+          <div>{{n.title}}</div>
+          <div>{{n.story}}</div>
       </ion-item>
+        <!-- <ion-item no-lines (click)="navigateToDetails(news.newsID)" >{{news.newsID}}{{news.title}}</ion-item> -->
+        <!-- <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNewsEvent(news.newsID)"></ion-icon> -->
     </ion-list> 
-    <ion-item>
-
-    </ion-item>
 </ion-content>
