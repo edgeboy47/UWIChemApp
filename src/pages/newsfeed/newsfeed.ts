@@ -16,9 +16,9 @@ import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFire
   templateUrl: 'newsfeed.html',
 })
 export class NewsfeedPage {
-  newsSubscription;
   news=[];
-  News=[];
+  newsSub;
+
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
   userSub;
   typeSub;
@@ -40,35 +40,26 @@ export class NewsfeedPage {
         });
       }
     });
-    this.newsSubscription = this.db.object('/News').valueChanges().subscribe(data=>{      //Subscribe to the Courses object
-    this.news = [];
-    this.News = [];
-    if(data){                       //If there is data in the news object then store it in the global news list.
-      for(let key in data){
-        let d = data[key];
-        // d['newsID'] = key+" ";    //Insert newsID in the object stored for ease of use.
-        this.news.push(d);
-        
+    this.newsSub = this.db.list('/News/').valueChanges().subscribe(data=>{
+      if (data){
+        this.news=data;
+        this.news.sort();
       }
-      this.News = this.news; //
-      this.News.sort();
-    }
-  });
+        
+    });
   }
 
   addNews(){
-    // let modal = this.modalCtrl.create('AddCourseModalPage');      //Create a modal to allow admin to enter new course details
+    // let modal = this.modalCtrl.create('AddNewsModalPage');      //Create a modal to allow admin to enter new course details
     // modal.present();
-    // modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the course to the firebase.
+    // modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the news to the firebase.
     //   if(data){
     //     let obj = {
-    //       Available: data.Available,
-    //       Name: data.Name,                                        //Create an object with the data returned.
-    //       Credits: data.Credits,
-    //       Outline: data.Outline,
+    //       title: data.Title,
+    //       story: data.Story,                                        //Create an object with the data returned.
     //     }
 
-    //     this.db.database.ref('/Courses/').child(data.courseID).set(obj);      //Add the new course to the database.
+    //     this.db.database.ref('/News/').child(data).set(obj);      //Add the new course to the database.
 
     //     let newCourses = this.courses;
     //     data.courseID = data.courseID+" ";                                    //Add space for GUI functioning.
