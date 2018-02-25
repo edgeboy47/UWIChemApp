@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 
@@ -26,6 +26,7 @@ export class NewsfeedPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public db: AngularFireDatabase,
+              public modalCtrl: ModalController,
               public auth: AngularFireAuth        //Various constructor declarations
             ) {
   }
@@ -57,28 +58,7 @@ export class NewsfeedPage {
   }
 
   addNews(){
-    // let modal = this.modalCtrl.create('AddCourseModalPage');      //Create a modal to allow admin to enter new course details
-    // modal.present();
-    // modal.onDidDismiss(data=>{                                    //On dismissal of that modal page get the data and if it exists add the course to the firebase.
-    //   if(data){
-    //     let obj = {
-    //       Available: data.Available,
-    //       Name: data.Name,                                        //Create an object with the data returned.
-    //       Credits: data.Credits,
-    //       Outline: data.Outline,
-    //     }
-
-    //     this.db.database.ref('/Courses/').child(data.courseID).set(obj);      //Add the new course to the database.
-
-    //     let newCourses = this.courses;
-    //     data.courseID = data.courseID+" ";                                    //Add space for GUI functioning.
-    //     newCourses.push(data);
-        
-    //     this.courses = [];
-    //     setTimeout(()=>{
-    //       this.courses = newCourses;                                        //Timeout set so that all course list is update in the interface.
-    //     });
-    //   }
-    // });
+    let modal = this.modalCtrl.create('AddNewsModalPage',{});     //Create modal for user to enter relevant info
+    modal.present();                                                                        //Present that modal
   }
 }

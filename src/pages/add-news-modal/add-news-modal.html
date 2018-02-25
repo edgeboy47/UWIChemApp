@@ -1,0 +1,86 @@
+<!--
+  Generated template for the AddNewsModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add News Item</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="news">  
+    <ion-item>
+      <ion-label color="primary" stacked>Title</ion-label>
+      <ion-input type="text" placeholder="Enter Title" [(ngModel)]="news.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Location</ion-label>
+      <ion-input type="text" placeholder="Enter location" [(ngModel)]="news.location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Cost</ion-label>
+      <ion-input type="text" placeholder="Enter Cost" [(ngModel)]="news.cost"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Description</ion-label>
+      <ion-textarea type="text" placeholder="Enter Description" [(ngModel)]="news.description"></ion-textarea>
+    </ion-item>
+
+    <ion-card>
+      <ion-card-header>
+        Type
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list radio-group [(ngModel)]="news.type">
+          <ion-item>
+            <ion-label>Event</ion-label>
+            <ion-radio value="Event"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label >Opportunity</ion-label>
+            <ion-radio value="Opportunity"></ion-radio>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label >Achievement</ion-label>
+            <ion-radio value="Achievement"></ion-radio>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label >Story</ion-label>
+            <ion-radio value="Story"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="news.date"></ion-datetime>      
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY" [(ngModel)]="news.date"></ion-datetime>      
+    </ion-item>
+  </ion-list>
+  
+  <button ion-button full icon-left (click)="save()">
+    <ion-icon name="checkmark"></ion-icon>Add Course
+  </button>
+
+  <button ion-button full icon-left (click)="goBack()">
+    <ion-icon name="close"></ion-icon>Back
+  </button>
+
+</ion-content>
