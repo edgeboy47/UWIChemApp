@@ -44,7 +44,7 @@ export class NewsfeedPage {
     this.newsSub = this.db.list('/News/').valueChanges().subscribe(data=>{
       if (data){
         this.news=data;
-        this.news.sort();
+        this.news.sort ();
       }
         
     });
@@ -75,4 +75,11 @@ export class NewsfeedPage {
       }
     });
   }
+
+  removeNews(news_Event){
+    this.news.splice(this.news.indexOf(news_Event),1);
+    this.db.object('/News/'+news_Event.title).remove(); // only using title until id gets sorted out.
+
+    
+  }// end removeNotice(notice)
 }
