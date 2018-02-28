@@ -82,8 +82,7 @@ export class NewsfeedPage {
 
   removeNews(news_Event){
     this.news.splice(this.news.indexOf(news_Event),1);
-    this.db.object('/News/'+news_Event.title).remove(); // only using title until id gets sorted out.
+    this.db.object('/News/'+news_Event.id).remove(); // only using title until id gets sorted out.
 
-    
-  }// end removeNotice(notice)
+  }// end removeNews()
 }
