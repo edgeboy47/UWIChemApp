@@ -41,12 +41,16 @@ export class NewsfeedPage {
         });
       }
     });
-    this.newsSub = this.db.list('/News/').valueChanges().subscribe(data=>{
+    this.newsSub = this.db.object('/News/').valueChanges().subscribe(data=>{
       if (data){
-        this.news=data;
-        this.news.sort ();
+        this.news=[];
+        for(let key in data){
+          let d = data[key];
+          d['id'] = key;
+          console.log(d['id']);
+          this.news.push(d); 
+        }
       }
-        
     });
   }
 
