@@ -59,12 +59,13 @@ export class NewsfeedPage {
     modal.present();                                                                        //Present that modal
     let cost = "";
     modal.onDidDismiss(data=>{
-      if(data.cost==="")
-        cost = "free";
-      else 
-        cost = data.cost;
-
       if(data){
+
+        if(!data.cost || data.cost==="")
+          cost = "free";
+        else 
+          cost = data.cost;
+
         let obj = {
           title:data.title,
           description:data.description,
