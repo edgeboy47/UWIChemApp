@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
+import * as moment from 'moment';
 
 /**
  * Generated class for the NewsfeedPage page.
@@ -47,6 +48,7 @@ export class NewsfeedPage {
         for(let key in data){
           let d = data[key];
           d['id'] = key;
+          d['displayDate'] = moment(new Date(d['date'])).format('DD/MM/YY');
           console.log(d['id']);
           this.news.push(d); 
         }

@@ -20,41 +20,29 @@
 
 <ion-content class="card-background-page">
   <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
-  <ion-card> 
+  <ion-card *ngFor = "let n of news"> 
     <img width="100%" height="200" src="https://images-eu.ssl-images-amazon.com/images/I/41tRm4ogJpL._SL500_AC_SS350_.jpg"/>
-    <div class="card-title">Hackathon</div>
-    <div class="card-subtitle">New Event</div>
+    <div class="card-title">{{n.title}}</div>
+    <div class="card-subtitle">New {{n.type}}</div>
     
     <ion-row>
       <ion-col center text-center *ngIf="!showButtons">
-        <p>Free</p>
+        <p>{{n.cost}}</p>
       </ion-col>
 
-      <ion-col center text-center *ngIf="showButtons" (click)="removeCourse(course.courseID)">
+      <ion-col center text-center *ngIf="showButtons" (click)="removeNews(n)">
         Remove
         <ion-icon name="close" item-end></ion-icon>      
       </ion-col>
 
 
       <ion-col center text-center>
-        17/02/2018
+        {{n.displayDate}}
       </ion-col>
       <ion-col center text-center>
-        <p>FST CSL1</p>
+        <p>{{n.location}}</p>
       </ion-col>
     </ion-row>
 
   </ion-card>
-
-    <ion-list>
-      <div  text-capitalize id="notice1" *ngIf="news.length==0">
-        No News Added Yet..
-      </div>
-      <ion-item *ngFor = "let n of news">
-          <div>{{n.title}}</div>
-          <!-- <div>{{n.story}}</div> -->
-      </ion-item>
-        <!-- <ion-item no-lines (click)="navigateToDetails(news.newsID)" >{{news.newsID}}{{news.title}}</ion-item> -->
-        <!-- <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNewsEvent(news.newsID)"></ion-icon> -->
-    </ion-list> 
 </ion-content>
