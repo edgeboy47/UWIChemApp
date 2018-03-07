@@ -4,6 +4,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { PlatformCheckProvider } from '../../providers/platform-check/platform-check';
+import { DatabaseProvider } from '../../providers/database/database';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
@@ -24,22 +26,21 @@ export class LoginPage {
               private db: AngularFireDatabase, 
               private fbAuth: AngularFireAuth, 
               private toasty: ToastController,
-              private pltCheck: PlatformCheckProvider) {
+              private pltCheck: PlatformCheckProvider,
+              private dbProv: DatabaseProvider,
+              private authProv: AuthProvider) {
   }
 
   ionViewDidLoad() {
     // If a user is already logged in and verified, skip the login page
-    this.fbAuth.authState.subscribe(data=>{
-      if(data){
-        this.db.object(`Users/${data.uid}/verified`).valueChanges().take(1).subscribe(val => {
-          if(val === 'True'){
-            this.skip = true;
-            this.navCtrl.setRoot('UsertabsPage');
-          }
-        })
-      }
-    })
-
+    if(this.authProv.isLoggedIn()){
+      this.dbProv.readObject(`/Users/${this.authProv.getUID()}/verified`).subscribe(val =>{
+        if(val === 'True'){
+          this.skip = true;
+          this.navCtrl.setRoot('UsertabsPage');
+        }
+      })
+    }
   }
 
   // The user login function

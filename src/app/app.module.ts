@@ -16,7 +16,9 @@ import {NgCalendarModule} from 'ionic2-calendar';                 //Module for c
 import { FCM } from '@ionic-native/fcm';                                              //Firebase Cloud messaging provider used to facilitate notifications
 import { LocalNotifications } from '@ionic-native/local-notifications';               //Local Notifications provider to allow scheduling of notifications for users.
 import { ToastService } from '../providers/toast-service/toast-service';  
-import { PlatformCheckProvider } from '../providers/platform-check/platform-check';   //PlatformCheck provider imported to check the current platform that the user is on.
+import { PlatformCheckProvider } from '../providers/platform-check/platform-check';
+import { DatabaseProvider } from '../providers/database/database';
+import { AuthProvider } from '../providers/auth/auth';   //PlatformCheck provider imported to check the current platform that the user is on.
 
 export const fbConfig = {
   apiKey: "AIzaSyDjGvGArBLdrMu2-KPKuUBtonz4QnNw-xM",
@@ -51,6 +53,8 @@ export const fbConfig = {
     FCM,
     LocalNotifications,
     PlatformCheckProvider,
+    DatabaseProvider,
+    AuthProvider,
   ]
 })
 export class AppModule {}
