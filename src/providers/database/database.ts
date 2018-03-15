@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthProvider } from '../auth/auth';
-import { Observable } from 'rxjs/observable'
+import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class DatabaseProvider {
