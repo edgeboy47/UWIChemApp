@@ -88,4 +88,8 @@ export class NewsfeedPage {
     this.db.object('/News/'+news_Event.id).remove(); // only using title until id gets sorted out.
 
   }// end removeNews()
+
+  navigateToDetails(id:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument
+    this.navCtrl.push('NewsDetailsPage',{id});
+  }
 }
