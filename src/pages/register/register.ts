@@ -4,7 +4,6 @@ import { AngularFireAuth} from 'angularfire2/auth'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { FCM } from '@ionic-native/fcm';
 import { PlatformCheckProvider } from '../../providers/platform-check/platform-check';
-import { DatabaseProvider } from '../../providers/database/database';
 
 
 @IonicPage()
@@ -24,8 +23,7 @@ export class RegisterPage {
               private fbAuth: AngularFireAuth, 
               private db: AngularFireDatabase, 
               private toasty: ToastController,
-              private pltCheck: PlatformCheckProvider,
-              private dbProv: DatabaseProvider) {
+              private pltCheck: PlatformCheckProvider) {
   }
 
   ionViewDidLoad() {
