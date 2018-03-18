@@ -85,6 +85,7 @@ export class NewsfeedPage {
           type:data.type,
           location:data.location,
           date:data.date,
+          image:"https://firebasestorage.googleapis.com/v0/b/chemappuwi.appspot.com/o/NewsImages%2Fdo_not_remove.jpg?alt=media&token=e93d929a-21e3-40c3-909e-aaea84c0b267",
         }
 
         this.db.database.ref('/News/').push(obj);

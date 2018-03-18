@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController, T
 })
 export class AddNewsModalPage {
 
-  news = {title:"",description:"",cost:"",type:"",location:"",date:""};
+  news = {title:"",description:"",cost:"",type:"",location:"",date: new Date().toISOString()};
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
