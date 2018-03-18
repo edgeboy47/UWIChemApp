@@ -6,6 +6,9 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import {File} from '@ionic-native/file';
+import {FileChooser} from '@ionic-native/file-chooser';
+import {FilePath} from '@ionic-native/file-path';
 
 //Import AngularFire related modules
 import {AngularFireAuthModule} from 'angularfire2/auth';          //Module for authentication
@@ -25,7 +28,7 @@ export const fbConfig = {
   authDomain: "chemappuwi.firebaseapp.com",
   databaseURL: "https://chemappuwi.firebaseio.com",                 //Firebase config object
   projectId: "chemappuwi",
-  storageBucket: "chemappuwi.appspot.com",
+  storageBucket: "gs://chemappuwi.appspot.com/",
   messagingSenderId: "977963203864"
 };
 
@@ -55,6 +58,9 @@ export const fbConfig = {
     PlatformCheckProvider,
     DatabaseProvider,
     AuthProvider,
+    File,
+    FileChooser,
+    FilePath
   ]
 })
 export class AppModule {}

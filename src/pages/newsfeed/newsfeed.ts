@@ -4,6 +4,13 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 import * as moment from 'moment';
 
+import {File} from '@ionic-native/file';
+import {FileChooser} from '@ionic-native/file-chooser';
+import {FilePath} from '@ionic-native/file-path';
+
+import * as firebase2 from 'firebase';
+
+
 /**
  * Generated class for the NewsfeedPage page.
  *
@@ -28,7 +35,10 @@ export class NewsfeedPage {
               public navParams: NavParams,
               public db: AngularFireDatabase,
               public modalCtrl: ModalController,
-              public auth: AngularFireAuth        //Various constructor declarations
+              public auth: AngularFireAuth,        //Various constructor declarations
+              public fileChooser:FileChooser,
+              public file:File,
+              public filePath:FilePath,
             ) {
   }
 
@@ -91,5 +101,46 @@ export class NewsfeedPage {
 
   navigateToDetails(id:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument
     this.navCtrl.push('NewsDetailsPage',{id});
+  }
+
+  addImage(id:string){
+    this.fileChooser.open().then(uri=>{
+      //this.file.resolveLocalFilesystemUrl(uri).then(newUrl=>{
+
+      this.filePath.resolveNativePath(uri).then(newUrl=>{
+        //let dirPath = newUrl.nativeURL;
+        let dirPath = newUrl;
+        let segs = dirPath.split('/');
+        let name = segs.pop();
+        dirPath = segs.join('/');
+
+        this.file.readAsArrayBuffer(dirPath,name).then(async (buffer)=>{
+          await this.upload(id,buffer,name);
+        }).catch(error=>{
+          alert(JSON.stringify(error)+"madness");
+        });
+
+
+      }).catch(error=>{
+        alert(JSON.stringify(error)+"hellicopter");
+      })
+    }).catch(error=>{
+      alert(JSON.stringify(error)+"herp");
+    })
+  }
+
+  async upload(id,buffer,name){
+    let blob = new Blob([buffer],{type: "image/jpeg" });   
+
+    let storage = firebase2.storage();   
+    
+    storage.ref('NewsImages/'+id).put(blob).then(d=>{
+      storage.ref('NewsImages/'+id).getDownloadURL().then(url=>{
+        this.db.database.ref('/News/'+id).child("image").set(url);
+      })
+      alert("Done");
+    }).catch(error=>{
+      alert(JSON.stringify(error)+"derp");
+    })
   }
 }

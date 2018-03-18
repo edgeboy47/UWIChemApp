@@ -86,4 +86,6 @@
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
     <allow-navigation href="http://192.168.1.7:8100" />
     <engine name="android" spec="~7.0.0" />
+    <allow-navigation href="http://192.168.100.70:8100" />
+    <plugin name="cordova-plugin-filepath" spec="^1.2.0" />
 </widget>
