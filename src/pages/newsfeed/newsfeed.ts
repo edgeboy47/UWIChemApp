@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
@@ -23,13 +23,17 @@ import * as firebase2 from 'firebase';
   selector: 'page-newsfeed',
   templateUrl: 'newsfeed.html',
 })
-export class NewsfeedPage {
-  news=[];
+export class NewsfeedPage implements OnDestroy{
+  upcomingNews=[];
+  pastNews = [];
   newsSub;
+
 
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
   userSub;
   typeSub;
+
+  newsType = 'upcoming';
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -40,6 +44,15 @@ export class NewsfeedPage {
               public file:File,
               public filePath:FilePath,
             ) {
+  }
+
+  ngOnDestroy(){
+    if(this.userSub)
+      this.userSub.unsubscribe();
+    if(this.newsSub)
+      this.newsSub.unsubscribe();
+    if(this.typeSub)
+      this.typeSub.unsubscribe();
   }
 
   ionViewDidLoad() {
@@ -54,14 +67,33 @@ export class NewsfeedPage {
     });
     this.newsSub = this.db.object('/News/').valueChanges().subscribe(data=>{
       if (data){
-        this.news=[];
+        this.upcomingNews=[];
+        this.pastNews = [];
+
         for(let key in data){
           let d = data[key];
           d['id'] = key;
-          d['displayDate'] = moment(new Date(d['date'])).format('DD/MM/YY');
-          console.log(d['id']);
-          this.news.push(d); 
+
+          let tempDate = new Date(d['date'])
+          d['displayDate'] = moment(tempDate).format('DD/MM/YY');
+
+          if(tempDate>=new Date())
+            this.upcomingNews.push(d); 
+          else
+            this.pastNews.push(d);
         }
+
+        this.pastNews.sort(function(a, b) {
+          a = new Date(a.date);
+          b = new Date(b.date);
+          return a>b ? -1 : a<b ? 1 : 0;
+        });
+
+        this.upcomingNews.sort(function(a, b) {
+          a = new Date(a.date);
+          b = new Date(b.date);
+          return a<b ? -1 : a>b ? 1 : 0;
+        });
       }
     });
   }
@@ -95,9 +127,7 @@ export class NewsfeedPage {
   }
 
   removeNews(news_Event){
-    this.news.splice(this.news.indexOf(news_Event),1);
     this.db.object('/News/'+news_Event.id).remove(); // only using title until id gets sorted out.
-
   }// end removeNews()
 
   navigateToDetails(id:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument
