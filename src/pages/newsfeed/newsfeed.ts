@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 import * as moment from 'moment';
@@ -9,7 +9,6 @@ import {FileChooser} from '@ionic-native/file-chooser';
 import {FilePath} from '@ionic-native/file-path';
 
 import * as firebase2 from 'firebase';
-
 
 /**
  * Generated class for the NewsfeedPage page.
@@ -43,6 +42,7 @@ export class NewsfeedPage implements OnDestroy{
               public fileChooser:FileChooser,
               public file:File,
               public filePath:FilePath,
+              public loadingCtrl:LoadingController
             ) {
   }
 
@@ -164,13 +164,21 @@ export class NewsfeedPage implements OnDestroy{
     let blob = new Blob([buffer],{type: "image/jpeg" });   
 
     let storage = firebase2.storage();   
+
+    let loading = this.loadingCtrl.create({
+      content: 'Uploading...'
+    });
+  
+    loading.present();
     
     storage.ref('NewsImages/'+id).put(blob).then(d=>{
       storage.ref('NewsImages/'+id).getDownloadURL().then(url=>{
         this.db.database.ref('/News/'+id).child("image").set(url);
       })
+      loading.dismiss();
       alert("Done");
     }).catch(error=>{
+      loading.dismiss();            
       alert(JSON.stringify(error)+"derp");
     })
   }

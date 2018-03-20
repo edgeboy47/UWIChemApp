@@ -42,7 +42,7 @@ export const fbConfig = {
     IonicModule.forRoot(MyApp),                                 //MyApp class set as root of app
     AngularFireModule.initializeApp(fbConfig),                  //Firebase module initialized with config object specified
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
