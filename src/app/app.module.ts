@@ -23,6 +23,9 @@ import { PlatformCheckProvider } from '../providers/platform-check/platform-chec
 import { DatabaseProvider } from '../providers/database/database';
 import { AuthProvider } from '../providers/auth/auth';   //PlatformCheck provider imported to check the current platform that the user is on.
 
+import { ImageResizer } from '@ionic-native/image-resizer';
+
+
 export const fbConfig = {
   apiKey: "AIzaSyDjGvGArBLdrMu2-KPKuUBtonz4QnNw-xM",
   authDomain: "chemappuwi.firebaseapp.com",
@@ -60,7 +63,8 @@ export const fbConfig = {
     AuthProvider,
     File,
     FileChooser,
-    FilePath
+    FilePath,
+    ImageResizer,
   ]
 })
 export class AppModule {}

@@ -88,4 +88,6 @@
     <allow-navigation href="http://192.168.100.70:8100" />
     <plugin name="cordova-plugin-filepath" spec="^1.2.0" />
     <engine name="android" spec="~7.0.0" />
+    <plugin name="info.protonet.imageresizer" spec="^0.1.1" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.2" />
 </widget>

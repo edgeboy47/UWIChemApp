@@ -10,6 +10,9 @@ import {FilePath} from '@ionic-native/file-path';
 
 import * as firebase2 from 'firebase';
 
+
+import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
+
 /**
  * Generated class for the NewsfeedPage page.
  *
@@ -42,7 +45,8 @@ export class NewsfeedPage implements OnDestroy{
               public fileChooser:FileChooser,
               public file:File,
               public filePath:FilePath,
-              public loadingCtrl:LoadingController
+              public loadingCtrl:LoadingController,
+              public imageResizer: ImageResizer,
             ) {
   }
 
@@ -140,16 +144,48 @@ export class NewsfeedPage implements OnDestroy{
 
       this.filePath.resolveNativePath(uri).then(newUrl=>{
         //let dirPath = newUrl.nativeURL;
-        let dirPath = newUrl;
-        let segs = dirPath.split('/');
-        let name = segs.pop();
-        dirPath = segs.join('/');
+        // let dirPath = newUrl;
+        // let segs = dirPath.split('/');
+        // let name = segs.pop();
+        // dirPath = segs.join('/');
 
-        this.file.readAsArrayBuffer(dirPath,name).then(async (buffer)=>{
-          await this.upload(id,buffer,name);
-        }).catch(error=>{
-          alert(JSON.stringify(error)+"madness");
-        });
+
+        /*******************************************************************************************************************************/
+
+        let options = {
+          uri: newUrl,
+          folderName: "Temp",
+          quality: 85,
+          width: 1280,
+          height: 800,
+        } as ImageResizerOptions;
+
+        this.imageResizer.resize(options).then(async resizedURI=>{
+          let dirPath = resizedURI;
+          let segs = dirPath.split('/');
+          let name = segs.pop();
+          dirPath = segs.join('/');
+          
+          this.file.readAsArrayBuffer(dirPath,name).then(async buffer=>{
+            await this.upload(id,buffer,name);
+          }).catch(error=>{
+            alert(JSON.stringify(error)+"sadness");
+          })
+          
+        }).catch(
+          e=>alert(JSON.stringify(e)+"dasheen")
+        )
+
+
+
+        /*****************************************************************************************************************************/
+
+
+        // this.file.readAsArrayBuffer(dirPath,name).then(async (buffer)=>{
+        //    await this.upload(id,buffer,name);                   
+        // }).catch(error=>{
+        //   alert(JSON.stringify(error)+"madness");
+        // });
 
 
       }).catch(error=>{
