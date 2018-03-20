@@ -52,4 +52,8 @@ export class DatabaseProvider {
   set(path: string, obj: {}): Promise<void> {
     return this.db.object(path).set({})
   }
+
+  push(path: string, obj:{}){
+    this.db.database.ref(path).push(obj);
+  }
 }

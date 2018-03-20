@@ -1,7 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
-import {AngularFireDatabase} from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';        //Import AngularFireAuth Modular for authentication.
 import * as moment from 'moment';
 
 import {File} from '@ionic-native/file';
@@ -12,6 +10,9 @@ import * as firebase2 from 'firebase';
 
 
 import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
+
+import {ToastService} from '../../providers/toast-service/toast-service';
+import {DatabaseProvider} from '../../providers/database/database';
 
 /**
  * Generated class for the NewsfeedPage page.
@@ -32,27 +33,24 @@ export class NewsfeedPage implements OnDestroy{
 
 
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
-  userSub;
   typeSub;
 
   newsType = 'upcoming';
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              public db: AngularFireDatabase,
-              public modalCtrl: ModalController,
-              public auth: AngularFireAuth,        //Various constructor declarations
+              public modalCtrl: ModalController,        //Various constructor declarations
               public fileChooser:FileChooser,
               public file:File,
               public filePath:FilePath,
               public loadingCtrl:LoadingController,
               public imageResizer: ImageResizer,
+              public toasty: ToastService,
+              public dbProv: DatabaseProvider
             ) {
   }
 
   ngOnDestroy(){
-    if(this.userSub)
-      this.userSub.unsubscribe();
     if(this.newsSub)
       this.newsSub.unsubscribe();
     if(this.typeSub)
@@ -60,16 +58,14 @@ export class NewsfeedPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
-    this.userSub = this.auth.authState.subscribe(data=>{
-      if(data){
-        this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
-          if(d2=='Admin'){
-            this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
-          }
-        });
+    
+    this.typeSub = this.dbProv.getUserType().subscribe(d2=>{
+      if(d2=='Admin'){
+        this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
       }
     });
-    this.newsSub = this.db.object('/News/').valueChanges().subscribe(data=>{
+
+    this.newsSub = this.dbProv.readObject('/News/').subscribe(data=>{
       if (data){
         this.upcomingNews=[];
         this.pastNews = [];
@@ -124,14 +120,16 @@ export class NewsfeedPage implements OnDestroy{
           image:"https://firebasestorage.googleapis.com/v0/b/chemappuwi.appspot.com/o/NewsImages%2Fdo_not_remove.jpg?alt=media&token=e93d929a-21e3-40c3-909e-aaea84c0b267",
         }
 
-        this.db.database.ref('/News/').push(obj);
+        this.dbProv.push('/News/',obj);
         
       }
     });
   }
 
   removeNews(news_Event){
-    this.db.object('/News/'+news_Event.id).remove(); // only using title until id gets sorted out.
+    this.dbProv.removeObject('/News/'+news_Event.id);
+    firebase2.storage().ref('NewsImages/'+news_Event.id).delete();
+    this.toasty.show("Item Removed",1000);
   }// end removeNews()
 
   navigateToDetails(id:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument
@@ -140,18 +138,7 @@ export class NewsfeedPage implements OnDestroy{
 
   addImage(id:string){
     this.fileChooser.open().then(uri=>{
-      //this.file.resolveLocalFilesystemUrl(uri).then(newUrl=>{
-
       this.filePath.resolveNativePath(uri).then(newUrl=>{
-        //let dirPath = newUrl.nativeURL;
-        // let dirPath = newUrl;
-        // let segs = dirPath.split('/');
-        // let name = segs.pop();
-        // dirPath = segs.join('/');
-
-
-        /*******************************************************************************************************************************/
-
         let options = {
           uri: newUrl,
           folderName: "Temp",
@@ -175,19 +162,6 @@ export class NewsfeedPage implements OnDestroy{
         }).catch(
           e=>alert(JSON.stringify(e)+"dasheen")
         )
-
-
-
-        /*****************************************************************************************************************************/
-
-
-        // this.file.readAsArrayBuffer(dirPath,name).then(async (buffer)=>{
-        //    await this.upload(id,buffer,name);                   
-        // }).catch(error=>{
-        //   alert(JSON.stringify(error)+"madness");
-        // });
-
-
       }).catch(error=>{
         alert(JSON.stringify(error)+"hellicopter");
       })
@@ -209,10 +183,11 @@ export class NewsfeedPage implements OnDestroy{
     
     storage.ref('NewsImages/'+id).put(blob).then(d=>{
       storage.ref('NewsImages/'+id).getDownloadURL().then(url=>{
-        this.db.database.ref('/News/'+id).child("image").set(url);
+       // this.db.database.ref('/News/'+id).child("image").set(url);
+        this.dbProv.updateObject('/News/'+id,{"image":url})
       })
       loading.dismiss();
-      alert("Done");
+      this.toasty.show("Image Uploaded",1000);
     }).catch(error=>{
       loading.dismiss();            
       alert(JSON.stringify(error)+"derp");
