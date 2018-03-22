@@ -11,11 +11,11 @@
   <img src="assets/imgs/UWI_CREST.png" alt="UWI Crest" style="display:block;margin:auto">
   <ion-item>
     <ion-label color="primary" floating>Email Address</ion-label>
-    <ion-input type="email" [(ngModel)]="email"></ion-input>
+    <ion-input type="email" [(ngModel)]="email" autofocus="true"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label color="primary" floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="password" (keyup.enter)="register()"></ion-input>
   </ion-item>
   <button ion-button (click)="register()">Register</button>
 </ion-content>
