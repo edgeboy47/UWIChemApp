@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController } from 'ionic-angular';
+import {DatabaseProvider} from '../../providers/database/database';
 
 /**
  * Generated class for the CourseDetailsPage page.
@@ -22,15 +23,19 @@ export class CourseDetailsPage  implements OnDestroy{
   user; 
   userSub; 
   userCourseSub; 
+  typeSub;
   courseSub; //Variable to hold the course chosen
   alldegrees = [];
   degrees = [];
+  showDegrees = false;
 
   constructor(private fbAuth: AngularFireAuth, 
               public navCtrl: NavController, 
               public navParams: NavParams , 
               public db: AngularFireDatabase,
-              public toasty: ToastController){
+              public toasty: ToastController,
+              public dbProv: DatabaseProvider,
+            ){
     
   }
 
@@ -46,6 +51,14 @@ export class CourseDetailsPage  implements OnDestroy{
 
   ionViewDidLoad() {
     this.course.courseID = this.navParams.get('courseID');
+
+    this.typeSub = this.dbProv.getUserType().subscribe(d2=>{
+      if(d2=='Admin'){
+        this.showDegrees = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+      }else{
+        this.showDegrees = false;
+      }
+    });
 
     
     this.userSub = this.fbAuth.authState.subscribe(data=>{
