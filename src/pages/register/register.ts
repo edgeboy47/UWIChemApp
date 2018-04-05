@@ -41,7 +41,17 @@ export class RegisterPage {
           cssClass:"toast-success",
         });
         toast.present();
-      }else{
+      }
+      // If the email is not a my.uwi.edu address
+      else if(!this.validEmail(this.email)){
+        this.toasty.create({
+          message: "Email Address Must Be A University Address",
+          duration: 2000,
+          position: 'bottom',
+          cssClass:"toast-success",
+        }).present();
+      }
+      else{
         // Create the account with Firebase Authentication
         await this.fbAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
         
@@ -76,5 +86,11 @@ export class RegisterPage {
       toast.present();
       console.error(err)
     }
+  }
+
+  // Tests if the email address is a my.uwi.edu address
+  validEmail(email:string): boolean{
+    let uwiRegex = RegExp('([A-Za-z])+\.([A-Za-z])+(@my\.uwi\.edu){1}')
+    return uwiRegex.test(email)
   }
 }
