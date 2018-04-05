@@ -50,10 +50,40 @@ exports.globalNotification = functions.database.ref("Users/{userID}").onUpdate( 
     
 })
 
+// Sends a notification when a department event is created
+exports.globalEventNotification = functions.database.ref("DepartmentEvents/{eventCode}").onWrite( event =>{
+    // Retrieve the event data from the database    
+    const newVal = event.data.current.toJSON()
+    var topic = "global";
 
-// Sends a notification when an event is created
+    // Create the payload to send to the user devices
+    var payload = {
+        // Used when app is in the background
+        notification:{
+            title: `New Department Event`,
+            body: `New ${newVal.Type} : ${newVal.Notes}`,
+            sound: 'default'
+        },
+        // Used when the app is in the foreground
+        data:{
+            title: `New Department Event`,
+            message: `New ${newVal.Type} : ${newVal.Notes}`
+        }
+    };
+
+    // Send the payload to all users subscribed to the topic
+    admin.messaging().sendToTopic(topic, payload).then( res => {
+        console.log("Event:", newVal.Notes, "sent successfully to topic:", topic)
+        console.log("Response:", res)
+    }).catch(err => {
+        console.log("Event:", newVal.Notes, "was not sent to topic:", topic)
+        console.log("Error:", err)
+    })
+})
+
+// Sends a notification when a course event is created
 exports.eventNotification = functions.database.ref("Events/{courseCode}/{eventCode}").onCreate( event => {
-    // Retrieve the event data from the databse
+    // Retrieve the event data from the database
     const newVal = event.data.current.toJSON()
 
     // Create the topic code
