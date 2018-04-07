@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Loading } from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/take';
@@ -24,7 +24,9 @@ export class UsertabsPage implements OnDestroy{
   typeSub;
   userSub;
 
+  loader: Loading = null;
   constructor(private fbAuth: AngularFireAuth, public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
+    this.loader = this.navParams.get('loader');
   }
 
   ngOnDestroy(){
@@ -35,6 +37,12 @@ export class UsertabsPage implements OnDestroy{
   }
 
   ionViewDidLoad() {
+    if(this.loader != null){
+      setTimeout( () => {
+        this.loader.dismiss();
+      }, 1500);
+    }
+
     this.userSub = this.fbAuth.authState.subscribe(data=>{
       if(data){
         //Checking if user is an admin, which will display the 'Admin Options' tab

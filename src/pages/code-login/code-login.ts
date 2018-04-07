@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/take';
@@ -13,7 +13,12 @@ export class CodeLoginPage {
   token: string = ''
   verified: boolean = false
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private fbAuth: AngularFireAuth, private db: AngularFireDatabase, private toast: ToastController) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private fbAuth: AngularFireAuth, 
+              private db: AngularFireDatabase, 
+              private toast: ToastController,
+              private loader: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -29,7 +34,13 @@ export class CodeLoginPage {
         if(this.token === list[prop]){
           this.db.object(`Users/${uid}`).update({type: prop, verified: "True"})
           this.verified = true
-          this.navCtrl.setRoot("UsertabsPage")
+          
+          let loading = this.loader.create({
+            content: 'Loading...'
+          });
+          loading.present();
+
+          this.navCtrl.setRoot("UsertabsPage", {'loader': loading});
         }
       }
       

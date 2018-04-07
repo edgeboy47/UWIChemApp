@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -28,7 +28,8 @@ export class LoginPage {
               private toasty: ToastController,
               private pltCheck: PlatformCheckProvider,
               private dbProv: DatabaseProvider,
-              private authProv: AuthProvider) {
+              private authProv: AuthProvider,
+              private loader: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -65,12 +66,18 @@ export class LoginPage {
           })
         })
       }
+
+      let loading = this.loader.create({
+        content: 'Loading...'
+      });
+      loading.present();
+
       // If the user has already given the token, go to the main tabs page
       // else go to the code entry page
       let uid = this.fbAuth.auth.currentUser.uid
       
       this.db.object(`Users/${uid}/verified`).valueChanges().take(1).subscribe( val => {
-        if(val === "True") this.navCtrl.setRoot('UsertabsPage')
+        if(val === "True") this.navCtrl.setRoot('UsertabsPage', {'loader': loading})
         else this.navCtrl.push('CodeLoginPage')
       })
     }
