@@ -48,8 +48,6 @@ export class MyApp {
     try{
       // If the user agent is not a desktop browser
       if(!this.pltCheck.contains('core')) {
-        // Allow the user to give permission to display notifications
-        await this.localNotifications.requestPermission()
         // Whenever a notification from firebase is received
         this.fcm.onNotification().subscribe( data => {
           // Create a local notification that displays the firebase notification's data
