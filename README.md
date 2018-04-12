@@ -72,3 +72,6 @@ ionic cordova run ios
 
 * [Ionic Framework](https://ionicframework.com/) - The cross-platform framework used
 * [Firebase](https://firebase.google.com/) - The backend used
+
+## Acknowledgements
+* Readme created using the [readme template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md)
