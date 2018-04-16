@@ -90,7 +90,7 @@ export class RegisterPage {
 
   // Tests if the email address is a my.uwi.edu address
   validEmail(email:string): boolean{
-    let uwiRegex = RegExp('([A-Za-z])+\.([A-Za-z])+(@my\.uwi\.edu){1}')
+    let uwiRegex = /^([A-Za-z])+\.([A-Za-z])+(@my\.uwi\.edu)$/
     return uwiRegex.test(email)
   }
 }
