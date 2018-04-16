@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import {File} from '@ionic-native/file';
@@ -13,6 +13,8 @@ import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 
 import {ToastService} from '../../providers/toast-service/toast-service';
 import {DatabaseProvider} from '../../providers/database/database';
+import { AngularFireAuth } from 'angularfire2/auth';  
+import { AngularFireDatabase } from 'angularfire2/database';
 
 /**
  * Generated class for the NewsfeedPage page.
@@ -30,6 +32,7 @@ export class NewsfeedPage implements OnDestroy{
   upcomingNews=[];
   pastNews = [];
   newsSub;
+  userSub;
 
 
   showButtons = false;                              //Boolean indicating whether certain buttons should be shown based on user type.
@@ -46,7 +49,10 @@ export class NewsfeedPage implements OnDestroy{
               public loadingCtrl:LoadingController,
               public imageResizer: ImageResizer,
               public toasty: ToastService,
-              public dbProv: DatabaseProvider
+              public dbProv: DatabaseProvider,
+              public auth: AngularFireAuth,
+              public alertCtrl: AlertController,
+              public db: AngularFireDatabase,
             ) {
   }
 
@@ -55,15 +61,23 @@ export class NewsfeedPage implements OnDestroy{
       this.newsSub.unsubscribe();
     if(this.typeSub)
       this.typeSub.unsubscribe();
+    if(this.userSub)
+      this.userSub.unsubscribe();
   }
 
   ionViewDidLoad() {
-    
-    this.typeSub = this.dbProv.getUserType().subscribe(d2=>{
-      if(d2=='Admin'){
-        this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+    this.userSub = this.auth.authState.subscribe(data=>{
+      if(data){
+        this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
+          if(d2=='Admin'){
+            this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+          }else{
+            this.showButtons = false;
+          }
+        });
       }
     });
+    
 
     this.newsSub = this.dbProv.readObject('/News/').subscribe(data=>{
       if (data){
@@ -127,9 +141,26 @@ export class NewsfeedPage implements OnDestroy{
   }
 
   removeNews(news_Event){
-    this.dbProv.removeObject('/News/'+news_Event.id);
-    firebase2.storage().ref('NewsImages/'+news_Event.id).delete();
-    this.toasty.show("Item Removed",1000);
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'This cannot be undone',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Remove',
+          handler: ()=>{
+            if(news_Event.image!="https://firebasestorage.googleapis.com/v0/b/chemappuwi.appspot.com/o/NewsImages%2Fdo_not_remove.jpg?alt=media&token=e93d929a-21e3-40c3-909e-aaea84c0b267")
+              firebase2.storage().ref('NewsImages/'+news_Event.id).delete();
+            
+            this.dbProv.removeObject('/News/'+news_Event.id);
+            this.toasty.show("Item Removed",1000);
+          }
+        }
+      ]
+    });
+    alert.present();
   }// end removeNews()
 
   navigateToDetails(id:string){                 //Simply navigate to CourseDetails page with the course id passed as an argument

@@ -1,6 +1,6 @@
 //Darrion, Gideon, Ravish, Nathan, Krystel
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 /* This page navigates to the Login page when a department is selected. */
@@ -19,7 +19,8 @@ export class DepartmentsPage implements OnDestroy{
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private db: AngularFireDatabase, 
-              private fbAuth: AngularFireAuth) {
+              private fbAuth: AngularFireAuth,
+              public alertCtrl: AlertController) {
   }
 
   ngOnDestroy(){
@@ -47,5 +48,18 @@ export class DepartmentsPage implements OnDestroy{
         this.navCtrl.push("LoginPage"); 
       }
     })
+  }
+
+  showError(){
+    let alert = this.alertCtrl.create({
+      title:'Not expanded yet',
+      message:'Database not expanded to facilitate this department yet!',
+      buttons:[
+        {
+          text:'Ok',
+        },
+      ],
+    });
+    alert.present();
   }
 }

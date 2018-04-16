@@ -84,6 +84,8 @@ export class AllCoursesPage implements OnDestroy{
         this.typeSub = this.db.object('/Users/'+data.uid+'/type/').valueChanges().subscribe(d2=>{
           if(d2=='Admin'){
             this.showButtons = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+          }else{
+            this.showButtons = false;
           }
         });
       }

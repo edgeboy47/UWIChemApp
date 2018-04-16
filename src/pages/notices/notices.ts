@@ -174,30 +174,60 @@ IonViewDidLoad() contains the instructions used to read data from the database u
   } // end addDepartmentEvent()
 
   removeDepartmentEvent(D_notice){
-    let departmentNotices = this.departmentNoticeSource;
-    departmentNotices.splice(departmentNotices.indexOf(D_notice),1);   //get event that is selected.
-    
-    this.db.object('/DepartmentEvents/'+D_notice.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'This cannot be undone',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Remove',
+          handler: ()=>{
+            alert.present();
+            let departmentNotices = this.departmentNoticeSource;
+            departmentNotices.splice(departmentNotices.indexOf(D_notice),1);   //get event that is selected.
+            
+            this.db.object('/DepartmentEvents/'+D_notice.id+'/').remove();  //Removes +this.courseID from path //Remove it from firebase.
 
-    this.departmentNoticeSource  = [];
-    setTimeout(()=>{
-      this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
+            this.departmentNoticeSource  = [];
+            setTimeout(()=>{
+              this.departmentNoticeSource = departmentNotices;                //Set timeout and update user interface by setting the global eventSource used by the calendar element
+            });
+          }
+        }
+      ]
     });
-    
+    alert.present();
   }// end removeDepartmentEvent(event)
 
 
 
   removeNotice(notice){
-    this.notices = this.noticeSource;
-    this.notices.splice(this.notices.indexOf(notice),1);
-    this.db.object('/Events/'+notice.CourseID+'/'+notice.id).remove(); // This line executes the removal of an event in the firebase
-                                                                      // database by specifying its location.
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'This cannot be undone',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Remove',
+          handler: ()=>{
+            this.notices = this.noticeSource;
+            this.notices.splice(this.notices.indexOf(notice),1);
+            this.db.object('/Events/'+notice.CourseID+'/'+notice.id).remove(); // This line executes the removal of an event in the firebase
+                                                                              // database by specifying its location.
 
-    this.noticeSource = [];
-    setTimeout(()=>{
-      this.noticeSource = this.notices;
+            this.noticeSource = [];
+            setTimeout(()=>{
+              this.noticeSource = this.notices;
+            });
+          }
+        }
+      ]
     });
+    alert.present();    
   }// end removeNotice(notice)
 
   onNoticeSelected(notice){

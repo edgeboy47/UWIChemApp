@@ -22,13 +22,13 @@
   <!--<button ion-button (click)="addNotice()">Add a notice</button>-->
 
   <ion-list >
-    <ion-item text-wrap *ngFor="let notice of noticeSource"  (click)="onNoticeSelected(notice)" has-bouncing="false" overflow-scroll="false" >
-      {{notice.CourseID}} | {{notice.title}} 
+    <ion-item text-wrap *ngFor="let notice of noticeSource"   has-bouncing="false" overflow-scroll="false" >
+      <ion-item no-lines (click)="onNoticeSelected(notice)" >{{notice.CourseID}} | {{notice.title}}</ion-item>
       <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeNotice(notice)"></ion-icon>
     </ion-item>
 
-    <ion-item  text-wrap *ngFor="let departmentNotices of departmentNoticeSource"  (click)="onD_NoticeSelected(departmentNotices)" has-bouncing="false" overflow-scroll="false" >
-      {{departmentNotices.Type}} | {{departmentNotices.title}}
+    <ion-item  text-wrap *ngFor="let departmentNotices of departmentNoticeSource"   has-bouncing="false" overflow-scroll="false" >
+      <ion-item no-lines (click)="onD_NoticeSelected(departmentNotices)">{{departmentNotices.Type}} | {{departmentNotices.title}}</ion-item>
       <ion-icon *ngIf="showButtons" name="close" item-end (click)="removeDepartmentEvent(departmentNotices)"></ion-icon>
     </ion-item>
   </ion-list>
