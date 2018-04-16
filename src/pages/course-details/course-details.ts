@@ -51,24 +51,22 @@ export class CourseDetailsPage  implements OnDestroy{
 
   ionViewDidLoad() {
     this.course.courseID = this.navParams.get('courseID');
-
-    this.typeSub = this.dbProv.getUserType().subscribe(d2=>{
-      if(d2=='Admin'){
-        this.showDegrees = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
-      }else{
-        this.showDegrees = false;
-      }
-    });
-
-    
+   
     this.userSub = this.fbAuth.authState.subscribe(data=>{
       if(data){
         this.user = data;
         this.userCourseSub = this.db.object('/UserCourses/'+data.uid+'/'+this.course.courseID).valueChanges().subscribe(data=>{
           if(data!=null)this.showButton = false;
         })
-      }
-      
+
+        this.typeSub = this.dbProv.getUserType().subscribe(d2=>{
+          if(d2=='Admin'){
+            this.showDegrees = true;              //Get the user type and set the showButtons variable according to the type of user. Admin users are allowed to add courses.
+          }else{
+            this.showDegrees = false;
+          }
+        });
+      }      
     });
    
 
